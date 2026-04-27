@@ -304,6 +304,7 @@ p{font-size:13px;line-height:1.6;color:#555;margin-bottom:12px;}
   </div>
   <div class="sos-fired" id="sosfired">SOS 送信完了</div>
   <button class="sos-btn" onclick="fireSOS()" id="btn-sos">SOS Signal Push</button>
+  <button class="btn" id="btn-navi" onclick="openNavi()" style="background:#1A7A3A;margin-top:8px;">📍 現在地からナビ開始</button>
   <button class="btn" onclick="goTo(4)" id="btn-end">ツアー終了 →</button>
 </div>
 
@@ -363,7 +364,7 @@ var T={
     g3:'御社の名前が「接続済み」で点灯しているのを指差してください。',h3:'Step 3 — アクティブモード',
     tab_ski:'スキー場',tab_yama:'山岳',tab_machi:'市街地',loc_badge:'滞在中',
     sos_fired:'SOS 送信完了 — 救助信号・最終位置ログを送信しました',
-    btn_sos:'SOS Signal Push',btn_end:'ツアー終了 →',
+    btn_sos:'SOS Signal Push',btn_navi:'📍 現在地からナビ開始',btn_end:'ツアー終了 →',
     g4:'バーが100%になった瞬間「データは消えました」と伝えてください。',h4:'Step 4 — ツアー終了',p4:'位置データを消去中...',
     happy_user_lbl:'ユーザー',happy_user:'安全に帰宅',happy_aig:'リスク可視化',
     btn_close:'提携のご提案へ →',h5:'提携のご提案',
@@ -394,7 +395,7 @@ var T={
     p2:'Hold J-TAG near the phone. Works offline and with dead battery.',pairing:'J-TAG Pairing ID',waiting:'---',btn_sync_sim:'Tap to Simulate Sync',
     g3:'Point to the partner name shown as Connected.',h3:'Step 3 — Active Mode',
     tab_ski:'Ski Resort',tab_yama:'Mountain',tab_machi:'City',loc_badge:'Active',
-    sos_fired:'SOS Sent — Rescue signal transmitted',btn_sos:'SOS Signal Push',btn_end:'End Tour →',
+    sos_fired:'SOS Sent — Rescue signal transmitted',btn_sos:'SOS Signal Push',btn_navi:'📍 Start Navigation',btn_end:'End Tour →',
     g4:'When bar hits 100%, say "Data is gone."',h4:'Step 4 — Tour End',p4:'Erasing location data...',
     happy_user_lbl:'User',happy_user:'Safe Return',happy_aig:'Risk Visualization',
     btn_close:'Partnership Proposal →',h5:'Partnership Proposal',
@@ -423,7 +424,7 @@ var T={
     p2:'将J-TAG靠近手机背面。即使断电或无信号也能保留物理日志。',pairing:'J-TAG 配对ID',waiting:'---',btn_sync_sim:'点击模拟同步',
     g3:'请指向显示为"已连接"的合作伙伴名称。',h3:'Step 3 — 激活模式',
     tab_ski:'滑雪场',tab_yama:'山岳',tab_machi:'市区',loc_badge:'使用中',
-    sos_fired:'SOS已发送 — 救援信号已传送',btn_sos:'SOS 紧急求救',btn_end:'结束行程 →',
+    sos_fired:'SOS已发送 — 救援信号已传送',btn_sos:'SOS 紧急求救',btn_navi:'📍 开始导航',btn_end:'结束行程 →',
     g4:'进度条达到100%时，请说"数据已删除"。',h4:'Step 4 — 行程结束',p4:'正在删除位置数据...',
     happy_user_lbl:'用户',happy_user:'安全返回',happy_aig:'风险可视化',
     btn_close:'合作提案 →',h5:'合作提案',
@@ -452,7 +453,7 @@ var T={
     p2:'Approchez le J-TAG du téléphone. Fonctionne hors ligne et sans batterie.',pairing:'ID Jumelage J-TAG',waiting:'---',btn_sync_sim:'Simuler la synchronisation',
     g3:'Montrez le nom du partenaire affiché comme Connecté.',h3:'Étape 3 — Mode Actif',
     tab_ski:'Station de ski',tab_yama:'Montagne',tab_machi:'Ville',loc_badge:'Actif',
-    sos_fired:'SOS envoyé — Signal de secours transmis',btn_sos:'SOS Signal Push',btn_end:'Fin du séjour →',
+    sos_fired:'SOS envoyé — Signal de secours transmis',btn_sos:'SOS Signal Push',btn_navi:'📍 Démarrer navigation',btn_end:'Fin du séjour →',
     g4:'Quand la barre atteint 100%, dites « Les données ont disparu. »',h4:'Étape 4 — Fin du séjour',p4:'Suppression des données de localisation...',
     happy_user_lbl:'Utilisateur',happy_user:'Retour sain et sauf',happy_aig:'Visualisation des risques',
     btn_close:'Proposition de partenariat →',h5:'Proposition de partenariat',
@@ -509,7 +510,7 @@ function applyLang(){
   document.getElementById('g3txt').textContent=l.g3;document.getElementById('h3').textContent=l.h3;
   document.getElementById('tab-ski').textContent=l.tab_ski;document.getElementById('tab-yama').textContent=l.tab_yama;document.getElementById('tab-machi').textContent=l.tab_machi;
   document.getElementById('loc-badge').textContent=l.loc_badge;
-  document.getElementById('btn-sos').textContent=l.btn_sos;document.getElementById('btn-end').textContent=l.btn_end;
+  document.getElementById('btn-sos').textContent=l.btn_sos;document.getElementById('btn-navi').textContent=l.btn_navi;document.getElementById('btn-end').textContent=l.btn_end;
   document.getElementById('g4txt').textContent=l.g4;document.getElementById('h4').textContent=l.h4;document.getElementById('p4txt').textContent=l.p4;
   document.getElementById('happy-user-lbl').textContent=l.happy_user_lbl;document.getElementById('happy-user').textContent=l.happy_user;document.getElementById('happy-aig').textContent=l.happy_aig;
   document.getElementById('btn-close').textContent=l.btn_close;document.getElementById('h5').textContent=l.h5;document.getElementById('close-sub').innerHTML=l.close_sub;
@@ -590,6 +591,18 @@ function setMode(el,mode){
 }
 
 function fireSOS(){
+
+var naviDest={
+  ski:{ja:"白馬八方尾根スキー場",en:"Hakuba+Happo-one+Ski+Resort",zh:"白马八方尾根滑雪场",fr:"Hakuba+Happo-one",lat:36.6989,lng:137.7703},
+  yama:{ja:"扇沢駅",en:"Ogizawa+Station",zh:"扇泽站",fr:"Gare+Ogizawa",lat:36.5685,lng:137.6619},
+  machi:{ja:"松本駅",en:"Matsumoto+Station",zh:"松本站",fr:"Gare+Matsumoto",lat:36.2281,lng:137.9689}
+};
+function openNavi(){
+  var dest=naviDest[curMode];
+  if(!dest)return;
+  var url="https://www.google.com/maps/dir/?api=1&destination="+dest.lat+","+dest.lng+"&travelmode=driving";
+  window.open(url,"_blank");
+}
   if(sosTimer){clearTimeout(sosTimer);sosTimer=null;}
   document.getElementById('sosfired').textContent=L('sos_fired');
   document.getElementById('sosfired').style.display='block';
@@ -632,4 +645,3 @@ setMode(document.querySelector('.mtab.on'),'ski');
 </script>
 </body>
 </html>
-
