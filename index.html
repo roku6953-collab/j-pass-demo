@@ -28,29 +28,59 @@ p{font-size:13px;line-height:1.6;color:#555;margin-bottom:12px;}
 .pcolor{width:38px;height:38px;border-radius:8px;flex-shrink:0;}
 .pname{font-size:14px;font-weight:500;color:#222;}
 .psub{font-size:11px;color:#888;margin-top:2px;}
- 
-/* 通番2修正：登録フロー */
-.reg-flow{display:flex;flex-direction:column;gap:8px;margin:12px 0;}
-.reg-step{display:flex;align-items:flex-start;gap:12px;background:#f0f6ff;border:1px solid #b5d4f4;border-radius:12px;padding:12px 14px;}
-.reg-num{width:28px;height:28px;border-radius:50%;background:var(--ac);color:#fff;font-size:13px;font-weight:500;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
-.reg-txt{font-size:13px;color:#333;line-height:1.5;}
-.reg-txt strong{color:var(--ac);font-weight:500;}
-.reg-arrow{text-align:center;font-size:18px;color:#b5d4f4;margin:-2px 0;}
- 
+
+/* 登録方法選択 */
+.reg-method{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0;}
+.reg-btn{border:1.5px solid var(--ac);border-radius:14px;padding:16px 10px;text-align:center;cursor:pointer;background:#fff;transition:all .2s;}
+.reg-btn:active{transform:scale(.97);}
+.reg-btn-icon{font-size:28px;margin-bottom:6px;}
+.reg-btn-lbl{font-size:13px;font-weight:500;color:var(--ac);}
+.reg-btn-sub{font-size:10px;color:#888;margin-top:3px;}
+
+/* スキャン演出 */
+.scan-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.85);z-index:100;justify-content:center;align-items:center;flex-direction:column;}
+.scan-overlay.show{display:flex;}
+.scan-frame{width:240px;height:180px;border:2px solid #fff;border-radius:12px;position:relative;overflow:hidden;background:#111;}
+.scan-line{width:100%;height:2px;background:var(--ac);position:absolute;top:0;animation:scanline 1.5s linear infinite;}
+@keyframes scanline{0%{top:0;}100%{top:100%;}}
+.scan-label{color:#fff;font-size:14px;margin-top:16px;font-weight:500;}
+.scan-sub{color:#aaa;font-size:11px;margin-top:6px;}
+.scan-done{display:none;flex-direction:column;align-items:center;}
+.scan-ok{font-size:48px;margin-bottom:10px;}
+.scan-ok-lbl{color:#4CAF50;font-size:16px;font-weight:500;}
+.scan-ok-sub{color:#aaa;font-size:12px;margin-top:4px;}
+
+/* 手入力演出 */
+.input-box{background:#f8f8f8;border:1px solid #e0e0e0;border-radius:14px;padding:16px;margin:12px 0;}
+.input-lbl{font-size:11px;color:var(--ac);font-weight:500;margin-bottom:8px;}
+.input-field{width:100%;padding:12px;border:1.5px solid #e0e0e0;border-radius:10px;font-size:15px;font-family:monospace;letter-spacing:.1em;color:#333;background:#fff;text-align:center;}
+.input-field:focus{outline:none;border-color:var(--ac);}
+.input-hint{font-size:10px;color:#aaa;text-align:center;margin-top:6px;}
+
+/* 登録完了 */
+.reg-complete{display:none;flex-direction:column;align-items:center;padding:16px;background:#eaf3de;border:1px solid #5DCAA5;border-radius:14px;margin:12px 0;text-align:center;}
+.reg-complete.show{display:flex;}
+.reg-complete-icon{font-size:36px;margin-bottom:8px;}
+.reg-complete-lbl{font-size:14px;font-weight:500;color:#0F6E56;margin-bottom:4px;}
+.reg-complete-sub{font-size:11px;color:#555;}
+
 .token-box{background:#f0f6ff;border:1px solid #b5d4f4;border-radius:14px;padding:18px;text-align:center;margin:12px 0;}
 .token-lbl{font-size:10px;color:#378add;margin-bottom:6px;}
 .token-val{font-size:22px;font-weight:500;color:#0c447c;font-family:monospace;letter-spacing:.05em;}
 .token-ok{font-size:11px;color:#3b6d11;margin-top:5px;}
-.nfc-area{height:140px;display:flex;align-items:center;justify-content:center;position:relative;margin:16px 0;cursor:pointer;}
-.nfc-ring{width:80px;height:80px;border:2.5px solid var(--ac);border-radius:50%;position:absolute;animation:pulse 1.5s infinite;}
-.nfc-icon{font-size:36px;position:relative;z-index:1;}
-@keyframes pulse{0%{transform:scale(.8);opacity:1;}100%{transform:scale(1.5);opacity:0;}}
-.sync-done{display:none;text-align:center;color:#3b6d11;font-weight:500;font-size:14px;padding:10px;background:#eaf3de;border-radius:10px;margin-bottom:12px;}
+
 .net-box{background:#f8f8f8;border:1px solid #e0e0e0;border-radius:12px;padding:14px;margin:12px 0;}
 .net-row{display:flex;align-items:center;gap:10px;font-size:13px;padding:5px 0;color:#888;}
 .net-row.on{color:var(--ac);font-weight:500;}
 .ndot{width:8px;height:8px;border-radius:50%;background:#ccc;flex-shrink:0;}
 .net-row.on .ndot{background:var(--ac);}
+
+.nfc-area{height:140px;display:flex;align-items:center;justify-content:center;position:relative;margin:16px 0;cursor:pointer;}
+.nfc-ring{width:80px;height:80px;border:2.5px solid var(--ac);border-radius:50%;position:absolute;animation:pulse 1.5s infinite;}
+.nfc-icon{font-size:36px;position:relative;z-index:1;}
+@keyframes pulse{0%{transform:scale(.8);opacity:1;}100%{transform:scale(1.5);opacity:0;}}
+.sync-done{display:none;text-align:center;color:#3b6d11;font-weight:500;font-size:14px;padding:10px;background:#eaf3de;border-radius:10px;margin-bottom:12px;}
+
 .mode-tabs{display:flex;border:1px solid #e0e0e0;border-radius:10px;overflow:hidden;margin-bottom:12px;}
 .mtab{flex:1;padding:9px 4px;font-size:12px;text-align:center;cursor:pointer;background:#fff;border:none;color:#888;border-right:1px solid #e0e0e0;}
 .mtab:last-child{border-right:none;}
@@ -76,19 +106,34 @@ p{font-size:13px;line-height:1.6;color:#555;margin-bottom:12px;}
 </style>
 </head>
 <body>
+
+<!-- スキャン演出オーバーレイ -->
+<div class="scan-overlay" id="scanOverlay">
+  <div id="scanActive">
+    <div class="scan-frame">
+      <div class="scan-line"></div>
+    </div>
+    <div class="scan-label">カードをかざしてください</div>
+    <div class="scan-sub">楽天カード・モンベル会員証・保険証券</div>
+  </div>
+  <div class="scan-done" id="scanDone">
+    <div class="scan-ok">✅</div>
+    <div class="scan-ok-lbl">スキャン完了！</div>
+    <div class="scan-ok-sub">匿名トークンを生成しています...</div>
+  </div>
+</div>
+
 <div class="wrap">
 <div class="hdr">
   <span>J-PASS SDK v2.0</span>
   <span id="pname">パートナー未選択</span>
 </div>
- 
+
 <!-- Step 0: パートナー選択 -->
 <div class="sc on" id="sc0">
   <div class="guide"><div class="guide-lbl">凛子ガイド</div>営業先のロゴを選んでください。アプリの色が各社のブランドカラーに変わります。</div>
   <h2>パートナーを選択</h2>
   <div class="pgrid">
- 
-    <!-- 通番1修正：モンベルの説明文 -->
     <div class="pcard" onclick="setP('montbell','モンベル','#1A4B8C','モンベル / AIG損保')">
       <div class="pcolor" style="background:#1A4B8C;"></div>
       <div>
@@ -96,7 +141,6 @@ p{font-size:13px;line-height:1.6;color:#555;margin-bottom:12px;}
         <div class="psub">直営店でJ-TAGを購入した方専用の安全キー</div>
       </div>
     </div>
- 
     <div class="pcard" onclick="setP('hoshino','星野リゾート','#B8962E','星野リゾート / AIG損保')">
       <div class="pcolor" style="background:#B8962E;"></div>
       <div>
@@ -104,7 +148,6 @@ p{font-size:13px;line-height:1.6;color:#555;margin-bottom:12px;}
         <div class="psub">滞在中の安全を守るラグジュアリーキー</div>
       </div>
     </div>
- 
     <div class="pcard" onclick="setP('rakuten','楽天','#BF0000','楽天 / AIG損保')">
       <div class="pcolor" style="background:#BF0000;"></div>
       <div>
@@ -112,45 +155,57 @@ p{font-size:13px;line-height:1.6;color:#555;margin-bottom:12px;}
         <div class="psub">楽天IDで即座に使える安全インフラ</div>
       </div>
     </div>
- 
   </div>
 </div>
- 
-<!-- Step 1: 入国・登録（通番2修正：登録フロー追加） -->
+
+<!-- Step 1: 登録方法選択（通番3修正） -->
 <div class="sc" id="sc1">
-  <div class="guide"><div class="guide-lbl">凛子ガイド</div>「J-PASSは氏名も番号も持ちません」——この3ステップを指差しながら説明してください。</div>
-  <h2>Step 1 — 登録の仕組み</h2>
- 
-  <div class="reg-flow">
-    <div class="reg-step">
-      <div class="reg-num">1</div>
-      <div class="reg-txt"><strong>提携先IDを読み込む</strong><br>楽天ID・モンベル会員証・保険証券番号のいずれかをスキャン</div>
+  <div class="guide"><div class="guide-lbl">凛子ガイド</div>カードをスキャンするか、番号を入力するか選んでください。どちらも個人情報は残りません。</div>
+  <h2>Step 1 — 登録方法を選択</h2>
+
+  <div class="reg-method">
+    <div class="reg-btn" onclick="startScan()">
+      <div class="reg-btn-icon">📷</div>
+      <div class="reg-btn-lbl">カードを<br>スキャン</div>
+      <div class="reg-btn-sub">楽天カード<br>モンベル会員証</div>
     </div>
-    <div class="reg-arrow">↓</div>
-    <div class="reg-step">
-      <div class="reg-num">2</div>
-      <div class="reg-txt"><strong>匿名トークンに変換</strong><br>J-PASSが個人情報を「T-XXXX」という記号に自動変換。元の情報は即座に消去</div>
-    </div>
-    <div class="reg-arrow">↓</div>
-    <div class="reg-step">
-      <div class="reg-num">3</div>
-      <div class="reg-txt"><strong>登録完了</strong><br>J-PASSに残るのは記号のみ。あなたの個人情報はどこにも保存されません</div>
+    <div class="reg-btn" onclick="startInput()">
+      <div class="reg-btn-icon">🔢</div>
+      <div class="reg-btn-lbl">番号を<br>入力</div>
+      <div class="reg-btn-sub">保険証券番号<br>会員番号</div>
     </div>
   </div>
- 
-  <div class="token-box">
+
+  <!-- 手入力欄 -->
+  <div class="input-box" id="inputBox" style="display:none;">
+    <div class="input-lbl">証券番号・会員番号を入力</div>
+    <input class="input-field" id="inputField" type="text" maxlength="16" placeholder="例：1234-5678-9012" />
+    <div class="input-hint">入力後、登録ボタンを押してください</div>
+    <button class="btn" onclick="completeInput()" style="margin-top:10px;">登録する →</button>
+  </div>
+
+  <!-- 登録完了表示 -->
+  <div class="reg-complete" id="regComplete">
+    <div class="reg-complete-icon">🔐</div>
+    <div class="reg-complete-lbl">登録完了！</div>
+    <div class="reg-complete-sub">個人情報は即座に消去されました</div>
+  </div>
+
+  <div class="token-box" id="tokenBox" style="display:none;">
     <div class="token-lbl">生成された匿名トークン</div>
     <div class="token-val" id="tokval">T-4821-XX</div>
     <div class="token-ok">✓ 個人情報は一切保存されません</div>
   </div>
-  <div class="net-box">
+
+  <div class="net-box" id="netBox" style="display:none;">
     <div class="net-row on"><div class="ndot"></div><span id="p-lbl1">提携先</span>（接続済み）</div>
     <div class="net-row on"><div class="ndot"></div>AIG損保（承認済み）</div>
     <div class="net-row on"><div class="ndot"></div>J-PASS 松本ハブ（監視中）</div>
   </div>
-  <button class="btn" onclick="goTo(2)">次へ — J-TAG を同期する →</button>
+
+  <button class="btn" id="btnSc2" style="display:none;" onclick="goTo(2)">次へ — J-TAG を同期する →</button>
 </div>
- 
+
 <!-- Step 2: J-TAG同期 -->
 <div class="sc" id="sc2">
   <div class="guide"><div class="guide-lbl">凛子ガイド</div>「ここをタップして」と相手に渡してください。タグが光る瞬間が最大の刺さりポイントです。</div>
@@ -165,7 +220,7 @@ p{font-size:13px;line-height:1.6;color:#555;margin-bottom:12px;}
   <button class="btn" id="btn2" style="display:none;" onclick="goTo(3)">次へ — アクティブモード →</button>
   <button class="btn btn-sub" onclick="doSync()">タップで同期シミュレート</button>
 </div>
- 
+
 <!-- Step 3: アクティブモード -->
 <div class="sc" id="sc3">
   <div class="guide"><div class="guide-lbl">凛子ガイド</div>御社の名前が「接続済み」で点灯しているのを指差してください。</div>
@@ -191,7 +246,7 @@ p{font-size:13px;line-height:1.6;color:#555;margin-bottom:12px;}
   <button class="sos-btn" onclick="fireSOS()">SOS Signal Push</button>
   <button class="btn" onclick="goTo(4)">ツアー終了 →</button>
 </div>
- 
+
 <!-- Step 4: ツアー終了 -->
 <div class="sc" id="sc4">
   <div class="guide"><div class="guide-lbl">凛子ガイド</div>バーが100%になった瞬間「データは消えました」と伝えてください。</div>
@@ -207,7 +262,7 @@ p{font-size:13px;line-height:1.6;color:#555;margin-bottom:12px;}
     <button class="btn" onclick="goTo(5)">提携のご提案へ →</button>
   </div>
 </div>
- 
+
 <!-- Step 5: クロージング -->
 <div class="sc" id="sc5">
   <h2>提携のご提案</h2>
@@ -218,10 +273,10 @@ p{font-size:13px;line-height:1.6;color:#555;margin-bottom:12px;}
   <p style="font-size:12px;text-align:center;color:#888;">担当：六郷 代表 / J-PASS 事務局<br>松本 Hub</p>
   <button class="btn" onclick="restart()">デモをリセット</button>
 </div>
- 
+
 </div>
 <script>
-var cur=0,curPart='montbell',eTimer=null;
+var cur=0,curPart='montbell',eTimer=null,scanTimer=null;
 var modes={
   ski:{name:'白馬八方尾根スキー場',desc:'長野県・標高1,831m / 気温 -5℃',hubs:[['長野','接続中'],['豊田','スタンバイ'],['仙台','スタンバイ']]},
   yama:{name:'北アルプス 剱岳',desc:'富山県・標高2,999m / 通信圏外',hubs:[['富山','NFC記録中'],['仙台','スタンバイ'],['豊田','スタンバイ']]},
@@ -229,10 +284,11 @@ var modes={
 };
 var partClose={montbell:'モンベルさまへ',hoshino:'星野リゾートさまへ',rakuten:'楽天さまへ'};
 var partHappy={montbell:'J-TAG販売 + 会員価値向上',hoshino:'滞在価値向上 + 安全差別化',rakuten:'楽天Pay シームレス決済'};
+
 function setAC(c){document.documentElement.style.setProperty('--ac',c);}
+
 function setP(p,name,c,plbl){
-  curPart=p;
-  setAC(c);
+  curPart=p; setAC(c);
   document.getElementById('pname').textContent=name+'様';
   document.getElementById('p-lbl1').textContent=name;
   document.getElementById('close-title').textContent=partClose[p];
@@ -241,20 +297,62 @@ function setP(p,name,c,plbl){
   hp.lastChild.textContent=partHappy[p];
   var tok='T-'+Math.floor(Math.random()*9000+1000)+'-'+p.toUpperCase().substring(0,2);
   document.getElementById('tokval').textContent=tok;
+  document.getElementById('inputBox').style.display='none';
+  document.getElementById('regComplete').classList.remove('show');
+  document.getElementById('tokenBox').style.display='none';
+  document.getElementById('netBox').style.display='none';
+  document.getElementById('btnSc2').style.display='none';
   goTo(1);
 }
+
+function startScan(){
+  var overlay=document.getElementById('scanOverlay');
+  document.getElementById('scanActive').style.display='block';
+  document.getElementById('scanDone').style.display='none';
+  overlay.classList.add('show');
+  scanTimer=setTimeout(function(){
+    document.getElementById('scanActive').style.display='none';
+    document.getElementById('scanDone').style.display='flex';
+    setTimeout(function(){
+      overlay.classList.remove('show');
+      showRegComplete();
+    },1500);
+  },2000);
+}
+
+function startInput(){
+  document.getElementById('inputBox').style.display='block';
+  document.getElementById('inputField').focus();
+}
+
+function completeInput(){
+  var val=document.getElementById('inputField').value;
+  if(!val){alert('番号を入力してください');return;}
+  document.getElementById('inputBox').style.display='none';
+  showRegComplete();
+}
+
+function showRegComplete(){
+  document.getElementById('regComplete').classList.add('show');
+  document.getElementById('tokenBox').style.display='block';
+  document.getElementById('netBox').style.display='block';
+  document.getElementById('btnSc2').style.display='block';
+}
+
 function goTo(n){
   document.querySelectorAll('.sc').forEach(function(s){s.classList.remove('on');});
   cur=n;
   document.getElementById('sc'+n).classList.add('on');
   if(n===4)startProg();
 }
+
 function doSync(){
   document.getElementById('nfcring').style.animation='none';
   document.getElementById('syncdone').style.display='block';
   document.getElementById('tagid').textContent='JT-'+Math.floor(Math.random()*9000+1000)+'-08';
   document.getElementById('btn2').style.display='block';
 }
+
 function setMode(el,mode){
   document.querySelectorAll('.mtab').forEach(function(t){t.classList.remove('on');});
   el.classList.add('on');
@@ -264,7 +362,9 @@ function setMode(el,mode){
   document.getElementById('hubs').innerHTML=m.hubs.map(function(h){return'<div class="hubrow"><span>分散拠点 — '+h[0]+'</span><span>'+h[1]+'</span></div>';}).join('');
   document.getElementById('sosfired').style.display='none';
 }
+
 function fireSOS(){document.getElementById('sosfired').style.display='block';}
+
 function startProg(){
   if(eTimer)clearInterval(eTimer);
   var pct=0;
@@ -276,13 +376,22 @@ function startProg(){
     if(pct>=100){clearInterval(eTimer);eTimer=null;document.getElementById('finalcard').style.display='block';}
   },200);
 }
+
 function restart(){
   if(eTimer){clearInterval(eTimer);eTimer=null;}
+  if(scanTimer){clearTimeout(scanTimer);scanTimer=null;}
+  document.getElementById('scanOverlay').classList.remove('show');
   document.getElementById('nfcring').style.animation='pulse 1.5s infinite';
   document.getElementById('syncdone').style.display='none';
   document.getElementById('tagid').textContent='同期待ち...';
   document.getElementById('btn2').style.display='none';
   document.getElementById('sosfired').style.display='none';
+  document.getElementById('inputBox').style.display='none';
+  document.getElementById('inputField').value='';
+  document.getElementById('regComplete').classList.remove('show');
+  document.getElementById('tokenBox').style.display='none';
+  document.getElementById('netBox').style.display='none';
+  document.getElementById('btnSc2').style.display='none';
   document.querySelectorAll('.mtab').forEach(function(t,i){t.classList.toggle('on',i===0);});
   setAC('#1A4B8C');
   document.getElementById('pname').textContent='パートナー未選択';
@@ -291,7 +400,3 @@ function restart(){
 </script>
 </body>
 </html>
- 
- 
-
- 
