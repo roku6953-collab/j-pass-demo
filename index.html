@@ -1,4 +1,3 @@
-
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
@@ -13,6 +12,9 @@
 body{background:#f0f4f8;display:flex;justify-content:center;min-height:100vh;font-family:-apple-system,BlinkMacSystemFont,'Hiragino Sans',sans-serif;}
 .wrap{width:100%;max-width:390px;background:#fff;min-height:100vh;display:flex;flex-direction:column;}
 .hdr{background:var(--ac);color:#fff;padding:14px 18px;display:flex;justify-content:space-between;align-items:center;font-size:14px;font-weight:500;}
+.lang-bar{display:flex;gap:6px;padding:8px 18px;border-bottom:1px solid #e0e0e0;background:#f8f8f8;}
+.lang-flag{padding:4px 10px;border-radius:20px;font-size:13px;cursor:pointer;border:1px solid #e0e0e0;background:#fff;transition:all .15s;}
+.lang-flag.on{background:var(--ac);color:#fff;border-color:var(--ac);}
 .sc{display:none;padding:20px;flex-direction:column;flex:1;}
 .sc.on{display:flex;}
 .guide{background:#f8f8f8;border-left:3px solid var(--ac);padding:10px 12px;border-radius:0 8px 8px 0;font-size:12px;color:#555;margin-bottom:16px;}
@@ -28,19 +30,13 @@ p{font-size:13px;line-height:1.6;color:#555;margin-bottom:12px;}
 .pcolor{width:38px;height:38px;border-radius:8px;flex-shrink:0;}
 .pname{font-size:14px;font-weight:500;color:#222;}
 .psub{font-size:11px;color:#888;margin-top:2px;}
-
-/* フラッシュ演出 */
 .flash-overlay{position:fixed;top:0;left:0;width:100%;height:100%;z-index:200;pointer-events:none;opacity:0;transition:opacity .1s;}
-
-/* 登録方法選択 */
 .reg-method{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0;}
 .reg-btn{border:1.5px solid var(--ac);border-radius:14px;padding:16px 10px;text-align:center;cursor:pointer;background:#fff;transition:all .2s;}
 .reg-btn:active{transform:scale(.97);}
 .reg-btn-icon{font-size:28px;margin-bottom:6px;}
 .reg-btn-lbl{font-size:13px;font-weight:500;color:var(--ac);}
 .reg-btn-sub{font-size:10px;color:#888;margin-top:3px;}
-
-/* スキャン演出 */
 .scan-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.85);z-index:100;justify-content:center;align-items:center;flex-direction:column;}
 .scan-overlay.show{display:flex;}
 .scan-frame{width:240px;height:180px;border:2px solid #fff;border-radius:12px;position:relative;overflow:hidden;background:#111;}
@@ -52,38 +48,30 @@ p{font-size:13px;line-height:1.6;color:#555;margin-bottom:12px;}
 .scan-ok{font-size:48px;margin-bottom:10px;}
 .scan-ok-lbl{color:#4CAF50;font-size:16px;font-weight:500;}
 .scan-ok-sub{color:#aaa;font-size:12px;margin-top:4px;}
-
-/* 手入力演出 */
 .input-box{background:#f8f8f8;border:1px solid #e0e0e0;border-radius:14px;padding:16px;margin:12px 0;}
 .input-lbl{font-size:11px;color:var(--ac);font-weight:500;margin-bottom:8px;}
 .input-field{width:100%;padding:12px;border:1.5px solid #e0e0e0;border-radius:10px;font-size:15px;font-family:monospace;letter-spacing:.1em;color:#333;background:#fff;text-align:center;}
 .input-field:focus{outline:none;border-color:var(--ac);}
 .input-hint{font-size:10px;color:#aaa;text-align:center;margin-top:6px;}
-
-/* 登録完了 */
 .reg-complete{display:none;flex-direction:column;align-items:center;padding:16px;background:#eaf3de;border:1px solid #5DCAA5;border-radius:14px;margin:12px 0;text-align:center;}
 .reg-complete.show{display:flex;}
 .reg-complete-icon{font-size:36px;margin-bottom:8px;}
 .reg-complete-lbl{font-size:14px;font-weight:500;color:#0F6E56;margin-bottom:4px;}
 .reg-complete-sub{font-size:11px;color:#555;}
-
 .token-box{background:#f0f6ff;border:1px solid #b5d4f4;border-radius:14px;padding:18px;text-align:center;margin:12px 0;}
 .token-lbl{font-size:10px;color:#378add;margin-bottom:6px;}
 .token-val{font-size:22px;font-weight:500;color:#0c447c;font-family:monospace;letter-spacing:.05em;}
 .token-ok{font-size:11px;color:#3b6d11;margin-top:5px;}
-
 .net-box{background:#f8f8f8;border:1px solid #e0e0e0;border-radius:12px;padding:14px;margin:12px 0;}
 .net-row{display:flex;align-items:center;gap:10px;font-size:13px;padding:5px 0;color:#888;}
 .net-row.on{color:var(--ac);font-weight:500;}
 .ndot{width:8px;height:8px;border-radius:50%;background:#ccc;flex-shrink:0;}
 .net-row.on .ndot{background:var(--ac);}
-
 .nfc-area{height:140px;display:flex;align-items:center;justify-content:center;position:relative;margin:16px 0;cursor:pointer;}
 .nfc-ring{width:80px;height:80px;border:2.5px solid var(--ac);border-radius:50%;position:absolute;animation:pulse 1.5s infinite;}
 .nfc-icon{font-size:36px;position:relative;z-index:1;}
 @keyframes pulse{0%{transform:scale(.8);opacity:1;}100%{transform:scale(1.5);opacity:0;}}
 .sync-done{display:none;text-align:center;color:#3b6d11;font-weight:500;font-size:14px;padding:10px;background:#eaf3de;border-radius:10px;margin-bottom:12px;}
-
 .mode-tabs{display:flex;border:1px solid #e0e0e0;border-radius:10px;overflow:hidden;margin-bottom:12px;}
 .mtab{flex:1;padding:9px 4px;font-size:12px;text-align:center;cursor:pointer;background:#fff;border:none;color:#888;border-right:1px solid #e0e0e0;}
 .mtab:last-child{border-right:none;}
@@ -109,257 +97,511 @@ p{font-size:13px;line-height:1.6;color:#555;margin-bottom:12px;}
 </style>
 </head>
 <body>
-
-<!-- フラッシュ演出オーバーレイ -->
 <div class="flash-overlay" id="flashOverlay"></div>
-
-<!-- スキャン演出オーバーレイ -->
 <div class="scan-overlay" id="scanOverlay">
   <div id="scanActive">
-    <div class="scan-frame">
-      <div class="scan-line"></div>
-    </div>
-    <div class="scan-label">カードをかざしてください</div>
-    <div class="scan-sub">楽天カード・モンベル会員証・保険証券</div>
+    <div class="scan-frame"><div class="scan-line"></div></div>
+    <div class="scan-label" id="scan-label-txt">カードをかざしてください</div>
+    <div class="scan-sub" id="scan-sub-txt">楽天カード・モンベル会員証・保険証券</div>
   </div>
   <div class="scan-done" id="scanDone">
     <div class="scan-ok">✅</div>
-    <div class="scan-ok-lbl">スキャン完了！</div>
-    <div class="scan-ok-sub">匿名トークンを生成しています...</div>
+    <div class="scan-ok-lbl" id="scan-ok-lbl">スキャン完了！</div>
+    <div class="scan-ok-sub" id="scan-ok-sub">匿名トークンを生成しています...</div>
   </div>
 </div>
 
 <div class="wrap">
 <div class="hdr">
   <span>J-PASS SDK v2.0</span>
-  <span id="pname">パートナー未選択</span>
+  <span id="pname">---</span>
 </div>
 
-<!-- Step 0: パートナー選択 -->
+<!-- 言語バー（通番6） -->
+<div class="lang-bar">
+  <button class="lang-flag on" onclick="setLang('ja')">🇯🇵 日本語</button>
+  <button class="lang-flag" onclick="setLang('en')">🇺🇸 EN</button>
+  <button class="lang-flag" onclick="setLang('zh')">🇨🇳 中文</button>
+  <button class="lang-flag" onclick="setLang('fr')">🇫🇷 FR</button>
+</div>
+
+<!-- Step 0 -->
 <div class="sc on" id="sc0">
-  <div class="guide"><div class="guide-lbl">凛子ガイド</div>営業先のロゴを選んでください。アプリの色が各社のブランドカラーに変わります。</div>
-  <h2>パートナーを選択</h2>
+  <div class="guide"><div class="guide-lbl" id="g0lbl">凛子ガイド</div><span id="g0txt">営業先のロゴを選んでください。アプリの色が各社のブランドカラーに変わります。</span></div>
+  <h2 id="h0">パートナーを選択</h2>
   <div class="pgrid">
-    <div class="pcard" onclick="setP('montbell','モンベル','#1A4B8C','モンベル / AIG損保')">
+    <div class="pcard" onclick="setP('montbell','モンベル','#1A4B8C')">
       <div class="pcolor" style="background:#1A4B8C;"></div>
-      <div>
-        <div class="pname">mont-bell</div>
-        <div class="psub">直営店でJ-TAGを購入した方専用の安全キー</div>
-      </div>
+      <div><div class="pname">mont-bell</div><div class="psub" id="psub-mb">直営店でJ-TAGを購入した方専用の安全キー</div></div>
     </div>
-    <div class="pcard" onclick="setP('hoshino','星野リゾート','#B8962E','星野リゾート / AIG損保')">
+    <div class="pcard" onclick="setP('hoshino','星野リゾート','#B8962E')">
       <div class="pcolor" style="background:#B8962E;"></div>
-      <div>
-        <div class="pname">HOSHINO RESORTS</div>
-        <div class="psub">滞在中の安全を守るラグジュアリーキー</div>
-      </div>
+      <div><div class="pname">HOSHINO RESORTS</div><div class="psub" id="psub-hs">滞在中の安全を守るラグジュアリーキー</div></div>
     </div>
-    <div class="pcard" onclick="setP('rakuten','楽天','#BF0000','楽天 / AIG損保')">
+    <div class="pcard" onclick="setP('rakuten','楽天','#BF0000')">
       <div class="pcolor" style="background:#BF0000;"></div>
-      <div>
-        <div class="pname">Rakuten</div>
-        <div class="psub">楽天IDで即座に使える安全インフラ</div>
-      </div>
+      <div><div class="pname">Rakuten</div><div class="psub" id="psub-rk">楽天IDで即座に使える安全インフラ</div></div>
     </div>
   </div>
 </div>
 
-<!-- Step 1: 登録方法選択（通番3修正） -->
+<!-- Step 1 -->
 <div class="sc" id="sc1">
-  <div class="guide"><div class="guide-lbl">凛子ガイド</div>カードをスキャンするか、番号を入力するか選んでください。どちらも個人情報は残りません。</div>
-  <h2>Step 1 — 登録方法を選択</h2>
-
+  <div class="guide"><div class="guide-lbl">凛子ガイド</div><span id="g1txt">カードをスキャンするか、番号を入力するか選んでください。どちらも個人情報は残りません。</span></div>
+  <h2 id="h1">Step 1 — 登録方法を選択</h2>
   <div class="reg-method">
     <div class="reg-btn" onclick="startScan()">
       <div class="reg-btn-icon">📷</div>
-      <div class="reg-btn-lbl">カードを<br>スキャン</div>
-      <div class="reg-btn-sub">楽天カード<br>モンベル会員証</div>
+      <div class="reg-btn-lbl" id="scan-lbl">カードを<br>スキャン</div>
+      <div class="reg-btn-sub" id="scan-sub">楽天カード<br>モンベル会員証</div>
     </div>
     <div class="reg-btn" onclick="startInput()">
       <div class="reg-btn-icon">🔢</div>
-      <div class="reg-btn-lbl">番号を<br>入力</div>
-      <div class="reg-btn-sub">保険証券番号<br>会員番号</div>
+      <div class="reg-btn-lbl" id="input-lbl">番号を<br>入力</div>
+      <div class="reg-btn-sub" id="input-sub">保険証券番号<br>会員番号</div>
     </div>
   </div>
-
-  <!-- 手入力欄 -->
   <div class="input-box" id="inputBox" style="display:none;">
-    <div class="input-lbl">証券番号・会員番号を入力</div>
-    <input class="input-field" id="inputField" type="text" maxlength="16" placeholder="例：1234-5678-9012" />
-    <div class="input-hint">入力後、登録ボタンを押してください</div>
-    <button class="btn" onclick="completeInput()" style="margin-top:10px;">登録する →</button>
+    <div class="input-lbl" id="input-field-lbl">証券番号・会員番号を入力</div>
+    <input class="input-field" id="inputField" type="text" maxlength="16" placeholder="例：1234-5678-9012"/>
+    <div class="input-hint" id="input-hint">入力後、登録ボタンを押してください</div>
+    <button class="btn" onclick="completeInput()" style="margin-top:10px;" id="btn-reg">登録する →</button>
   </div>
-
-  <!-- 登録完了表示 -->
   <div class="reg-complete" id="regComplete">
     <div class="reg-complete-icon">🔐</div>
-    <div class="reg-complete-lbl">登録完了！</div>
-    <div class="reg-complete-sub">個人情報は即座に消去されました</div>
+    <div class="reg-complete-lbl" id="reg-done-lbl">登録完了！</div>
+    <div class="reg-complete-sub" id="reg-done-sub">個人情報は即座に消去されました</div>
   </div>
-
   <div class="token-box" id="tokenBox" style="display:none;">
-    <div class="token-lbl">生成された匿名トークン</div>
+    <div class="token-lbl" id="tok-lbl">生成された匿名トークン</div>
     <div class="token-val" id="tokval">T-4821-XX</div>
-    <div class="token-ok">✓ 個人情報は一切保存されません</div>
+    <div class="token-ok" id="tok-ok">✓ 個人情報は一切保存されません</div>
   </div>
-
   <div class="net-box" id="netBox" style="display:none;">
-    <div class="net-row on"><div class="ndot"></div><span id="p-lbl1">提携先</span>（接続済み）</div>
-    <div class="net-row on"><div class="ndot"></div>AIG損保（承認済み）</div>
-    <div class="net-row on"><div class="ndot"></div>J-PASS 松本ハブ（監視中）</div>
+    <div class="net-row on"><div class="ndot"></div><span id="p-lbl1">提携先</span>（<span id="connected-lbl">接続済み</span>）</div>
+    <div class="net-row on"><div class="ndot"></div><span id="aig-lbl">AIG損保（承認済み）</span></div>
+    <div class="net-row on"><div class="ndot"></div><span id="hub-lbl">J-PASS 松本ハブ（監視中）</span></div>
   </div>
-
-  <button class="btn" id="btnSc2" style="display:none;" onclick="goTo(2)">次へ — J-TAG を同期する →</button>
+  <button class="btn" id="btnSc2" style="display:none;" onclick="goTo(2)" id="btn-next1">次へ — J-TAG を同期する →</button>
 </div>
 
-<!-- Step 2: J-TAG同期 -->
+<!-- Step 2 -->
 <div class="sc" id="sc2">
-  <div class="guide"><div class="guide-lbl">凛子ガイド</div>「ここをタップして」と相手に渡してください。タグが光る瞬間が最大の刺さりポイントです。</div>
-  <h2>Step 2 — J-TAG 0.8mm 同期</h2>
-  <p>直営店で取得したJ-TAGをスマホ背面にかざします。電池切れ・圏外でも物理ログが残ります。</p>
+  <div class="guide"><div class="guide-lbl">凛子ガイド</div><span id="g2txt">「ここをタップして」と相手に渡してください。タグが光る瞬間が最大の刺さりポイントです。</span></div>
+  <h2 id="h2">Step 2 — J-TAG 0.8mm 同期</h2>
+  <p id="p2txt">直営店で取得したJ-TAGをスマホ背面にかざします。電池切れ・圏外でも物理ログが残ります。</p>
   <div class="nfc-area" onclick="doSync()">
     <div class="nfc-ring" id="nfcring"></div>
     <div class="nfc-icon">🏷</div>
   </div>
-  <div class="sync-done" id="syncdone">✓ Sync OK — 安全の同期が完了しました</div>
-  <div style="font-size:12px;color:#888;text-align:center;margin-bottom:8px;">J-TAG ペアリングID: <span id="tagid">同期待ち...</span></div>
+  <div class="sync-done" id="syncdone">✓ Sync OK</div>
+  <div style="font-size:12px;color:#888;text-align:center;margin-bottom:8px;"><span id="pairing-lbl">J-TAG ペアリングID</span>: <span id="tagid">---</span></div>
   <button class="btn" id="btn2" style="display:none;" onclick="goTo(3)">次へ — アクティブモード →</button>
-  <button class="btn btn-sub" onclick="doSync()">タップで同期シミュレート</button>
+  <button class="btn btn-sub" onclick="doSync()" id="btn-sync-sim">タップで同期シミュレート</button>
 </div>
 
-<!-- Step 3: アクティブモード -->
+<!-- Step 3 -->
 <div class="sc" id="sc3">
-  <div class="guide"><div class="guide-lbl">凛子ガイド</div>御社の名前が「接続済み」で点灯しているのを指差してください。</div>
-  <h2>Step 3 — アクティブモード</h2>
+  <div class="guide"><div class="guide-lbl">凛子ガイド</div><span id="g3txt">御社の名前が「接続済み」で点灯しているのを指差してください。</span></div>
+  <h2 id="h3">Step 3 — アクティブモード</h2>
   <div class="mode-tabs">
-    <button class="mtab on" onclick="setMode(this,'ski')">スキー場</button>
-    <button class="mtab" onclick="setMode(this,'yama')">山岳</button>
-    <button class="mtab" onclick="setMode(this,'machi')">市街地</button>
+    <button class="mtab on" onclick="setMode(this,'ski')" id="tab-ski">スキー場</button>
+    <button class="mtab" onclick="setMode(this,'yama')" id="tab-yama">山岳</button>
+    <button class="mtab" onclick="setMode(this,'machi')" id="tab-machi">市街地</button>
   </div>
   <div class="loccard">
     <div class="lochead">
       <div class="locname" id="locname">白馬八方尾根スキー場</div>
-      <div class="locbadge">滞在中</div>
+      <div class="locbadge" id="loc-badge">滞在中</div>
     </div>
     <div class="locdesc" id="locdesc">長野県・標高1,831m / 気温 -5℃</div>
-    <div id="hubs">
-      <div class="hubrow"><span>分散拠点 — 長野</span><span>接続中</span></div>
-      <div class="hubrow"><span>分散拠点 — 豊田</span><span>スタンバイ</span></div>
-      <div class="hubrow"><span>分散拠点 — 仙台</span><span>スタンバイ</span></div>
-    </div>
+    <div id="hubs"></div>
   </div>
-  <div class="sos-fired" id="sosfired">SOS 送信完了 — 救助信号・最終位置ログを送信しました</div>
-  <button class="sos-btn" onclick="fireSOS()">SOS Signal Push</button>
-  <button class="btn" onclick="goTo(4)">ツアー終了 →</button>
+  <div class="sos-fired" id="sosfired">SOS 送信完了</div>
+  <button class="sos-btn" onclick="fireSOS()" id="btn-sos">SOS Signal Push</button>
+  <button class="btn" onclick="goTo(4)" id="btn-end">ツアー終了 →</button>
 </div>
 
-<!-- Step 4: ツアー終了 -->
+<!-- Step 4 -->
 <div class="sc" id="sc4">
-  <div class="guide"><div class="guide-lbl">凛子ガイド</div>バーが100%になった瞬間「データは消えました」と伝えてください。</div>
-  <h2>Step 4 — ツアー終了</h2>
-  <p>位置データを消去中...</p>
+  <div class="guide"><div class="guide-lbl">凛子ガイド</div><span id="g4txt">バーが100%になった瞬間「データは消えました」と伝えてください。</span></div>
+  <h2 id="h4">Step 4 — ツアー終了</h2>
+  <p id="p4txt">位置データを消去中...</p>
   <div class="prog-bar"><div class="prog-fill" id="progfill"></div></div>
   <div id="finalcard" style="display:none;">
     <div class="happy">
-      <div class="hcard"><div class="hcard-lbl">ユーザー</div>安全に帰宅</div>
-      <div class="hcard"><div class="hcard-lbl">AIG損保</div>リスク可視化</div>
-      <div class="hcard full" id="hcard-p"><div class="hcard-lbl">モンベル</div>J-TAG販売 + 会員価値向上</div>
+      <div class="hcard"><div class="hcard-lbl" id="happy-user-lbl">ユーザー</div><span id="happy-user">安全に帰宅</span></div>
+      <div class="hcard"><div class="hcard-lbl">AIG損保</div><span id="happy-aig">リスク可視化</span></div>
+      <div class="hcard full" id="hcard-p"><div class="hcard-lbl" id="happy-p-lbl">モンベル</div><span id="happy-p">J-TAG販売 + 会員価値向上</span></div>
     </div>
-    <button class="btn" onclick="goTo(5)">提携のご提案へ →</button>
+    <button class="btn" onclick="goTo(5)" id="btn-close">提携のご提案へ →</button>
   </div>
 </div>
 
-<!-- Step 5: クロージング -->
+<!-- Step 5 -->
 <div class="sc" id="sc5">
-  <h2>提携のご提案</h2>
+  <h2 id="h5">提携のご提案</h2>
   <div class="close-box">
     <div class="close-title" id="close-title">モンベルさまへ</div>
-    <div class="close-sub">J-PASSは御社の会員基盤・実店舗網に<br>プラグインするだけで稼働します。<br><br>新たな開発コストは不要です。</div>
+    <div class="close-sub" id="close-sub">J-PASSは御社の会員基盤・実店舗網に<br>プラグインするだけで稼働します。<br><br>新たな開発コストは不要です。</div>
   </div>
   <p style="font-size:12px;text-align:center;color:#888;">担当：六郷 代表 / J-PASS 事務局<br>松本 Hub</p>
-  <button class="btn" onclick="restart()">デモをリセット</button>
+  <button class="btn" onclick="restart()" id="btn-reset">デモをリセット</button>
+</div>
 </div>
 
-</div>
 <script>
-/* ===== 音・フラッシュ・振動エンジン ===== */
+/* ===== 多言語テキスト（通番6）===== */
+var T={
+  ja:{
+    pname_none:'パートナー未選択',
+    g0:'営業先のロゴを選んでください。アプリの色が各社のブランドカラーに変わります。',
+    h0:'パートナーを選択',
+    psub_mb:'直営店でJ-TAGを購入した方専用の安全キー',
+    psub_hs:'滞在中の安全を守るラグジュアリーキー',
+    psub_rk:'楽天IDで即座に使える安全インフラ',
+    g1:'カードをスキャンするか、番号を入力するか選んでください。どちらも個人情報は残りません。',
+    h1:'Step 1 — 登録方法を選択',
+    scan_lbl:'カードを\nスキャン', scan_sub:'楽天カード\nモンベル会員証',
+    input_lbl:'番号を\n入力', input_sub:'保険証券番号\n会員番号',
+    input_field_lbl:'証券番号・会員番号を入力',
+    input_hint:'入力後、登録ボタンを押してください',
+    btn_reg:'登録する →',
+    reg_done_lbl:'登録完了！', reg_done_sub:'個人情報は即座に消去されました',
+    tok_lbl:'生成された匿名トークン', tok_ok:'✓ 個人情報は一切保存されません',
+    connected:'接続済み', aig:'AIG損保（承認済み）', hub:'J-PASS 松本ハブ（監視中）',
+    btn_next1:'次へ — J-TAG を同期する →',
+    g2:'「ここをタップして」と相手に渡してください。タグが光る瞬間が最大の刺さりポイントです。',
+    h2:'Step 2 — J-TAG 0.8mm 同期',
+    p2:'直営店で取得したJ-TAGをスマホ背面にかざします。電池切れ・圏外でも物理ログが残ります。',
+    pairing:'J-TAG ペアリングID', waiting:'同期待ち...',
+    btn_sync_sim:'タップで同期シミュレート',
+    g3:'御社の名前が「接続済み」で点灯しているのを指差してください。',
+    h3:'Step 3 — アクティブモード',
+    tab_ski:'スキー場', tab_yama:'山岳', tab_machi:'市街地',
+    loc_badge:'滞在中',
+    sos_fired:'SOS 送信完了 — 救助信号・最終位置ログを送信しました',
+    btn_sos:'SOS Signal Push', btn_end:'ツアー終了 →',
+    g4:'バーが100%になった瞬間「データは消えました」と伝えてください。',
+    h4:'Step 4 — ツアー終了', p4:'位置データを消去中...',
+    happy_user_lbl:'ユーザー', happy_user:'安全に帰宅',
+    happy_aig:'リスク可視化',
+    btn_close:'提携のご提案へ →',
+    h5:'提携のご提案',
+    close_sub:'J-PASSは御社の会員基盤・実店舗網に<br>プラグインするだけで稼働します。<br><br>新たな開発コストは不要です。',
+    btn_reset:'デモをリセット',
+    scan_label:'カードをかざしてください',
+    scan_sub_overlay:'楽天カード・モンベル会員証・保険証券',
+    scan_ok_lbl:'スキャン完了！', scan_ok_sub:'匿名トークンを生成しています...',
+    partClose:{montbell:'モンベルさまへ',hoshino:'星野リゾートさまへ',rakuten:'楽天さまへ'},
+    partHappy:{montbell:'J-TAG販売 + 会員価値向上',hoshino:'滞在価値向上 + 安全差別化',rakuten:'楽天Pay シームレス決済'},
+    hubs:{
+      ski:[['長野','接続中'],['豊田','スタンバイ'],['仙台','スタンバイ']],
+      yama:[['富山','NFC記録中'],['仙台','スタンバイ'],['豊田','スタンバイ']],
+      machi:[['松本','接続中'],['豊田','接続中'],['仙台','スタンバイ']]
+    },
+    locs:{
+      ski:{name:'白馬八方尾根スキー場',desc:'長野県・標高1,831m / 気温 -5℃'},
+      yama:{name:'北アルプス 剱岳',desc:'富山県・標高2,999m / 通信圏外'},
+      machi:{name:'松本市街地',desc:'長野県松本市 / 通常生活モード'}
+    }
+  },
+  en:{
+    pname_none:'Select Partner',
+    g0:'Select your sales partner. The app color will change to match their brand.',
+    h0:'Select Partner',
+    psub_mb:'Exclusive safety key for mont-bell store customers',
+    psub_hs:'Luxury safety key for resort guests',
+    psub_rk:'Instant safety infrastructure with Rakuten ID',
+    g1:'Choose how to register. No personal data is stored either way.',
+    h1:'Step 1 — Registration',
+    scan_lbl:'Scan\nCard', scan_sub:'Rakuten Card\nmont-bell Member',
+    input_lbl:'Enter\nNumber', input_sub:'Policy Number\nMember Number',
+    input_field_lbl:'Enter policy / member number',
+    input_hint:'Press Register after entering number',
+    btn_reg:'Register →',
+    reg_done_lbl:'Registered!', reg_done_sub:'Personal data erased instantly',
+    tok_lbl:'Anonymous Token Generated', tok_ok:'✓ No personal data stored',
+    connected:'Connected', aig:'AIG Insurance (Approved)', hub:'J-PASS Matsumoto Hub (Active)',
+    btn_next1:'Next — Sync J-TAG →',
+    g2:'Hand the phone to your guest. The tag sync is the wow moment.',
+    h2:'Step 2 — J-TAG 0.8mm Sync',
+    p2:'Hold J-TAG near the phone. Works offline and with dead battery.',
+    pairing:'J-TAG Pairing ID', waiting:'Waiting...',
+    btn_sync_sim:'Tap to Simulate Sync',
+    g3:'Point to the partner name shown as Connected.',
+    h3:'Step 3 — Active Mode',
+    tab_ski:'Ski Resort', tab_yama:'Mountain', tab_machi:'City',
+    loc_badge:'Active',
+    sos_fired:'SOS Sent — Rescue signal transmitted',
+    btn_sos:'SOS Signal Push', btn_end:'End Tour →',
+    g4:'When bar hits 100%, say "Data is gone."',
+    h4:'Step 4 — Tour End', p4:'Erasing location data...',
+    happy_user_lbl:'User', happy_user:'Safe Return',
+    happy_aig:'Risk Visualization',
+    btn_close:'Partnership Proposal →',
+    h5:'Partnership Proposal',
+    close_sub:'J-PASS plugs into your membership base and stores.<br><br>No new development cost required.',
+    btn_reset:'Reset Demo',
+    scan_label:'Hold card to camera',
+    scan_sub_overlay:'Rakuten Card · mont-bell Card · Policy',
+    scan_ok_lbl:'Scan Complete!', scan_ok_sub:'Generating anonymous token...',
+    partClose:{montbell:'To mont-bell',hoshino:'To Hoshino Resorts',rakuten:'To Rakuten'},
+    partHappy:{montbell:'J-TAG Sales + Member Value',hoshino:'Safety Differentiation',rakuten:'Rakuten Pay Integration'},
+    hubs:{
+      ski:[['Nagano','Connected'],['Toyota','Standby'],['Sendai','Standby']],
+      yama:[['Toyama','NFC Log'],['Sendai','Standby'],['Toyota','Standby']],
+      machi:[['Matsumoto','Connected'],['Toyota','Connected'],['Sendai','Standby']]
+    },
+    locs:{
+      ski:{name:'Hakuba Happo-one Ski Resort',desc:'Nagano / Alt. 1,831m / -5℃'},
+      yama:{name:'Tsurugidake, N. Alps',desc:'Toyama / Alt. 2,999m / No Signal'},
+      machi:{name:'Matsumoto City',desc:'Nagano / Daily Life Mode'}
+    }
+  },
+  zh:{
+    pname_none:'选择合作伙伴',
+    g0:'请选择营业对象的标志。应用颜色将切换为对应品牌色。',
+    h0:'选择合作伙伴',
+    psub_mb:'专为在门店购买J-TAG会员专属安全钥匙',
+    psub_hs:'保护住宿安全的高端钥匙',
+    psub_rk:'使用乐天ID即可使用的安全基础设施',
+    g1:'请选择注册方式。两种方式均不保存个人信息。',
+    h1:'Step 1 — 注册方式选择',
+    scan_lbl:'扫描\n卡片', scan_sub:'乐天卡\n会员证',
+    input_lbl:'输入\n号码', input_sub:'保险单号\n会员号',
+    input_field_lbl:'请输入保险单号或会员号',
+    input_hint:'输入后请按注册按钮',
+    btn_reg:'注册 →',
+    reg_done_lbl:'注册完成！', reg_done_sub:'个人信息已即时删除',
+    tok_lbl:'生成的匿名令牌', tok_ok:'✓ 不保存任何个人信息',
+    connected:'已连接', aig:'AIG保险（已批准）', hub:'J-PASS 松本枢纽（监控中）',
+    btn_next1:'下一步 — 同步J-TAG →',
+    g2:'请将手机递给对方。标签同步的瞬间是最大亮点。',
+    h2:'Step 2 — J-TAG 0.8mm 同步',
+    p2:'将J-TAG靠近手机背面。即使断电或无信号也能保留物理日志。',
+    pairing:'J-TAG 配对ID', waiting:'等待同步...',
+    btn_sync_sim:'点击模拟同步',
+    g3:'请指向显示为"已连接"的合作伙伴名称。',
+    h3:'Step 3 — 激活模式',
+    tab_ski:'滑雪场', tab_yama:'山岳', tab_machi:'市区',
+    loc_badge:'使用中',
+    sos_fired:'SOS已发送 — 救援信号已传送',
+    btn_sos:'SOS 紧急求救', btn_end:'结束行程 →',
+    g4:'进度条达到100%时，请说"数据已删除"。',
+    h4:'Step 4 — 行程结束', p4:'正在删除位置数据...',
+    happy_user_lbl:'用户', happy_user:'安全返回',
+    happy_aig:'风险可视化',
+    btn_close:'合作提案 →',
+    h5:'合作提案',
+    close_sub:'J-PASS只需接入贵司会员基础和门店网络即可运行。<br><br>无需新的开发成本。',
+    btn_reset:'重置演示',
+    scan_label:'请将卡片靠近摄像头',
+    scan_sub_overlay:'乐天卡・会员证・保险单',
+    scan_ok_lbl:'扫描完成！', scan_ok_sub:'正在生成匿名令牌...',
+    partClose:{montbell:'致mont-bell',hoshino:'致星野度假村',rakuten:'致乐天'},
+    partHappy:{montbell:'J-TAG销售 + 会员价值提升',hoshino:'安全差异化',rakuten:'乐天Pay无缝支付'},
+    hubs:{
+      ski:[['长野','已连接'],['丰田','待机'],['仙台','待机']],
+      yama:[['富山','NFC记录中'],['仙台','待机'],['丰田','待机']],
+      machi:[['松本','已连接'],['丰田','已连接'],['仙台','待机']]
+    },
+    locs:{
+      ski:{name:'白马八方尾根滑雪场',desc:'长野县・海拔1,831m / 气温-5℃'},
+      yama:{name:'北阿尔卑斯 剱岳',desc:'富山县・海拔2,999m / 无信号'},
+      machi:{name:'松本市区',desc:'长野县松本市 / 日常生活模式'}
+    }
+  },
+  fr:{
+    pname_none:'Choisir partenaire',
+    g0:'Sélectionnez le partenaire commercial. La couleur de l\'app changera.',
+    h0:'Sélectionner un partenaire',
+    psub_mb:'Clé de sécurité exclusive pour clients mont-bell',
+    psub_hs:'Clé de sécurité luxe pour les résidents',
+    psub_rk:'Infrastructure de sécurité avec Rakuten ID',
+    g1:'Choisissez votre méthode d\'inscription. Aucune donnée personnelle n\'est conservée.',
+    h1:'Étape 1 — Inscription',
+    scan_lbl:'Scanner\nla carte', scan_sub:'Carte Rakuten\nCarte membre',
+    input_lbl:'Saisir\nle numéro', input_sub:'N° de police\nN° membre',
+    input_field_lbl:'Entrez votre numéro de police ou membre',
+    input_hint:'Appuyez sur Enregistrer après la saisie',
+    btn_reg:'Enregistrer →',
+    reg_done_lbl:'Inscription réussie !', reg_done_sub:'Données personnelles effacées instantanément',
+    tok_lbl:'Jeton anonyme généré', tok_ok:'✓ Aucune donnée personnelle stockée',
+    connected:'Connecté', aig:'AIG Assurance (Approuvé)', hub:'Hub J-PASS Matsumoto (Actif)',
+    btn_next1:'Suivant — Sync J-TAG →',
+    g2:'Passez le téléphone à votre interlocuteur. La sync du tag est le moment clé.',
+    h2:'Étape 2 — Sync J-TAG 0.8mm',
+    p2:'Approchez le J-TAG du téléphone. Fonctionne hors ligne et sans batterie.',
+    pairing:'ID Jumelage J-TAG', waiting:'En attente...',
+    btn_sync_sim:'Simuler la synchronisation',
+    g3:'Montrez le nom du partenaire affiché comme Connecté.',
+    h3:'Étape 3 — Mode Actif',
+    tab_ski:'Station de ski', tab_yama:'Montagne', tab_machi:'Ville',
+    loc_badge:'Actif',
+    sos_fired:'SOS envoyé — Signal de secours transmis',
+    btn_sos:'SOS Signal Push', btn_end:'Fin du séjour →',
+    g4:'Quand la barre atteint 100%, dites "Les données ont disparu."',
+    h4:'Étape 4 — Fin du séjour', p4:'Suppression des données de localisation...',
+    happy_user_lbl:'Utilisateur', happy_user:'Retour sain et sauf',
+    happy_aig:'Visualisation des risques',
+    btn_close:'Proposition de partenariat →',
+    h5:'Proposition de partenariat',
+    close_sub:'J-PASS se branche sur votre réseau de membres et de boutiques.<br><br>Aucun coût de développement supplémentaire.',
+    btn_reset:'Réinitialiser la démo',
+    scan_label:'Approchez la carte de la caméra',
+    scan_sub_overlay:'Carte Rakuten · Carte membre · Police',
+    scan_ok_lbl:'Scan terminé !', scan_ok_sub:'Génération du jeton anonyme...',
+    partClose:{montbell:'À mont-bell',hoshino:'À Hoshino Resorts',rakuten:'À Rakuten'},
+    partHappy:{montbell:'Vente J-TAG + Valeur membre',hoshino:'Différenciation sécurité',rakuten:'Paiement Rakuten Pay'},
+    hubs:{
+      ski:[['Nagano','Connecté'],['Toyota','Veille'],['Sendai','Veille']],
+      yama:[['Toyama','Log NFC'],['Sendai','Veille'],['Toyota','Veille']],
+      machi:[['Matsumoto','Connecté'],['Toyota','Connecté'],['Sendai','Veille']]
+    },
+    locs:{
+      ski:{name:'Station Hakuba Happo-one',desc:'Nagano / Alt. 1 831m / -5℃'},
+      yama:{name:'Tsurugidake, Alpes du Nord',desc:'Toyama / Alt. 2 999m / Hors réseau'},
+      machi:{name:'Ville de Matsumoto',desc:'Nagano / Mode vie quotidienne'}
+    }
+  }
+};
+
+var curLang='ja',curPart='montbell',curMode='ski',cur=0,eTimer=null,scanTimer=null,sosTimer=null,sosCount=0;
+
+function t(key){return T[curLang][key]||T['ja'][key]||'';}
+
+function setLang(lang){
+  curLang=lang;
+  document.querySelectorAll('.lang-flag').forEach(function(b){b.classList.remove('on');});
+  event.target.classList.add('on');
+  applyLang();
+}
+
+function applyLang(){
+  var l=T[curLang];
+  document.getElementById('pname').textContent=curPart?l.partClose[curPart].replace('さまへ','様').replace('To ','').replace('致','').replace('À ',''):l.pname_none;
+  document.getElementById('g0txt').textContent=l.g0;
+  document.getElementById('h0').textContent=l.h0;
+  document.getElementById('psub-mb').textContent=l.psub_mb;
+  document.getElementById('psub-hs').textContent=l.psub_hs;
+  document.getElementById('psub-rk').textContent=l.psub_rk;
+  document.getElementById('g1txt').textContent=l.g1;
+  document.getElementById('h1').textContent=l.h1;
+  document.getElementById('scan-lbl').innerHTML=l.scan_lbl;
+  document.getElementById('scan-sub').innerHTML=l.scan_sub;
+  document.getElementById('input-lbl').innerHTML=l.input_lbl;
+  document.getElementById('input-sub').innerHTML=l.input_sub;
+  document.getElementById('input-field-lbl').textContent=l.input_field_lbl;
+  document.getElementById('input-hint').textContent=l.input_hint;
+  document.getElementById('btn-reg').textContent=l.btn_reg;
+  document.getElementById('reg-done-lbl').textContent=l.reg_done_lbl;
+  document.getElementById('reg-done-sub').textContent=l.reg_done_sub;
+  document.getElementById('tok-lbl').textContent=l.tok_lbl;
+  document.getElementById('tok-ok').textContent=l.tok_ok;
+  document.getElementById('connected-lbl').textContent=l.connected;
+  document.getElementById('aig-lbl').textContent=l.aig;
+  document.getElementById('hub-lbl').textContent=l.hub;
+  document.getElementById('btnSc2').textContent=l.btn_next1;
+  document.getElementById('g2txt').textContent=l.g2;
+  document.getElementById('h2').textContent=l.h2;
+  document.getElementById('p2txt').textContent=l.p2;
+  document.getElementById('pairing-lbl').textContent=l.pairing;
+  document.getElementById('btn-sync-sim').textContent=l.btn_sync_sim;
+  document.getElementById('g3txt').textContent=l.g3;
+  document.getElementById('h3').textContent=l.h3;
+  document.getElementById('tab-ski').textContent=l.tab_ski;
+  document.getElementById('tab-yama').textContent=l.tab_yama;
+  document.getElementById('tab-machi').textContent=l.tab_machi;
+  document.getElementById('loc-badge').textContent=l.loc_badge;
+  document.getElementById('btn-sos').textContent=l.btn_sos;
+  document.getElementById('btn-end').textContent=l.btn_end;
+  document.getElementById('g4txt').textContent=l.g4;
+  document.getElementById('h4').textContent=l.h4;
+  document.getElementById('p4txt').textContent=l.p4;
+  document.getElementById('happy-user-lbl').textContent=l.happy_user_lbl;
+  document.getElementById('happy-user').textContent=l.happy_user;
+  document.getElementById('happy-aig').textContent=l.happy_aig;
+  document.getElementById('btn-close').textContent=l.btn_close;
+  document.getElementById('h5').textContent=l.h5;
+  document.getElementById('close-sub').innerHTML=l.close_sub;
+  document.getElementById('btn-reset').textContent=l.btn_reset;
+  document.getElementById('scan-label-txt').textContent=l.scan_label;
+  document.getElementById('scan-sub-txt').textContent=l.scan_sub_overlay;
+  document.getElementById('scan-ok-lbl').textContent=l.scan_ok_lbl;
+  document.getElementById('scan-ok-sub').textContent=l.scan_ok_sub;
+  if(curPart){
+    document.getElementById('close-title').textContent=l.partClose[curPart];
+    document.getElementById('happy-p-lbl').textContent=l.partClose[curPart].replace('さまへ','').replace('To ','').replace('致','').replace('À ','');
+    document.getElementById('happy-p').textContent=l.partHappy[curPart];
+  }
+  setMode(document.querySelector('.mtab.on'),curMode);
+}
+
+/* ===== 音・フラッシュ・振動 ===== */
 var ctx=null;
 function getCtx(){if(!ctx)ctx=new(window.AudioContext||window.webkitAudioContext)();return ctx;}
-
 function playBeep(freq,dur,type,vol){
-  try{
-    var c=getCtx();
-    var o=c.createOscillator();
-    var g=c.createGain();
-    o.connect(g);g.connect(c.destination);
-    o.type=type||'sine';
-    o.frequency.value=freq;
-    g.gain.setValueAtTime(vol||0.3,c.currentTime);
-    g.gain.exponentialRampToValueAtTime(0.001,c.currentTime+dur);
-    o.start(c.currentTime);o.stop(c.currentTime+dur);
-  }catch(e){}
+  try{var c=getCtx();var o=c.createOscillator();var g=c.createGain();o.connect(g);g.connect(c.destination);o.type=type||'sine';o.frequency.value=freq;g.gain.setValueAtTime(vol||0.3,c.currentTime);g.gain.exponentialRampToValueAtTime(0.001,c.currentTime+dur);o.start(c.currentTime);o.stop(c.currentTime+dur);}catch(e){}
 }
-
-function soundRegComplete(){
-  playBeep(880,0.15,'sine',0.3);
-  setTimeout(function(){playBeep(1100,0.2,'sine',0.25);},150);
-}
-function soundSync(){
-  playBeep(660,0.1,'square',0.2);
-  setTimeout(function(){playBeep(880,0.15,'square',0.2);},120);
-}
-function soundSOS(){
-  playBeep(440,0.2,'sawtooth',0.35);
-  setTimeout(function(){playBeep(440,0.2,'sawtooth',0.35);},300);
-  setTimeout(function(){playBeep(220,0.5,'sawtooth',0.4);},600);
-}
-
 function flashScreen(color,duration){
   var el=document.getElementById('flashOverlay');
-  el.style.background=color;
-  el.style.opacity='0.45';
+  el.style.background=color;el.style.opacity='0.45';
   setTimeout(function(){el.style.opacity='0';},duration||150);
 }
-
 function effectRegComplete(){
-  soundRegComplete();
+  playBeep(880,0.15,'sine',0.3);setTimeout(function(){playBeep(1100,0.2,'sine',0.25);},150);
   flashScreen('rgba(0,200,100,0.5)',200);
   if(navigator.vibrate)navigator.vibrate(10);
 }
 function effectSync(){
-  soundSync();
-  flashScreen('rgba(26,75,140,0.5)',200);
-  setTimeout(function(){flashScreen('rgba(26,75,140,0.3)',150);},250);
+  playBeep(660,0.1,'square',0.2);setTimeout(function(){playBeep(880,0.15,'square',0.2);},120);
+  flashScreen('rgba(26,75,140,0.5)',200);setTimeout(function(){flashScreen('rgba(26,75,140,0.3)',150);},250);
   if(navigator.vibrate)navigator.vibrate(200);
 }
+
+/* 通番5：SOS音10秒×3回 */
+function playSosSound(){
+  var totalMs=0;
+  var pattern=[
+    {f:440,d:0.3,t:'sawtooth',v:0.4,delay:0},
+    {f:440,d:0.3,t:'sawtooth',v:0.4,delay:400},
+    {f:440,d:0.3,t:'sawtooth',v:0.4,delay:800},
+    {f:220,d:0.5,t:'sawtooth',v:0.45,delay:1400},
+    {f:220,d:0.5,t:'sawtooth',v:0.45,delay:2000},
+    {f:220,d:0.5,t:'sawtooth',v:0.45,delay:2600},
+    {f:440,d:0.3,t:'sawtooth',v:0.4,delay:3400},
+    {f:440,d:0.3,t:'sawtooth',v:0.4,delay:3800},
+    {f:440,d:0.3,t:'sawtooth',v:0.4,delay:4200},
+    {f:880,d:1.0,t:'sawtooth',v:0.5,delay:5000}
+  ];
+  pattern.forEach(function(n){setTimeout(function(){playBeep(n.f,n.d,n.t,n.v);},n.delay);});
+}
 function effectSOS(){
-  soundSOS();
+  sosCount=0;
+  if(navigator.vibrate)navigator.vibrate([100,50,100,50,300]);
   flashScreen('rgba(180,0,0,0.6)',150);
   setTimeout(function(){flashScreen('rgba(180,0,0,0.6)',150);},300);
   setTimeout(function(){flashScreen('rgba(180,0,0,0.8)',300);},600);
-  if(navigator.vibrate)navigator.vibrate([100,50,100,50,300]);
+  function doSosCycle(){
+    playSosSound();
+    sosCount++;
+    if(sosCount<3){sosTimer=setTimeout(doSosCycle,10500);}
+  }
+  doSosCycle();
 }
-/* ===== ここまで ===== */
 
-var cur=0,curPart='montbell',eTimer=null,scanTimer=null;
-var modes={
-  ski:{name:'白馬八方尾根スキー場',desc:'長野県・標高1,831m / 気温 -5℃',hubs:[['長野','接続中'],['豊田','スタンバイ'],['仙台','スタンバイ']]},
-  yama:{name:'北アルプス 剱岳',desc:'富山県・標高2,999m / 通信圏外',hubs:[['富山','NFC記録中'],['仙台','スタンバイ'],['豊田','スタンバイ']]},
-  machi:{name:'松本市街地',desc:'長野県松本市 / 通常生活モード',hubs:[['松本','接続中'],['豊田','接続中'],['仙台','スタンバイ']]}
-};
-var partClose={montbell:'モンベルさまへ',hoshino:'星野リゾートさまへ',rakuten:'楽天さまへ'};
-var partHappy={montbell:'J-TAG販売 + 会員価値向上',hoshino:'滞在価値向上 + 安全差別化',rakuten:'楽天Pay シームレス決済'};
-
+/* ===== アプリロジック ===== */
 function setAC(c){document.documentElement.style.setProperty('--ac',c);}
 
-function setP(p,name,c,plbl){
-  curPart=p; setAC(c);
+function setP(p,name,c){
+  curPart=p;setAC(c);
+  var l=T[curLang];
   document.getElementById('pname').textContent=name+'様';
   document.getElementById('p-lbl1').textContent=name;
-  document.getElementById('close-title').textContent=partClose[p];
-  var hp=document.getElementById('hcard-p');
-  hp.querySelector('.hcard-lbl').textContent=name;
-  hp.lastChild.textContent=partHappy[p];
+  document.getElementById('close-title').textContent=l.partClose[p];
+  document.getElementById('happy-p-lbl').textContent=name;
+  document.getElementById('happy-p').textContent=l.partHappy[p];
   var tok='T-'+Math.floor(Math.random()*9000+1000)+'-'+p.toUpperCase().substring(0,2);
   document.getElementById('tokval').textContent=tok;
   document.getElementById('inputBox').style.display='none';
@@ -378,10 +620,7 @@ function startScan(){
   scanTimer=setTimeout(function(){
     document.getElementById('scanActive').style.display='none';
     document.getElementById('scanDone').style.display='flex';
-    setTimeout(function(){
-      overlay.classList.remove('show');
-      showRegComplete();
-    },1500);
+    setTimeout(function(){overlay.classList.remove('show');showRegComplete();},1500);
   },2000);
 }
 
@@ -392,7 +631,7 @@ function startInput(){
 
 function completeInput(){
   var val=document.getElementById('inputField').value;
-  if(!val){alert('番号を入力してください');return;}
+  if(!val){alert(T[curLang].input_hint);return;}
   document.getElementById('inputBox').style.display='none';
   showRegComplete();
 }
@@ -407,8 +646,7 @@ function showRegComplete(){
 
 function goTo(n){
   document.querySelectorAll('.sc').forEach(function(s){s.classList.remove('on');});
-  cur=n;
-  document.getElementById('sc'+n).classList.add('on');
+  cur=n;document.getElementById('sc'+n).classList.add('on');
   if(n===4)startProg();
 }
 
@@ -421,18 +659,25 @@ function doSync(){
 }
 
 function setMode(el,mode){
+  curMode=mode;
   document.querySelectorAll('.mtab').forEach(function(t){t.classList.remove('on');});
-  el.classList.add('on');
-  var m=modes[mode];
-  document.getElementById('locname').textContent=m.name;
-  document.getElementById('locdesc').textContent=m.desc;
-  document.getElementById('hubs').innerHTML=m.hubs.map(function(h){return'<div class="hubrow"><span>分散拠点 — '+h[0]+'</span><span>'+h[1]+'</span></div>';}).join('');
+  if(el)el.classList.add('on');
+  var l=T[curLang];
+  var loc=l.locs[mode];
+  var hubs=l.hubs[mode];
+  document.getElementById('locname').textContent=loc.name;
+  document.getElementById('locdesc').textContent=loc.desc;
+  document.getElementById('hubs').innerHTML=hubs.map(function(h){
+    return'<div class="hubrow"><span>'+h[0]+'</span><span>'+h[1]+'</span></div>';
+  }).join('');
   document.getElementById('sosfired').style.display='none';
 }
 
 function fireSOS(){
-  effectSOS();
+  if(sosTimer){clearTimeout(sosTimer);sosTimer=null;}
+  document.getElementById('sosfired').textContent=T[curLang].sos_fired;
   document.getElementById('sosfired').style.display='block';
+  effectSOS();
 }
 
 function startProg(){
@@ -441,8 +686,7 @@ function startProg(){
   document.getElementById('progfill').style.width='0%';
   document.getElementById('finalcard').style.display='none';
   eTimer=setInterval(function(){
-    pct+=10;
-    document.getElementById('progfill').style.width=pct+'%';
+    pct+=10;document.getElementById('progfill').style.width=pct+'%';
     if(pct>=100){clearInterval(eTimer);eTimer=null;document.getElementById('finalcard').style.display='block';}
   },200);
 }
@@ -450,10 +694,12 @@ function startProg(){
 function restart(){
   if(eTimer){clearInterval(eTimer);eTimer=null;}
   if(scanTimer){clearTimeout(scanTimer);scanTimer=null;}
+  if(sosTimer){clearTimeout(sosTimer);sosTimer=null;}
+  sosCount=0;
   document.getElementById('scanOverlay').classList.remove('show');
   document.getElementById('nfcring').style.animation='pulse 1.5s infinite';
   document.getElementById('syncdone').style.display='none';
-  document.getElementById('tagid').textContent='同期待ち...';
+  document.getElementById('tagid').textContent='---';
   document.getElementById('btn2').style.display='none';
   document.getElementById('sosfired').style.display='none';
   document.getElementById('inputBox').style.display='none';
@@ -463,10 +709,15 @@ function restart(){
   document.getElementById('netBox').style.display='none';
   document.getElementById('btnSc2').style.display='none';
   document.querySelectorAll('.mtab').forEach(function(t,i){t.classList.toggle('on',i===0);});
-  setAC('#1A4B8C');
-  document.getElementById('pname').textContent='パートナー未選択';
+  setAC('#1A4B8C');curPart='';
+  document.getElementById('pname').textContent=T[curLang].pname_none;
+  document.getElementById('close-title').textContent='';
   goTo(0);
 }
+
+applyLang();
+setMode(document.querySelector('.mtab.on'),'ski');
 </script>
 </body>
 </html>
+
