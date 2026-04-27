@@ -69,13 +69,19 @@ p{font-size:13px;line-height:1.6;color:#555;margin-bottom:12px;}
 .ph-box{width:34px;height:58px;border:2px solid var(--ac);border-radius:8px;background:#f0f6ff;display:flex;align-items:center;justify-content:center;}
 .ph-dot{width:6px;height:6px;border-radius:50%;background:var(--ac);}
 /* 通番10：保険パッケージ */
-.ins-package{background:#fff5f5;border:1px solid #FFCDD2;border-radius:14px;padding:14px;margin-bottom:14px;}
+.ins-package{margin-bottom:14px;}
 .ins-pkg-title{font-size:11px;font-weight:500;color:#a32d2d;margin-bottom:10px;}
-.ins-pkg-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid #FFE0E0;}
-.ins-pkg-row:last-child{border-bottom:none;}
+.ins-pkg-btn{display:flex;justify-content:space-between;align-items:center;padding:12px 14px;border:1.5px solid #e0e0e0;border-radius:12px;background:#fff;cursor:pointer;margin-bottom:8px;transition:all .15s;width:100%;}
+.ins-pkg-btn:last-child{margin-bottom:0;}
+.ins-pkg-btn.selected{border-color:var(--ac);background:#f0f6ff;}
+.ins-pkg-btn:active{transform:scale(.98);}
+.ins-pkg-left{text-align:left;}
 .ins-pkg-name{font-size:13px;font-weight:500;color:#222;}
-.ins-pkg-price{font-size:14px;font-weight:500;color:#a32d2d;}
 .ins-pkg-note{font-size:10px;color:#888;margin-top:2px;}
+.ins-pkg-right{text-align:right;}
+.ins-pkg-price{font-size:15px;font-weight:500;color:var(--ac);}
+.ins-pkg-check{font-size:18px;opacity:0;}
+.ins-pkg-btn.selected .ins-pkg-check{opacity:1;}
 /* 登録 */
 .reg-method{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0;}
 .reg-btn{border:1.5px solid var(--ac);border-radius:14px;padding:16px 10px;text-align:center;cursor:pointer;background:#fff;transition:all .2s;}
@@ -205,20 +211,38 @@ p{font-size:13px;line-height:1.6;color:#555;margin-bottom:12px;}
 <div class="sc" id="sc06">
   <div class="guide"><div class="guide-lbl">凛子ガイド</div><span id="g06txt">---</span></div>
   <h2 id="h06">---</h2>
+  <div class="ins-pkg-title" id="ins-pkg-title">---</div>
   <div class="ins-package">
-    <div class="ins-pkg-title" id="ins-pkg-title">---</div>
-    <div class="ins-pkg-row">
-      <div><div class="ins-pkg-name" id="pkg1-name">---</div><div class="ins-pkg-note" id="pkg1-note">---</div></div>
-      <div class="ins-pkg-price" id="pkg1-price">---</div>
-    </div>
-    <div class="ins-pkg-row">
-      <div><div class="ins-pkg-name" id="pkg2-name">---</div><div class="ins-pkg-note" id="pkg2-note">---</div></div>
-      <div class="ins-pkg-price" id="pkg2-price">---</div>
-    </div>
-    <div class="ins-pkg-row">
-      <div><div class="ins-pkg-name" id="pkg3-name">---</div><div class="ins-pkg-note" id="pkg3-note">---</div></div>
-      <div class="ins-pkg-price" id="pkg3-price">---</div>
-    </div>
+    <button class="ins-pkg-btn" onclick="selectPkg(this,1)" id="pkg-btn-1">
+      <div class="ins-pkg-left">
+        <div class="ins-pkg-name" id="pkg1-name">---</div>
+        <div class="ins-pkg-note" id="pkg1-note">---</div>
+      </div>
+      <div class="ins-pkg-right">
+        <div class="ins-pkg-price" id="pkg1-price">---</div>
+        <div class="ins-pkg-check">✓</div>
+      </div>
+    </button>
+    <button class="ins-pkg-btn" onclick="selectPkg(this,2)" id="pkg-btn-2">
+      <div class="ins-pkg-left">
+        <div class="ins-pkg-name" id="pkg2-name">---</div>
+        <div class="ins-pkg-note" id="pkg2-note">---</div>
+      </div>
+      <div class="ins-pkg-right">
+        <div class="ins-pkg-price" id="pkg2-price">---</div>
+        <div class="ins-pkg-check">✓</div>
+      </div>
+    </button>
+    <button class="ins-pkg-btn" onclick="selectPkg(this,3)" id="pkg-btn-3">
+      <div class="ins-pkg-left">
+        <div class="ins-pkg-name" id="pkg3-name">---</div>
+        <div class="ins-pkg-note" id="pkg3-note">---</div>
+      </div>
+      <div class="ins-pkg-right">
+        <div class="ins-pkg-price" id="pkg3-price">---</div>
+        <div class="ins-pkg-check">✓</div>
+      </div>
+    </button>
   </div>
   <div style="background:#f0f6ff;border:1px solid #b5d4f4;border-radius:12px;padding:12px;font-size:12px;color:#0c447c;margin-bottom:14px;">
     <span id="ins-note">---</span>
@@ -583,6 +607,12 @@ var curLang='ja',curPart='',curMode='ski',cur=0,eTimer=null,scanTimer=null,sosTi
 function L(k){return T[curLang][k]||T.ja[k]||'';}
 function setAC(c){document.documentElement.style.setProperty('--ac',c);}
 
+function selectPkg(el,num){
+  document.querySelectorAll('.ins-pkg-btn').forEach(function(b){b.classList.remove('selected');});
+  el.classList.add('selected');
+  if(navigator.vibrate)navigator.vibrate(10);
+}
+
 function setLang(lang,btn){
   curLang=lang;
   document.querySelectorAll('.lang-flag').forEach(function(b){b.classList.remove('on');});
@@ -791,4 +821,3 @@ setMode(document.querySelector('.mtab.on'),'ski');
 </script>
 </body>
 </html>
-
