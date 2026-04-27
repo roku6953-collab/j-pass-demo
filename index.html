@@ -590,12 +590,10 @@ function setMode(el,mode){
   document.getElementById('sosfired').style.display='none';
 }
 
-function fireSOS(){
-
 var naviDest={
-  ski:{ja:"白馬八方尾根スキー場",en:"Hakuba+Happo-one+Ski+Resort",zh:"白马八方尾根滑雪场",fr:"Hakuba+Happo-one",lat:36.6989,lng:137.7703},
-  yama:{ja:"扇沢駅",en:"Ogizawa+Station",zh:"扇泽站",fr:"Gare+Ogizawa",lat:36.5685,lng:137.6619},
-  machi:{ja:"松本駅",en:"Matsumoto+Station",zh:"松本站",fr:"Gare+Matsumoto",lat:36.2281,lng:137.9689}
+  ski:{lat:36.6989,lng:137.7703},
+  yama:{lat:36.5685,lng:137.6619},
+  machi:{lat:36.2281,lng:137.9689}
 };
 function openNavi(){
   var dest=naviDest[curMode];
@@ -603,6 +601,7 @@ function openNavi(){
   var url="https://www.google.com/maps/dir/?api=1&destination="+dest.lat+","+dest.lng+"&travelmode=driving";
   window.open(url,"_blank");
 }
+function fireSOS(){
   if(sosTimer){clearTimeout(sosTimer);sosTimer=null;}
   document.getElementById('sosfired').textContent=L('sos_fired');
   document.getElementById('sosfired').style.display='block';
