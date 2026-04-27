@@ -333,6 +333,7 @@ function completeInput(){
 }
 
 function showRegComplete(){
+  if(navigator.vibrate)navigator.vibrate(10);
   document.getElementById('regComplete').classList.add('show');
   document.getElementById('tokenBox').style.display='block';
   document.getElementById('netBox').style.display='block';
@@ -347,6 +348,7 @@ function goTo(n){
 }
 
 function doSync(){
+  if(navigator.vibrate)navigator.vibrate(200);
   document.getElementById('nfcring').style.animation='none';
   document.getElementById('syncdone').style.display='block';
   document.getElementById('tagid').textContent='JT-'+Math.floor(Math.random()*9000+1000)+'-08';
@@ -363,7 +365,10 @@ function setMode(el,mode){
   document.getElementById('sosfired').style.display='none';
 }
 
-function fireSOS(){document.getElementById('sosfired').style.display='block';}
+function fireSOS(){
+  if(navigator.vibrate)navigator.vibrate([100,50,100,50,300]);
+  document.getElementById('sosfired').style.display='block';
+}
 
 function startProg(){
   if(eTimer)clearInterval(eTimer);
