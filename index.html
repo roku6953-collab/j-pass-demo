@@ -131,6 +131,29 @@ p{font-size:13px;line-height:1.6;color:#555;margin-bottom:12px;}
 .close-box{background:#f8f8f8;border:1px solid #e0e0e0;border-radius:14px;padding:18px;text-align:center;margin:12px 0;}
 .close-title{font-size:16px;font-weight:500;color:var(--ac);margin-bottom:6px;}
 .close-sub{font-size:12px;color:#666;line-height:1.6;}
+/* ナビ支援パネル */
+.navi-panel{border:1px solid #e0e0e0;border-radius:12px;overflow:hidden;margin-bottom:12px;}
+.navi-panel-title{background:#f8f8f8;padding:8px 12px;font-size:11px;font-weight:500;color:#888;border-bottom:1px solid #e0e0e0;}
+.navi-btn-row{display:flex;flex-direction:column;gap:8px;padding:12px;}
+.navi-action-btn{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:10px;border:1.5px solid #e0e0e0;background:#fff;cursor:pointer;text-align:left;width:100%;transition:all .15s;}
+.navi-action-btn:active{transform:scale(.98);}
+.navi-action-btn-icon{font-size:22px;flex-shrink:0;}
+.navi-action-btn-body{}
+.navi-action-btn-title{font-size:13px;font-weight:500;color:#222;}
+.navi-action-btn-sub{font-size:11px;color:#888;margin-top:2px;}
+.navi-action-btn.green{border-color:#1A7A3A;}
+.navi-action-btn.green .navi-action-btn-title{color:#1A7A3A;}
+.navi-action-btn.blue{border-color:#1A4B8C;}
+.navi-action-btn.blue .navi-action-btn-title{color:#1A4B8C;}
+.navi-action-btn.teal{border-color:#0E7490;}
+.navi-action-btn.teal .navi-action-btn-title{color:#0E7490;}
+.weather-box{background:#EFF8FF;border:1px solid #B5D4F4;border-radius:10px;padding:12px;margin:0 12px 12px;}
+.weather-loading{font-size:12px;color:#888;text-align:center;padding:8px 0;}
+.weather-row{display:flex;justify-content:space-between;align-items:center;}
+.weather-temp{font-size:22px;font-weight:500;color:#0c447c;}
+.weather-desc{font-size:12px;color:#378ADD;}
+.weather-detail{display:flex;gap:12px;margin-top:6px;}
+.weather-item{font-size:11px;color:#555;}
 </style>
 </head>
 <body>
@@ -350,8 +373,50 @@ p{font-size:13px;line-height:1.6;color:#555;margin-bottom:12px;}
   </div>
   <div class="sos-fired" id="sosfired">---</div>
   <button class="sos-btn" onclick="fireSOS()" id="btn-sos">---</button>
-  <button class="btn" onclick="openNavi()" style="background:#1A7A3A;margin-top:10px;" id="btn-navi">---</button>
-  <button class="btn" onclick="goTo(4)" style="background:#555;margin-top:8px;" id="btn-end">---</button>
+
+  <!-- ナビ支援パネル（通番16・17・18）-->
+  <div class="navi-panel">
+    <div class="navi-panel-title" id="navi-panel-title">ナビ支援</div>
+    <div class="navi-btn-row">
+      <button class="navi-action-btn green" onclick="openNavi()">
+        <div class="navi-action-btn-icon">📍</div>
+        <div class="navi-action-btn-body">
+          <div class="navi-action-btn-title" id="btn-navi">---</div>
+          <div class="navi-action-btn-sub" id="btn-navi-sub">---</div>
+        </div>
+      </button>
+      <button class="navi-action-btn blue" onclick="open3DMap()">
+        <div class="navi-action-btn-icon">🗾</div>
+        <div class="navi-action-btn-body">
+          <div class="navi-action-btn-title" id="btn-3dmap">---</div>
+          <div class="navi-action-btn-sub" id="btn-3dmap-sub">---</div>
+        </div>
+      </button>
+      <button class="navi-action-btn teal" onclick="loadWeather()">
+        <div class="navi-action-btn-icon">🌤</div>
+        <div class="navi-action-btn-body">
+          <div class="navi-action-btn-title" id="btn-weather">---</div>
+          <div class="navi-action-btn-sub" id="btn-weather-sub">---</div>
+        </div>
+      </button>
+    </div>
+    <div class="weather-box" id="weatherBox" style="display:none;">
+      <div class="weather-loading" id="weatherLoading">---</div>
+      <div id="weatherResult" style="display:none;">
+        <div class="weather-row">
+          <div class="weather-temp" id="w-temp">--°C</div>
+          <div class="weather-desc" id="w-desc">---</div>
+        </div>
+        <div class="weather-detail">
+          <div class="weather-item" id="w-wind">---</div>
+          <div class="weather-item" id="w-humid">---</div>
+          <div class="weather-item" id="w-precip">---</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <button class="btn" onclick="goTo(4)" style="background:#555;margin-top:4px;" id="btn-end">---</button>
 </div>
 
 <!-- Step 4: ツアー終了 -->
@@ -424,7 +489,13 @@ var T={
     hub_name_3:'仙台ハブ',hub_status_3:'スタンバイ',
     tab_ski:'スキー場',tab_yama:'山岳',tab_machi:'市街地',loc_badge:'滞在中',
     sos_fired:'SOS 送信完了 — 救助信号・最終位置ログを送信しました',
-    btn_sos:'SOS Signal Push',btn_navi:'📍 現在地からナビ開始',btn_end:'ツアー終了 →',
+    btn_sos:'SOS Signal Push',
+    btn_navi:'📍 Googleマップ（母国語）でナビ開始',btn_navi_sub:'現在地から目的地まで母国語でルート案内',
+    btn_3dmap:'🗾 国土地理院3Dマップで地形確認',btn_3dmap_sub:'目的地周辺の詳細地形・標高を3D表示',
+    btn_weather:'🌤 現地の天気を確認',btn_weather_sub:'OpenMeteo リアルタイム気象データ',
+    navi_panel_title:'ナビ支援パネル',
+    weather_loading:'天気情報を取得中...',w_wind:'風速',w_humid:'湿度',w_precip:'降水量',
+    btn_end:'ツアー終了 →',
     g4:'バーが100%になった瞬間「データは消えました」と伝えてください。',h4:'Step 4 — ツアー終了',p4:'位置データを消去中...',
     happy_user_lbl:'ユーザー',happy_user:'安全に帰宅',happy_ins_lbl:'提携保険会社',happy_ins:'リスク可視化',
     btn_close:'提携のご提案へ →',h5:'提携のご提案',
@@ -479,7 +550,13 @@ var T={
     hub_name_3:'Sendai Hub',hub_status_3:'Standby',
     tab_ski:'Ski Resort',tab_yama:'Mountain',tab_machi:'City',loc_badge:'Active',
     sos_fired:'SOS Sent — Rescue signal transmitted',
-    btn_sos:'SOS Signal Push',btn_navi:'📍 Start Navigation',btn_end:'End Tour →',
+    btn_sos:'SOS Signal Push',
+    btn_navi:'📍 Google Maps Navigation (Native Language)',btn_navi_sub:'Route guidance in your language from current location',
+    btn_3dmap:'🗾 GSI 3D Map — Terrain View',btn_3dmap_sub:'Detailed 3D terrain and elevation around destination',
+    btn_weather:'🌤 Check Local Weather',btn_weather_sub:'OpenMeteo real-time weather data',
+    navi_panel_title:'Navigation Support',
+    weather_loading:'Loading weather data...',w_wind:'Wind',w_humid:'Humidity',w_precip:'Precipitation',
+    btn_end:'End Tour →',
     g4:'When bar hits 100%, say "Data is gone."',h4:'Step 4 — Tour End',p4:'Erasing location data...',
     happy_user_lbl:'User',happy_user:'Safe Return',happy_ins_lbl:'Partner Insurance',happy_ins:'Risk Visualization',
     btn_close:'Partnership Proposal →',h5:'Partnership Proposal',
@@ -533,7 +610,13 @@ var T={
     hub_name_3:'仙台据点',hub_status_3:'待机中',
     tab_ski:'滑雪场',tab_yama:'山岳',tab_machi:'市区',loc_badge:'使用中',
     sos_fired:'SOS已发送 — 救援信号已传送',
-    btn_sos:'SOS 紧急求救',btn_navi:'📍 开始导航',btn_end:'结束行程 →',
+    btn_sos:'SOS 紧急求救',
+    btn_navi:'📍 谷歌地图（母语）导航',btn_navi_sub:'从当前位置到目的地的母语路线导航',
+    btn_3dmap:'🗾 国土地理院3D地图 — 地形确认',btn_3dmap_sub:'目的地周边详细地形与海拔3D显示',
+    btn_weather:'🌤 确认当地天气',btn_weather_sub:'OpenMeteo 实时气象数据',
+    navi_panel_title:'导航支援',
+    weather_loading:'正在获取天气信息...',w_wind:'风速',w_humid:'湿度',w_precip:'降水量',
+    btn_end:'结束行程 →',
     g4:'进度条达到100%时，请说"数据已删除"。',h4:'Step 4 — 行程结束',p4:'正在删除位置数据...',
     happy_user_lbl:'用户',happy_user:'安全返回',happy_ins_lbl:'合作保险公司',happy_ins:'风险可视化',
     btn_close:'合作提案 →',h5:'合作提案',
@@ -587,7 +670,13 @@ var T={
     hub_name_3:'Hub Sendai',hub_status_3:'Veille',
     tab_ski:'Station de ski',tab_yama:'Montagne',tab_machi:'Ville',loc_badge:'Actif',
     sos_fired:'SOS envoyé — Signal de secours transmis',
-    btn_sos:'SOS Signal Push',btn_navi:'📍 Démarrer navigation',btn_end:'Fin du séjour →',
+    btn_sos:'SOS Signal Push',
+    btn_navi:'📍 Navigation Google Maps (langue natale)',btn_navi_sub:'Itinéraire dans votre langue depuis votre position',
+    btn_3dmap:'🗾 Carte 3D IGJ — Vue du terrain',btn_3dmap_sub:'Terrain 3D et altitude détaillés autour de la destination',
+    btn_weather:'🌤 Météo locale',btn_weather_sub:'Données météo en temps réel OpenMeteo',
+    navi_panel_title:'Support navigation',
+    weather_loading:'Chargement météo...',w_wind:'Vent',w_humid:'Humidité',w_precip:'Précipitation',
+    btn_end:'Fin du séjour →',
     g4:'Quand la barre atteint 100%, dites « Les données ont disparu. »',h4:'Étape 4 — Fin du séjour',p4:'Suppression des données de localisation...',
     happy_user_lbl:'Utilisateur',happy_user:'Retour sain et sauf',happy_ins_lbl:'Assurance Partenaire',happy_ins:'Visualisation des risques',
     btn_close:'Proposition de partenariat →',h5:'Proposition de partenariat',
@@ -660,7 +749,16 @@ function applyLang(){
   document.getElementById('hub-name-3').textContent=l.hub_name_3;document.getElementById('hub-status-3').textContent=l.hub_status_3;
   document.getElementById('tab-ski').textContent=l.tab_ski;document.getElementById('tab-yama').textContent=l.tab_yama;document.getElementById('tab-machi').textContent=l.tab_machi;
   document.getElementById('loc-badge').textContent=l.loc_badge;
-  document.getElementById('btn-sos').textContent=l.btn_sos;document.getElementById('btn-navi').textContent=l.btn_navi;document.getElementById('btn-end').textContent=l.btn_end;
+  document.getElementById('btn-sos').textContent=l.btn_sos;
+  document.getElementById('btn-navi').textContent=l.btn_navi;
+  document.getElementById('btn-navi-sub').textContent=l.btn_navi_sub;
+  document.getElementById('btn-3dmap').textContent=l.btn_3dmap;
+  document.getElementById('btn-3dmap-sub').textContent=l.btn_3dmap_sub;
+  document.getElementById('btn-weather').textContent=l.btn_weather;
+  document.getElementById('btn-weather-sub').textContent=l.btn_weather_sub;
+  document.getElementById('navi-panel-title').textContent=l.navi_panel_title;
+  document.getElementById('weatherLoading').textContent=l.weather_loading;
+  document.getElementById('btn-end').textContent=l.btn_end;
   document.getElementById('g4txt').textContent=l.g4;document.getElementById('h4').textContent=l.h4;document.getElementById('p4txt').textContent=l.p4;
   document.getElementById('happy-user-lbl').textContent=l.happy_user_lbl;document.getElementById('happy-user').textContent=l.happy_user;
   document.getElementById('happy-ins-lbl').textContent=l.happy_ins_lbl;document.getElementById('happy-ins').textContent=l.happy_ins;
@@ -694,6 +792,59 @@ function openNavi(){
   var mapLang=curLang==='zh'?'zh-CN':curLang;
   var url='https://www.google.com/maps/dir/?api=1&destination='+dest.lat+','+dest.lng+'&hl='+mapLang+'&travelmode=driving';
   window.open(url,'_blank');
+}
+
+/* ===== 国土地理院3Dマップ（通番17） ===== */
+function open3DMap(){
+  var dest=naviCoords[curMode];
+  if(!dest)return;
+  var url='https://maps.gsi.go.jp/3d/?lon='+dest.lng+'&lat='+dest.lat+'&height=3000&heading=0&pitch=-45&roll=0';
+  window.open(url,'_blank');
+}
+
+/* ===== ウェザー（OpenMeteo 無料API）（通番18） ===== */
+var weatherCache={};
+function loadWeather(){
+  var dest=naviCoords[curMode];
+  if(!dest)return;
+  var l=T[curLang];
+  document.getElementById('weatherBox').style.display='block';
+  document.getElementById('weatherLoading').style.display='block';
+  document.getElementById('weatherResult').style.display='none';
+  var key=curMode;
+  if(weatherCache[key]){showWeather(weatherCache[key]);return;}
+  var url='https://api.open-meteo.com/v1/forecast?latitude='+dest.lat+'&longitude='+dest.lng
+    +'&current=temperature_2m,relative_humidity_2m,wind_speed_10m,precipitation,weather_code'
+    +'&wind_speed_unit=ms&timezone=Asia%2FTokyo';
+  fetch(url).then(function(r){return r.json();}).then(function(d){
+    weatherCache[key]=d;
+    showWeather(d);
+  }).catch(function(){
+    document.getElementById('weatherLoading').textContent='--';
+  });
+}
+
+var WMO={0:'☀️ 快晴',1:'🌤 ほぼ晴れ',2:'⛅ 一部曇り',3:'☁️ 曇り',45:'🌫 霧',48:'🌫 霧氷',51:'🌦 霧雨',61:'🌧 小雨',63:'🌧 雨',65:'🌧 大雨',71:'🌨 小雪',73:'❄️ 雪',75:'❄️ 大雪',80:'🌦 にわか雨',95:'⛈ 雷雨'};
+var WMO_en={0:'☀️ Clear',1:'🌤 Mostly clear',2:'⛅ Partly cloudy',3:'☁️ Overcast',45:'🌫 Fog',51:'🌦 Drizzle',61:'🌧 Light rain',63:'🌧 Rain',65:'🌧 Heavy rain',71:'🌨 Light snow',73:'❄️ Snow',75:'❄️ Heavy snow',80:'🌦 Showers',95:'⛈ Thunderstorm'};
+var WMO_zh={0:'☀️ 晴朗',1:'🌤 基本晴朗',2:'⛅ 部分多云',3:'☁️ 阴天',45:'🌫 雾',61:'🌧 小雨',63:'🌧 雨',65:'🌧 大雨',73:'❄️ 雪',80:'🌦 阵雨',95:'⛈ 雷雨'};
+var WMO_fr={0:'☀️ Ensoleillé',1:'🌤 Dégagé',2:'⛅ Partiellement nuageux',3:'☁️ Couvert',45:'🌫 Brouillard',61:'🌧 Pluie légère',63:'🌧 Pluie',65:'🌧 Forte pluie',73:'❄️ Neige',80:'🌦 Averses',95:'⛈ Orage'};
+
+function getDesc(code){
+  var maps={ja:WMO,en:WMO_en,zh:WMO_zh,fr:WMO_fr};
+  var m=maps[curLang]||WMO_en;
+  return m[code]||m[0]||'--';
+}
+
+function showWeather(d){
+  var c=d.current;
+  document.getElementById('weatherLoading').style.display='none';
+  document.getElementById('weatherResult').style.display='block';
+  document.getElementById('w-temp').textContent=Math.round(c.temperature_2m)+'°C';
+  document.getElementById('w-desc').textContent=getDesc(c.weather_code);
+  var l=T[curLang];
+  document.getElementById('w-wind').textContent=l.w_wind+': '+Math.round(c.wind_speed_10m)+'m/s';
+  document.getElementById('w-humid').textContent=l.w_humid+': '+Math.round(c.relative_humidity_2m)+'%';
+  document.getElementById('w-precip').textContent=l.w_precip+': '+c.precipitation+'mm';
 }
 
 function setP(p,c){
@@ -768,6 +919,9 @@ function setMode(el,mode){
   document.getElementById('locdesc').textContent=loc.desc;
   document.getElementById('hubs').innerHTML=loc.hubs.map(function(h){return'<div class="hubrow"><span>'+h[0]+'</span><span>'+h[1]+'</span></div>';}).join('');
   document.getElementById('sosfired').style.display='none';
+  document.getElementById('weatherBox').style.display='none';
+  document.getElementById('weatherResult').style.display='none';
+  weatherCache={};
 }
 
 function fireSOS(){
@@ -805,6 +959,9 @@ function restart(){
   document.getElementById('tagid').textContent='---';
   document.getElementById('btn2').style.display='none';
   document.getElementById('sosfired').style.display='none';
+  document.getElementById('weatherBox').style.display='none';
+  document.getElementById('weatherResult').style.display='none';
+  weatherCache={};
   document.getElementById('inputBox').style.display='none';
   document.getElementById('inputField').value='';
   document.getElementById('regComplete').classList.remove('show');
