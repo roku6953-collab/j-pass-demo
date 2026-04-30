@@ -3,157 +3,185 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="apple-mobile-web-app-title" content="J-PASS V2">
-<title>J-PASS Demo V2.4</title>
+<meta name="apple-mobile-web-app-title" content="J-PASS">
+<title>J-PASS Demo v2.5</title>
 <style>
-:root{--ac:#1A4B8C;}
+:root{--ac:#1A4B8C;--ok:#1D9E75;--ng:#A32D2D;}
 *{box-sizing:border-box;margin:0;padding:0;}
 body{background:#f0f4f8;display:flex;justify-content:center;min-height:100vh;font-family:-apple-system,BlinkMacSystemFont,'Hiragino Sans',sans-serif;}
 .wrap{width:100%;max-width:390px;background:#fff;min-height:100vh;display:flex;flex-direction:column;}
-.hdr{background:var(--ac);color:#fff;padding:14px 18px;display:flex;justify-content:space-between;align-items:center;font-size:14px;font-weight:500;}
-.lang-bar{display:flex;gap:6px;padding:8px 18px;border-bottom:1px solid #e0e0e0;background:#f8f8f8;overflow-x:auto;}
-.lang-flag{padding:4px 10px;border-radius:20px;font-size:13px;cursor:pointer;border:1px solid #e0e0e0;background:#fff;transition:all .15s;white-space:nowrap;}
+
+/* ヘッダー */
+.hdr{background:var(--ac);color:#fff;padding:12px 18px 8px;display:flex;justify-content:space-between;align-items:flex-start;}
+.hdr-left{display:flex;flex-direction:column;}
+.hdr-title{font-size:15px;font-weight:500;}
+.hdr-partner{font-size:11px;opacity:.8;margin-top:2px;}
+.hdr-right{font-size:13px;font-weight:500;}
+
+/* 進捗バー */
+.progress-bar{display:flex;align-items:center;padding:0 16px;background:var(--ac);padding-bottom:10px;gap:4px;}
+.prog-step{height:4px;flex:1;border-radius:2px;background:rgba(255,255,255,0.25);transition:background .3s;}
+.prog-step.done{background:rgba(255,255,255,0.9);}
+.prog-step.active{background:#fff;}
+.prog-label{font-size:10px;color:rgba(255,255,255,0.7);margin-left:6px;white-space:nowrap;}
+
+/* 言語バー */
+.lang-bar{display:flex;gap:6px;padding:8px 14px;border-bottom:1px solid #e0e0e0;background:#f8f8f8;overflow-x:auto;}
+.lang-flag{padding:4px 10px;border-radius:20px;font-size:12px;cursor:pointer;border:1px solid #e0e0e0;background:#fff;transition:all .15s;white-space:nowrap;}
 .lang-flag.on{background:var(--ac);color:#fff;border-color:var(--ac);}
-.sc{display:none;padding:20px;flex-direction:column;flex:1;}
+
+/* 画面 */
+.sc{display:none;padding:18px;flex-direction:column;flex:1;}
 .sc.on{display:flex;}
-.guide{background:#f8f8f8;border-left:3px solid var(--ac);padding:10px 12px;border-radius:0 8px 8px 0;font-size:12px;color:#555;margin-bottom:16px;}
-.guide-lbl{font-size:10px;font-weight:600;color:var(--ac);margin-bottom:3px;}
-h2{color:var(--ac);font-size:18px;font-weight:500;margin-bottom:12px;}
-p{font-size:13px;line-height:1.6;color:#555;margin-bottom:12px;}
-.btn{background:var(--ac);color:#fff;border:none;padding:14px;border-radius:12px;font-size:14px;font-weight:500;cursor:pointer;width:100%;margin-top:12px;}
-.btn:active{opacity:.88;transform:scale(.98);}
-.pgrid{display:flex;flex-direction:column;gap:10px;margin:12px 0;}
+.flash-overlay{position:fixed;top:0;left:0;width:100%;height:100%;z-index:200;pointer-events:none;opacity:0;transition:opacity .1s;}
+
+/* スキャンオーバーレイ */
+.scan-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.9);z-index:100;justify-content:center;align-items:center;flex-direction:column;}
+.scan-overlay.show{display:flex;}
+.scan-frame{width:220px;height:160px;border:2px solid #fff;border-radius:12px;position:relative;overflow:hidden;background:#111;}
+.scan-line{width:100%;height:2px;background:var(--ac);position:absolute;animation:scanline 1.5s linear infinite;}
+@keyframes scanline{0%{top:0;}100%{top:100%;}}
+.scan-label{color:#fff;font-size:14px;margin-top:14px;font-weight:500;}
+
+/* タイポグラフィ */
+h2{color:var(--ac);font-size:18px;font-weight:500;margin-bottom:10px;}
+p{font-size:13px;line-height:1.6;color:#555;margin-bottom:10px;}
+
+/* ボタン */
+.btn{background:var(--ac);color:#fff;border:none;padding:14px;border-radius:12px;font-size:14px;font-weight:500;cursor:pointer;width:100%;margin-top:10px;transition:all .1s;}
+.btn:active{opacity:.85;transform:scale(.98);}
+.btn-gray{background:#666;}
+.btn-green{background:var(--ok);}
+.btn-red{background:var(--ng);}
+
+/* Step 0: パートナー */
+.pgrid{display:flex;flex-direction:column;gap:10px;margin:8px 0;}
 .pcard{background:#fff;border:1.5px solid #e0e0e0;border-radius:14px;padding:14px 16px;display:flex;align-items:center;gap:14px;cursor:pointer;transition:all .15s;}
 .pcard:active{transform:scale(.98);}
-.pcolor{width:38px;height:38px;border-radius:8px;flex-shrink:0;}
+.pcolor{width:36px;height:36px;border-radius:8px;flex-shrink:0;}
 .pname{font-size:14px;font-weight:500;color:#222;}
 .psub{font-size:11px;color:#888;margin-top:2px;}
-.flash-overlay{position:fixed;top:0;left:0;width:100%;height:100%;z-index:200;pointer-events:none;opacity:0;transition:opacity .1s;}
-.scan-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.85);z-index:100;justify-content:center;align-items:center;flex-direction:column;}
-.scan-overlay.show{display:flex;}
-.scan-frame{width:240px;height:180px;border:2px solid #fff;border-radius:12px;position:relative;overflow:hidden;background:#111;}
-.scan-line{width:100%;height:2px;background:var(--ac);position:absolute;top:0;animation:scanline 1.5s linear infinite;}
-@keyframes scanline{0%{top:0;}100%{top:100%;}}
-.scan-label{color:#fff;font-size:14px;margin-top:16px;font-weight:500;}
-/* J-TAG説明 */
-.jtag-hero{background:#f0f6ff;border:1px solid #b5d4f4;border-radius:14px;padding:16px;text-align:center;margin-bottom:14px;}
-.jtag-card{width:110px;height:70px;border-radius:8px;background:var(--ac);margin:0 auto 10px;display:flex;align-items:center;justify-content:center;}
+
+/* Step 0.5: J-TAG */
+.jtag-visual{background:#f0f6ff;border:1px solid #b5d4f4;border-radius:14px;padding:16px;text-align:center;margin-bottom:14px;}
+.jtag-card{width:100px;height:64px;border-radius:8px;background:var(--ac);margin:0 auto 8px;display:flex;align-items:center;justify-content:center;}
 .jtag-card-txt{color:#fff;font-size:12px;font-weight:500;}
-.jtag-badge{display:inline-block;background:var(--ac);color:#fff;font-size:10px;padding:2px 10px;border-radius:10px;margin-top:4px;}
-.feat-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:14px;}
-.feat-card{border:1px solid #e0e0e0;border-radius:12px;padding:12px;background:#fff;}
-.feat-icon{font-size:22px;margin-bottom:6px;}
-.feat-title{font-size:12px;font-weight:500;color:#222;margin-bottom:3px;}
-.feat-desc{font-size:10px;color:#888;line-height:1.4;}
-/* 通番12：物理ログ詳細カード */
-.phylog-card{background:#FFF8E1;border:1px solid #FFD54F;border-radius:12px;padding:14px;margin-bottom:14px;}
-.phylog-title{font-size:12px;font-weight:500;color:#E65100;margin-bottom:8px;display:flex;align-items:center;gap:6px;}
-.phylog-row{display:flex;align-items:flex-start;gap:8px;margin-bottom:6px;font-size:11px;color:#555;line-height:1.5;}
-.phylog-row:last-child{margin-bottom:0;}
-.phylog-num{width:18px;height:18px;border-radius:50%;background:#E65100;color:#fff;font-size:10px;font-weight:500;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
-.flow-box{border:1px solid #e0e0e0;border-radius:12px;padding:12px;margin-bottom:14px;}
-.flow-lbl{font-size:11px;color:#888;margin-bottom:10px;font-weight:500;}
-.flow-row{display:flex;align-items:center;gap:6px;}
-.flow-node{flex:1;padding:7px 4px;border-radius:8px;font-size:11px;text-align:center;font-weight:500;}
-.flow-node.bl{background:#f0f6ff;color:#0c447c;}
-.flow-node.tl{background:#eaf3de;color:#0f6e56;}
-.flow-arr{font-size:14px;color:#aaa;flex-shrink:0;}
-.nfc-demo{height:64px;display:flex;align-items:center;justify-content:center;gap:16px;margin-bottom:14px;}
-.tag-box{width:42px;height:26px;border-radius:6px;background:var(--ac);display:flex;align-items:center;justify-content:center;}
+.jtag-size{font-size:12px;color:#0c447c;margin-bottom:6px;}
+.jtag-badge{display:inline-block;background:var(--ac);color:#fff;font-size:10px;padding:2px 10px;border-radius:10px;}
+.feat-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:12px;}
+.feat-card{border:1px solid #e0e0e0;border-radius:10px;padding:10px;background:#fff;}
+.feat-icon{font-size:20px;margin-bottom:4px;}
+.feat-title{font-size:12px;font-weight:500;color:#222;}
+.feat-desc{font-size:10px;color:#888;line-height:1.4;margin-top:2px;}
+
+/* NFC波アニメ */
+.nfc-demo{height:56px;display:flex;align-items:center;justify-content:center;gap:14px;margin-bottom:12px;}
+.tag-box{width:40px;height:24px;border-radius:5px;background:var(--ac);display:flex;align-items:center;justify-content:center;}
 .tag-txt{color:#fff;font-size:8px;font-weight:500;}
-.waves{position:relative;display:flex;align-items:center;justify-content:center;width:50px;height:50px;}
-.wave{position:absolute;width:16px;height:16px;border:2px solid #378ADD;border-radius:50%;opacity:0;animation:wv 1.8s ease-out infinite;}
+.waves{position:relative;width:44px;height:44px;display:flex;align-items:center;justify-content:center;}
+.wave{position:absolute;width:14px;height:14px;border:2px solid #378ADD;border-radius:50%;opacity:0;animation:wv 1.8s ease-out infinite;}
 .wave:nth-child(2){animation-delay:.5s;}.wave:nth-child(3){animation-delay:1s;}
-@keyframes wv{0%{transform:scale(0.5);opacity:0.8;}100%{transform:scale(2.5);opacity:0;}}
-.ph-box{width:34px;height:58px;border:2px solid var(--ac);border-radius:8px;background:#f0f6ff;display:flex;align-items:center;justify-content:center;}
-.ph-dot{width:6px;height:6px;border-radius:50%;background:var(--ac);}
-/* 通番10：保険パッケージ */
-.ins-package{margin-bottom:14px;}
+@keyframes wv{0%{transform:scale(.5);opacity:.8;}100%{transform:scale(2.5);opacity:0;}}
+.ph-box{width:30px;height:52px;border:2px solid var(--ac);border-radius:7px;background:#f0f6ff;display:flex;align-items:center;justify-content:center;}
+.ph-dot{width:5px;height:5px;border-radius:50%;background:var(--ac);}
+
+/* Step 0.6: 保険 */
 .ins-pkg-title{font-size:11px;font-weight:500;color:#a32d2d;margin-bottom:10px;}
-.ins-pkg-btn{display:flex;justify-content:space-between;align-items:center;padding:12px 14px;border:1.5px solid #e0e0e0;border-radius:12px;background:#fff;cursor:pointer;margin-bottom:8px;transition:all .15s;width:100%;}
-.ins-pkg-btn:last-child{margin-bottom:0;}
-.ins-pkg-btn.selected{border-color:var(--ac);background:#f0f6ff;}
-.ins-pkg-btn:active{transform:scale(.98);}
-.ins-pkg-left{text-align:left;}
-.ins-pkg-name{font-size:13px;font-weight:500;color:#222;}
-.ins-pkg-note{font-size:10px;color:#888;margin-top:2px;}
-.ins-pkg-right{text-align:right;}
-.ins-pkg-price{font-size:15px;font-weight:500;color:var(--ac);}
-.ins-pkg-check{font-size:18px;opacity:0;}
-.ins-pkg-btn.selected .ins-pkg-check{opacity:1;}
-/* 登録 */
-.reg-method{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0;}
-.reg-btn{border:1.5px solid var(--ac);border-radius:14px;padding:16px 10px;text-align:center;cursor:pointer;background:#fff;transition:all .2s;}
+.pkg-btn{display:flex;justify-content:space-between;align-items:center;padding:12px 14px;border:1.5px solid #e0e0e0;border-radius:12px;background:#fff;cursor:pointer;margin-bottom:8px;width:100%;transition:all .15s;}
+.pkg-btn:last-child{margin-bottom:0;}
+.pkg-btn.sel{border-color:var(--ac);background:#f0f6ff;}
+.pkg-btn:active{transform:scale(.98);}
+.pkg-name{font-size:13px;font-weight:500;color:#222;text-align:left;}
+.pkg-note{font-size:10px;color:#888;margin-top:2px;text-align:left;}
+.pkg-right{text-align:right;}
+.pkg-price{font-size:15px;font-weight:500;color:var(--ac);}
+.pkg-check{font-size:16px;opacity:0;margin-top:2px;}
+.pkg-btn.sel .pkg-check{opacity:1;}
+.ins-note{background:#f0f6ff;border:1px solid #b5d4f4;border-radius:10px;padding:10px 12px;font-size:11px;color:#0c447c;margin-top:10px;}
+
+/* Step 1: 登録 */
+.reg-method{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:10px 0;}
+.reg-btn{border:1.5px solid var(--ac);border-radius:14px;padding:14px 10px;text-align:center;cursor:pointer;background:#fff;transition:all .2s;}
 .reg-btn:active{transform:scale(.97);}
-.reg-complete{display:none;flex-direction:column;align-items:center;padding:16px;background:#eaf3de;border:1px solid #5DCAA5;border-radius:14px;margin:12px 0;text-align:center;}
+.reg-complete{display:none;flex-direction:column;align-items:center;padding:14px;background:#eaf3de;border:1px solid #5DCAA5;border-radius:14px;margin:10px 0;text-align:center;}
 .reg-complete.show{display:flex;}
-.token-box{background:#f0f6ff;border:1px solid #b5d4f4;border-radius:14px;padding:14px;text-align:center;margin:8px 0;}
+.token-box{background:#f0f6ff;border:1px solid #b5d4f4;border-radius:12px;padding:12px;text-align:center;margin:8px 0;}
 .token-val{font-size:20px;font-weight:500;color:#0c447c;font-family:monospace;}
-.net-box{background:#f8f8f8;border:1px solid #e0e0e0;border-radius:12px;padding:12px;margin:8px 0;}
-.net-row{display:flex;align-items:center;gap:10px;font-size:13px;padding:4px 0;color:var(--ac);font-weight:500;}
-.ndot{width:8px;height:8px;border-radius:50%;background:var(--ac);flex-shrink:0;}
-/* J-TAG同期 */
-.nfc-area{height:140px;display:flex;align-items:center;justify-content:center;position:relative;margin:16px 0;cursor:pointer;}
-.nfc-ring{width:80px;height:80px;border:2.5px solid var(--ac);border-radius:50%;position:absolute;animation:pulse 1.5s infinite;}
-.nfc-icon{font-size:36px;position:relative;z-index:1;}
+.net-box{background:#f8f8f8;border:1px solid #e0e0e0;border-radius:10px;padding:10px;margin:8px 0;}
+.net-row{display:flex;align-items:center;gap:8px;font-size:12px;padding:3px 0;color:var(--ac);font-weight:500;}
+.ndot{width:7px;height:7px;border-radius:50%;background:var(--ac);flex-shrink:0;}
+.input-box{background:#f8f8f8;border:1px solid #e0e0e0;border-radius:12px;padding:14px;margin:8px 0;}
+.input-field{width:100%;padding:10px;border:1.5px solid #e0e0e0;border-radius:8px;font-size:15px;font-family:monospace;text-align:center;background:#fff;}
+.input-field:focus{outline:none;border-color:var(--ac);}
+
+/* Step 2: NFC */
+.nfc-area{height:130px;display:flex;align-items:center;justify-content:center;position:relative;margin:14px 0;cursor:pointer;}
+.nfc-ring{width:76px;height:76px;border:2.5px solid var(--ac);border-radius:50%;position:absolute;animation:pulse 1.5s infinite;}
 @keyframes pulse{0%{transform:scale(.8);opacity:1;}100%{transform:scale(1.5);opacity:0;}}
-.sync-done{display:none;text-align:center;color:#3b6d11;font-weight:500;font-size:14px;padding:10px;background:#eaf3de;border-radius:10px;margin-bottom:12px;}
-/* 通番13：点灯ドット */
-.live-hub-box{background:#f8f8f8;border:1px solid #e0e0e0;border-radius:12px;padding:12px 14px;margin-bottom:12px;}
-.live-hub-title{font-size:10px;font-weight:500;color:#888;margin-bottom:8px;}
-.live-hub-row{display:flex;align-items:center;justify-content:space-between;padding:4px 0;}
-.live-hub-name{font-size:12px;color:#333;}
-.live-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
-.live-dot.on{background:#1D9E75;box-shadow:0 0 6px #1D9E75;animation:blink 1.5s infinite;}
-.live-dot.standby{background:#FFA726;}
-@keyframes blink{0%{opacity:1;}50%{opacity:0.3;}100%{opacity:1;}}
-/* モード */
-.mode-tabs{display:flex;border:1px solid #e0e0e0;border-radius:10px;overflow:hidden;margin-bottom:12px;}
-.mtab{flex:1;padding:9px 4px;font-size:12px;text-align:center;cursor:pointer;background:#fff;border:none;color:#888;border-right:1px solid #e0e0e0;}
+.nfc-icon{font-size:34px;position:relative;z-index:1;}
+.sync-ok{display:none;text-align:center;color:var(--ok);font-weight:500;font-size:14px;padding:10px;background:#eaf3de;border-radius:10px;margin-bottom:10px;}
+.phylog{background:#FFF8E1;border:1px solid #FFD54F;border-radius:12px;padding:12px;margin-top:10px;}
+.phylog-title{font-size:12px;font-weight:500;color:#E65100;margin-bottom:8px;}
+.phylog-row{display:flex;gap:8px;margin-bottom:6px;font-size:11px;color:#555;line-height:1.5;}
+.phylog-num{width:16px;height:16px;border-radius:50%;background:#E65100;color:#fff;font-size:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+
+/* Step 3: アクティブ */
+.live-box{background:#f8f8f8;border:1px solid #e0e0e0;border-radius:12px;padding:12px;margin-bottom:10px;}
+.live-title{font-size:10px;color:#888;font-weight:500;margin-bottom:8px;}
+.live-row{display:flex;justify-content:space-between;align-items:center;padding:3px 0;}
+.live-name{font-size:12px;color:#333;}
+.live-status{display:flex;align-items:center;gap:5px;font-size:11px;font-weight:500;}
+.dot{width:9px;height:9px;border-radius:50%;flex-shrink:0;}
+.dot.on{background:var(--ok);box-shadow:0 0 5px var(--ok);animation:blink 1.5s infinite;}
+.dot.standby{background:#FFA726;}
+@keyframes blink{0%{opacity:1;}50%{opacity:.3;}100%{opacity:1;}}
+.mode-tabs{display:flex;border:1px solid #e0e0e0;border-radius:10px;overflow:hidden;margin-bottom:10px;}
+.mtab{flex:1;padding:8px 4px;font-size:12px;text-align:center;cursor:pointer;background:#fff;border:none;color:#888;border-right:1px solid #e0e0e0;}
 .mtab:last-child{border-right:none;}
 .mtab.on{background:var(--ac);color:#fff;font-weight:500;}
-.loccard{background:#f8f8f8;border:1px solid #e0e0e0;border-radius:12px;padding:12px 14px;margin-bottom:12px;}
-.lochead{display:flex;justify-content:space-between;align-items:center;margin-bottom:5px;}
-.locname{font-size:13px;font-weight:500;}
-.locbadge{font-size:10px;padding:2px 8px;border-radius:10px;background:#e1f5ee;color:#0f6e56;font-weight:500;}
-.locdesc{font-size:11px;color:#888;margin-bottom:7px;}
+.loccard{background:#f8f8f8;border:1px solid #e0e0e0;border-radius:12px;padding:12px;margin-bottom:10px;}
+.locname{font-size:13px;font-weight:500;margin-bottom:3px;}
+.locbadge{font-size:10px;padding:2px 8px;border-radius:10px;background:#e1f5ee;color:var(--ok);font-weight:500;float:right;}
+.locdesc{font-size:11px;color:#888;margin-bottom:6px;}
 .hubrow{display:flex;justify-content:space-between;font-size:11px;color:#888;padding:2px 0;}
-.hubrow span:last-child{color:#3b6d11;font-weight:500;}
-.sos-btn{width:100%;padding:14px;background:#a32d2d;color:#fff;border:none;border-radius:12px;font-size:15px;font-weight:500;cursor:pointer;margin-bottom:10px;}
-.sos-fired{display:none;padding:10px;background:#fcebeb;border:1px solid #f7c1c1;border-radius:10px;font-size:12px;color:#a32d2d;text-align:center;margin-bottom:10px;font-weight:500;}
-.prog-bar{background:#e0e0e0;height:10px;border-radius:5px;overflow:hidden;margin:12px 0;}
-.prog-fill{background:var(--ac);height:100%;width:0%;transition:width .2s;}
-.happy{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin:14px 0;}
-.hcard{padding:10px;border-radius:10px;font-size:12px;text-align:center;background:#f0f6ff;color:#0c447c;}
-.hcard.full{grid-column:1/-1;background:#eaf3de;color:#3b6d11;}
-.hcard-lbl{font-weight:500;margin-bottom:2px;font-size:11px;}
-.close-box{background:#f8f8f8;border:1px solid #e0e0e0;border-radius:14px;padding:18px;text-align:center;margin:12px 0;}
-.close-title{font-size:16px;font-weight:500;color:var(--ac);margin-bottom:6px;}
-.close-sub{font-size:12px;color:#666;line-height:1.6;}
-/* ナビ支援パネル */
-.navi-panel{border:1px solid #e0e0e0;border-radius:12px;overflow:hidden;margin-bottom:12px;}
-.navi-panel-title{background:#f8f8f8;padding:8px 12px;font-size:11px;font-weight:500;color:#888;border-bottom:1px solid #e0e0e0;}
-.navi-btn-row{display:flex;flex-direction:column;gap:8px;padding:12px;}
-.navi-action-btn{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:10px;border:1.5px solid #e0e0e0;background:#fff;cursor:pointer;text-align:left;width:100%;transition:all .15s;}
-.navi-action-btn:active{transform:scale(.98);}
-.navi-action-btn-icon{font-size:22px;flex-shrink:0;}
-.navi-action-btn-body{}
-.navi-action-btn-title{font-size:13px;font-weight:500;color:#222;}
-.navi-action-btn-sub{font-size:11px;color:#888;margin-top:2px;}
-.navi-action-btn.green{border-color:#1A7A3A;}
-.navi-action-btn.green .navi-action-btn-title{color:#1A7A3A;}
-.navi-action-btn.blue{border-color:#1A4B8C;}
-.navi-action-btn.blue .navi-action-btn-title{color:#1A4B8C;}
-.navi-action-btn.teal{border-color:#0E7490;}
-.navi-action-btn.teal .navi-action-btn-title{color:#0E7490;}
-.weather-box{background:#EFF8FF;border:1px solid #B5D4F4;border-radius:10px;padding:12px;margin:0 12px 12px;}
-.weather-loading{font-size:12px;color:#888;text-align:center;padding:8px 0;}
+.sos-fired{display:none;padding:10px;background:#fcebeb;border:1px solid #f7c1c1;border-radius:10px;font-size:12px;color:var(--ng);text-align:center;margin-bottom:10px;font-weight:500;}
+.sos-btn{width:100%;padding:14px;background:var(--ng);color:#fff;border:none;border-radius:12px;font-size:15px;font-weight:500;cursor:pointer;margin-bottom:10px;}
+.sos-btn:active{opacity:.85;}
+
+/* ナビパネル */
+.navi-panel{border:1px solid #e0e0e0;border-radius:12px;overflow:hidden;margin-bottom:10px;}
+.navi-panel-hdr{background:#f8f8f8;padding:7px 12px;font-size:11px;font-weight:500;color:#888;border-bottom:1px solid #e0e0e0;}
+.navi-btns{display:flex;flex-direction:column;gap:7px;padding:10px;}
+.navi-btn{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;border:1.5px solid #e0e0e0;background:#fff;cursor:pointer;width:100%;text-align:left;}
+.navi-btn:active{transform:scale(.98);}
+.navi-btn-icon{font-size:20px;flex-shrink:0;}
+.navi-btn-title{font-size:12px;font-weight:500;}
+.navi-btn-sub{font-size:10px;color:#888;margin-top:1px;}
+.navi-btn.g{border-color:var(--ok);}.navi-btn.g .navi-btn-title{color:var(--ok);}
+.navi-btn.b{border-color:var(--ac);}.navi-btn.b .navi-btn-title{color:var(--ac);}
+.navi-btn.t{border-color:#0E7490;}.navi-btn.t .navi-btn-title{color:#0E7490;}
+.weather-box{background:#EFF8FF;border:1px solid #b5d4f4;border-radius:10px;padding:10px;margin:0 10px 10px;}
 .weather-row{display:flex;justify-content:space-between;align-items:center;}
 .weather-temp{font-size:22px;font-weight:500;color:#0c447c;}
 .weather-desc{font-size:12px;color:#378ADD;}
-.weather-detail{display:flex;gap:12px;margin-top:6px;}
-.weather-item{font-size:11px;color:#555;}
+.weather-detail{display:flex;gap:10px;margin-top:5px;font-size:11px;color:#555;flex-wrap:wrap;}
+
+/* Step 4: 終了 */
+.prog-bar{background:#e0e0e0;height:10px;border-radius:5px;overflow:hidden;margin:12px 0;}
+.prog-fill{background:var(--ac);height:100%;width:0%;transition:width .2s;}
+.happy{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin:12px 0;}
+.hcard{padding:10px;border-radius:10px;font-size:12px;text-align:center;background:#f0f6ff;color:#0c447c;}
+.hcard.full{grid-column:1/-1;background:#eaf3de;color:#3b6d11;}
+.hcard-lbl{font-weight:500;font-size:11px;margin-bottom:2px;}
+
+/* Step 5: クロージング */
+.close-box{background:#f8f8f8;border:1px solid #e0e0e0;border-radius:14px;padding:18px;text-align:center;margin:10px 0;}
+.close-title{font-size:16px;font-weight:500;color:var(--ac);margin-bottom:6px;}
+.close-sub{font-size:12px;color:#666;line-height:1.7;}
+.merit-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:10px 0;}
+.merit-card{border:1px solid #e0e0e0;border-radius:10px;padding:10px;text-align:center;background:#fff;}
+.merit-icon{font-size:18px;margin-bottom:4px;}
+.merit-txt{font-size:11px;color:#333;font-weight:500;}
 </style>
 </head>
 <body>
@@ -164,13 +192,27 @@ p{font-size:13px;line-height:1.6;color:#555;margin-bottom:12px;}
     <div class="scan-label" id="scan-label-txt">---</div>
   </div>
   <div id="scanDone" style="display:none;flex-direction:column;align-items:center;">
-    <div style="font-size:48px;margin-bottom:10px;">✅</div>
-    <div id="scan-ok-lbl" style="color:#4CAF50;font-size:16px;font-weight:500;">---</div>
+    <div style="font-size:44px;margin-bottom:8px;">✅</div>
+    <div id="scan-ok-lbl" style="color:#4CAF50;font-size:15px;font-weight:500;">---</div>
   </div>
 </div>
 
 <div class="wrap">
-<div class="hdr"><span>J-PASS SDK v2.4</span><span id="pname">---</span></div>
+<div class="hdr">
+  <div class="hdr-left">
+    <div class="hdr-title">J-PASS SDK v2.5</div>
+    <div class="hdr-partner" id="pname">---</div>
+  </div>
+  <div class="hdr-right" id="hdr-step">---</div>
+</div>
+<div class="progress-bar" id="progressBar">
+  <div class="prog-step" id="ps1"></div>
+  <div class="prog-step" id="ps2"></div>
+  <div class="prog-step" id="ps3"></div>
+  <div class="prog-step" id="ps4"></div>
+  <div class="prog-step" id="ps5"></div>
+  <div class="prog-label" id="prog-label-txt">---</div>
+</div>
 <div class="lang-bar">
   <button class="lang-flag on" onclick="setLang('ja',this)">🇯🇵 日本語</button>
   <button class="lang-flag" onclick="setLang('en',this)">🇺🇸 EN</button>
@@ -180,7 +222,6 @@ p{font-size:13px;line-height:1.6;color:#555;margin-bottom:12px;}
 
 <!-- Step 0: パートナー選択 -->
 <div class="sc on" id="sc0">
-  <div class="guide"><div class="guide-lbl">凛子ガイド</div><span id="g0txt">---</span></div>
   <h2 id="h0">---</h2>
   <div class="pgrid">
     <div class="pcard" onclick="setP('montbell','#1A4B8C')">
@@ -198,13 +239,12 @@ p{font-size:13px;line-height:1.6;color:#555;margin-bottom:12px;}
   </div>
 </div>
 
-<!-- Step 0.5: J-TAG説明（通番12強化） -->
+<!-- Step 0.5: J-TAG説明 -->
 <div class="sc" id="sc05">
-  <div class="guide"><div class="guide-lbl">凛子ガイド</div><span id="g05txt">---</span></div>
   <h2 id="h05">---</h2>
-  <div class="jtag-hero">
+  <div class="jtag-visual">
     <div class="jtag-card"><div class="jtag-card-txt">J-TAG</div></div>
-    <div id="jtag-size-txt" style="font-size:12px;color:#0c447c;margin-bottom:6px;">---</div>
+    <div class="jtag-size" id="jtag-size-txt">---</div>
     <div class="jtag-badge" id="jtag-badge-txt">---</div>
   </div>
   <div class="feat-grid">
@@ -213,15 +253,6 @@ p{font-size:13px;line-height:1.6;color:#555;margin-bottom:12px;}
     <div class="feat-card"><div class="feat-icon">🛡</div><div class="feat-title" id="f3t">---</div><div class="feat-desc" id="f3d">---</div></div>
     <div class="feat-card"><div class="feat-icon">⚡</div><div class="feat-title" id="f4t">---</div><div class="feat-desc" id="f4d">---</div></div>
   </div>
-
-  <!-- 通番12：物理ログ詳細解説 -->
-  <div class="phylog-card">
-    <div class="phylog-title">📋 <span id="phylog-title">物理ログとは？</span></div>
-    <div class="phylog-row"><div class="phylog-num">1</div><div id="phylog-1">---</div></div>
-    <div class="phylog-row"><div class="phylog-num">2</div><div id="phylog-2">---</div></div>
-    <div class="phylog-row"><div class="phylog-num">3</div><div id="phylog-3">---</div></div>
-  </div>
-
   <div class="nfc-demo">
     <div class="tag-box"><div class="tag-txt">J-TAG</div></div>
     <div class="waves"><div class="wave"></div><div class="wave"></div><div class="wave"></div></div>
@@ -230,79 +261,55 @@ p{font-size:13px;line-height:1.6;color:#555;margin-bottom:12px;}
   <button class="btn" onclick="goTo('06')" id="btn-jtag-next">---</button>
 </div>
 
-<!-- Step 0.6: 保険パッケージ（通番10新規） -->
+<!-- Step 0.6: 保険パッケージ -->
 <div class="sc" id="sc06">
-  <div class="guide"><div class="guide-lbl">凛子ガイド</div><span id="g06txt">---</span></div>
   <h2 id="h06">---</h2>
   <div class="ins-pkg-title" id="ins-pkg-title">---</div>
-  <div class="ins-package">
-    <button class="ins-pkg-btn" onclick="selectPkg(this,1)" id="pkg-btn-1">
-      <div class="ins-pkg-left">
-        <div class="ins-pkg-name" id="pkg1-name">---</div>
-        <div class="ins-pkg-note" id="pkg1-note">---</div>
-      </div>
-      <div class="ins-pkg-right">
-        <div class="ins-pkg-price" id="pkg1-price">---</div>
-        <div class="ins-pkg-check">✓</div>
-      </div>
-    </button>
-    <button class="ins-pkg-btn" onclick="selectPkg(this,2)" id="pkg-btn-2">
-      <div class="ins-pkg-left">
-        <div class="ins-pkg-name" id="pkg2-name">---</div>
-        <div class="ins-pkg-note" id="pkg2-note">---</div>
-      </div>
-      <div class="ins-pkg-right">
-        <div class="ins-pkg-price" id="pkg2-price">---</div>
-        <div class="ins-pkg-check">✓</div>
-      </div>
-    </button>
-    <button class="ins-pkg-btn" onclick="selectPkg(this,3)" id="pkg-btn-3">
-      <div class="ins-pkg-left">
-        <div class="ins-pkg-name" id="pkg3-name">---</div>
-        <div class="ins-pkg-note" id="pkg3-note">---</div>
-      </div>
-      <div class="ins-pkg-right">
-        <div class="ins-pkg-price" id="pkg3-price">---</div>
-        <div class="ins-pkg-check">✓</div>
-      </div>
-    </button>
-  </div>
-  <div style="background:#f0f6ff;border:1px solid #b5d4f4;border-radius:12px;padding:12px;font-size:12px;color:#0c447c;margin-bottom:14px;">
-    <span id="ins-note">---</span>
-  </div>
+  <button class="pkg-btn" onclick="selPkg(this)" id="pkg-btn-1">
+    <div><div class="pkg-name" id="pkg1-name">---</div><div class="pkg-note" id="pkg1-note">---</div></div>
+    <div class="pkg-right"><div class="pkg-price" id="pkg1-price">---</div><div class="pkg-check">✓</div></div>
+  </button>
+  <button class="pkg-btn" onclick="selPkg(this)" id="pkg-btn-2">
+    <div><div class="pkg-name" id="pkg2-name">---</div><div class="pkg-note" id="pkg2-note">---</div></div>
+    <div class="pkg-right"><div class="pkg-price" id="pkg2-price">---</div><div class="pkg-check">✓</div></div>
+  </button>
+  <button class="pkg-btn" onclick="selPkg(this)" id="pkg-btn-3">
+    <div><div class="pkg-name" id="pkg3-name">---</div><div class="pkg-note" id="pkg3-note">---</div></div>
+    <div class="pkg-right"><div class="pkg-price" id="pkg3-price">---</div><div class="pkg-check">✓</div></div>
+  </button>
+  <div class="ins-note" id="ins-note">---</div>
   <button class="btn" onclick="goTo(1)" id="btn-pkg-next">---</button>
 </div>
 
 <!-- Step 1: 登録 -->
 <div class="sc" id="sc1">
-  <div class="guide"><div class="guide-lbl">凛子ガイド</div><span id="g1txt">---</span></div>
   <h2 id="h1">---</h2>
   <div class="reg-method">
     <div class="reg-btn" onclick="startScan()">
-      <div style="font-size:28px;margin-bottom:6px;">📷</div>
-      <div id="scan-lbl" style="font-size:13px;font-weight:500;color:var(--ac);">---</div>
-      <div id="scan-sub" style="font-size:10px;color:#888;margin-top:3px;">---</div>
+      <div style="font-size:26px;margin-bottom:5px;">📷</div>
+      <div id="scan-lbl" style="font-size:12px;font-weight:500;color:var(--ac);">---</div>
+      <div id="scan-sub" style="font-size:10px;color:#888;margin-top:2px;">---</div>
     </div>
     <div class="reg-btn" onclick="startInput()">
-      <div style="font-size:28px;margin-bottom:6px;">🔢</div>
-      <div id="input-lbl" style="font-size:13px;font-weight:500;color:var(--ac);">---</div>
-      <div id="input-sub" style="font-size:10px;color:#888;margin-top:3px;">---</div>
+      <div style="font-size:26px;margin-bottom:5px;">🔢</div>
+      <div id="input-lbl" style="font-size:12px;font-weight:500;color:var(--ac);">---</div>
+      <div id="input-sub" style="font-size:10px;color:#888;margin-top:2px;">---</div>
     </div>
   </div>
-  <div id="inputBox" style="display:none;background:#f8f8f8;border:1px solid #e0e0e0;border-radius:14px;padding:16px;margin:8px 0;">
-    <div id="input-field-lbl" style="font-size:11px;color:var(--ac);font-weight:500;margin-bottom:8px;">---</div>
-    <input id="inputField" type="text" maxlength="16" placeholder="例：1234-5678-9012" style="width:100%;padding:12px;border:1.5px solid #e0e0e0;border-radius:10px;font-size:15px;font-family:monospace;text-align:center;background:#fff;"/>
-    <button class="btn" onclick="completeInput()" id="btn-reg" style="margin-top:10px;">---</button>
+  <div class="input-box" id="inputBox" style="display:none;">
+    <div id="input-field-lbl" style="font-size:11px;color:var(--ac);font-weight:500;margin-bottom:7px;">---</div>
+    <input class="input-field" id="inputField" type="text" maxlength="16" placeholder="1234-5678-9012"/>
+    <button class="btn" onclick="completeInput()" id="btn-reg" style="margin-top:8px;">---</button>
   </div>
   <div class="reg-complete" id="regComplete">
-    <div style="font-size:36px;margin-bottom:8px;">🔐</div>
-    <div id="reg-done-lbl" style="font-size:14px;font-weight:500;color:#0F6E56;margin-bottom:4px;">---</div>
+    <div style="font-size:34px;margin-bottom:6px;">🔐</div>
+    <div id="reg-done-lbl" style="font-size:14px;font-weight:500;color:var(--ok);margin-bottom:3px;">---</div>
     <div id="reg-done-sub" style="font-size:11px;color:#555;">---</div>
   </div>
   <div class="token-box" id="tokenBox" style="display:none;">
-    <div id="tok-lbl" style="font-size:10px;color:#378add;margin-bottom:6px;">---</div>
-    <div class="token-val" id="tokval">T-4821-XX</div>
-    <div id="tok-ok" style="font-size:11px;color:#3b6d11;margin-top:5px;">---</div>
+    <div id="tok-lbl" style="font-size:10px;color:#378add;margin-bottom:5px;">---</div>
+    <div class="token-val" id="tokval">T-0000-XX</div>
+    <div id="tok-ok" style="font-size:10px;color:var(--ok);margin-top:4px;">---</div>
   </div>
   <div class="net-box" id="netBox" style="display:none;">
     <div class="net-row"><div class="ndot"></div><span id="p-lbl1">---</span></div>
@@ -314,57 +321,48 @@ p{font-size:13px;line-height:1.6;color:#555;margin-bottom:12px;}
 
 <!-- Step 2: J-TAG同期 -->
 <div class="sc" id="sc2">
-  <div class="guide"><div class="guide-lbl">凛子ガイド</div><span id="g2txt">---</span></div>
   <h2 id="h2">---</h2>
   <p id="p2txt">---</p>
   <div class="nfc-area" onclick="doSync()">
     <div class="nfc-ring" id="nfcring"></div>
     <div class="nfc-icon">🏷</div>
   </div>
-  <div class="sync-done" id="syncdone">✓ Sync OK — 物理ログ記録完了</div>
-  <div style="font-size:12px;color:#888;text-align:center;margin-bottom:8px;"><span id="pairing-lbl">J-TAG ID</span>: <span id="tagid">---</span></div>
-  <button class="btn" id="btn2" style="display:none;" onclick="goTo(3)">---</button>
-  <button class="btn" onclick="doSync()" id="btn-sync-sim" style="background:#888;margin-top:8px;">---</button>
+  <div class="sync-ok" id="syncdone">✓ Sync OK — <span id="tagid"></span></div>
+  <div class="phylog" id="phylog-box">
+    <div class="phylog-title" id="phylog-title">---</div>
+    <div class="phylog-row"><div class="phylog-num">1</div><div id="phylog-1">---</div></div>
+    <div class="phylog-row"><div class="phylog-num">2</div><div id="phylog-2">---</div></div>
+    <div class="phylog-row"><div class="phylog-num">3</div><div id="phylog-3">---</div></div>
+  </div>
+  <button class="btn" id="btn2" style="display:none;margin-top:10px;" onclick="goTo(3)">---</button>
+  <button class="btn btn-gray" onclick="doSync()" id="btn-sync-sim" style="margin-top:8px;">---</button>
 </div>
 
-<!-- Step 3: アクティブモード（通番13：点灯ドット追加） -->
+<!-- Step 3: アクティブ -->
 <div class="sc" id="sc3">
-  <div class="guide"><div class="guide-lbl">凛子ガイド</div><span id="g3txt">---</span></div>
   <h2 id="h3">---</h2>
-
-  <!-- 通番13：分散拠点リアルタイム点灯 -->
-  <div class="live-hub-box">
-    <div class="live-hub-title" id="live-hub-title">---</div>
-    <div class="live-hub-row">
-      <span class="live-hub-name" id="hub-name-1">---</span>
-      <div style="display:flex;align-items:center;gap:6px;">
-        <span style="font-size:11px;color:#1D9E75;font-weight:500;" id="hub-status-1">---</span>
-        <div class="live-dot on"></div>
-      </div>
+  <div class="live-box">
+    <div class="live-title" id="live-hub-title">---</div>
+    <div class="live-row">
+      <span class="live-name" id="hub-name-1">---</span>
+      <div class="live-status" style="color:var(--ok);"><span id="hub-status-1">---</span><div class="dot on"></div></div>
     </div>
-    <div class="live-hub-row">
-      <span class="live-hub-name" id="hub-name-2">---</span>
-      <div style="display:flex;align-items:center;gap:6px;">
-        <span style="font-size:11px;color:#FFA726;font-weight:500;" id="hub-status-2">---</span>
-        <div class="live-dot standby"></div>
-      </div>
+    <div class="live-row">
+      <span class="live-name" id="hub-name-2">---</span>
+      <div class="live-status" style="color:#FFA726;"><span id="hub-status-2">---</span><div class="dot standby"></div></div>
     </div>
-    <div class="live-hub-row">
-      <span class="live-hub-name" id="hub-name-3">---</span>
-      <div style="display:flex;align-items:center;gap:6px;">
-        <span style="font-size:11px;color:#FFA726;font-weight:500;" id="hub-status-3">---</span>
-        <div class="live-dot standby"></div>
-      </div>
+    <div class="live-row">
+      <span class="live-name" id="hub-name-3">---</span>
+      <div class="live-status" style="color:#FFA726;"><span id="hub-status-3">---</span><div class="dot standby"></div></div>
     </div>
   </div>
-
   <div class="mode-tabs">
     <button class="mtab on" onclick="setMode(this,'ski')" id="tab-ski">---</button>
     <button class="mtab" onclick="setMode(this,'yama')" id="tab-yama">---</button>
     <button class="mtab" onclick="setMode(this,'machi')" id="tab-machi">---</button>
   </div>
   <div class="loccard">
-    <div class="lochead">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:3px;">
       <div class="locname" id="locname">---</div>
       <div class="locbadge" id="loc-badge">---</div>
     </div>
@@ -373,55 +371,42 @@ p{font-size:13px;line-height:1.6;color:#555;margin-bottom:12px;}
   </div>
   <div class="sos-fired" id="sosfired">---</div>
   <button class="sos-btn" onclick="fireSOS()" id="btn-sos">---</button>
-
-  <!-- ナビ支援パネル（通番16・17・18）-->
   <div class="navi-panel">
-    <div class="navi-panel-title" id="navi-panel-title">ナビ支援</div>
-    <div class="navi-btn-row">
-      <button class="navi-action-btn green" onclick="openNavi()">
-        <div class="navi-action-btn-icon">📍</div>
-        <div class="navi-action-btn-body">
-          <div class="navi-action-btn-title" id="btn-navi">---</div>
-          <div class="navi-action-btn-sub" id="btn-navi-sub">---</div>
-        </div>
+    <div class="navi-panel-hdr" id="navi-panel-title">---</div>
+    <div class="navi-btns">
+      <button class="navi-btn g" onclick="openNavi()">
+        <div class="navi-btn-icon">📍</div>
+        <div><div class="navi-btn-title" id="btn-navi">---</div><div class="navi-btn-sub" id="btn-navi-sub">---</div></div>
       </button>
-      <button class="navi-action-btn blue" onclick="open3DMap()">
-        <div class="navi-action-btn-icon">🗾</div>
-        <div class="navi-action-btn-body">
-          <div class="navi-action-btn-title" id="btn-3dmap">---</div>
-          <div class="navi-action-btn-sub" id="btn-3dmap-sub">---</div>
-        </div>
+      <button class="navi-btn b" onclick="open3DMap()">
+        <div class="navi-btn-icon">🗾</div>
+        <div><div class="navi-btn-title" id="btn-3dmap">---</div><div class="navi-btn-sub" id="btn-3dmap-sub">---</div></div>
       </button>
-      <button class="navi-action-btn teal" onclick="loadWeather()">
-        <div class="navi-action-btn-icon">🌤</div>
-        <div class="navi-action-btn-body">
-          <div class="navi-action-btn-title" id="btn-weather">---</div>
-          <div class="navi-action-btn-sub" id="btn-weather-sub">---</div>
-        </div>
+      <button class="navi-btn t" onclick="loadWeather()">
+        <div class="navi-btn-icon">🌤</div>
+        <div><div class="navi-btn-title" id="btn-weather">---</div><div class="navi-btn-sub" id="btn-weather-sub">---</div></div>
       </button>
     </div>
     <div class="weather-box" id="weatherBox" style="display:none;">
-      <div class="weather-loading" id="weatherLoading">---</div>
+      <div id="weatherLoading" style="font-size:12px;color:#888;text-align:center;padding:6px 0;">---</div>
       <div id="weatherResult" style="display:none;">
         <div class="weather-row">
           <div class="weather-temp" id="w-temp">--°C</div>
           <div class="weather-desc" id="w-desc">---</div>
         </div>
         <div class="weather-detail">
-          <div class="weather-item" id="w-wind">---</div>
-          <div class="weather-item" id="w-humid">---</div>
-          <div class="weather-item" id="w-precip">---</div>
+          <span id="w-wind">---</span>
+          <span id="w-humid">---</span>
+          <span id="w-precip">---</span>
         </div>
       </div>
     </div>
   </div>
-
-  <button class="btn" onclick="goTo(4)" style="background:#555;margin-top:4px;" id="btn-end">---</button>
+  <button class="btn btn-gray" onclick="goTo(4)" id="btn-end">---</button>
 </div>
 
-<!-- Step 4: ツアー終了 -->
+<!-- Step 4: 終了 -->
 <div class="sc" id="sc4">
-  <div class="guide"><div class="guide-lbl">凛子ガイド</div><span id="g4txt">---</span></div>
   <h2 id="h4">---</h2>
   <p id="p4txt">---</p>
   <div class="prog-bar"><div class="prog-fill" id="progfill"></div></div>
@@ -429,7 +414,7 @@ p{font-size:13px;line-height:1.6;color:#555;margin-bottom:12px;}
     <div class="happy">
       <div class="hcard"><div class="hcard-lbl" id="happy-user-lbl">---</div><span id="happy-user">---</span></div>
       <div class="hcard"><div class="hcard-lbl" id="happy-ins-lbl">---</div><span id="happy-ins">---</span></div>
-      <div class="hcard full" id="hcard-p"><div class="hcard-lbl" id="happy-p-lbl">---</div><span id="happy-p">---</span></div>
+      <div class="hcard full"><div class="hcard-lbl" id="happy-p-lbl">---</div><span id="happy-p">---</span></div>
     </div>
     <button class="btn" onclick="goTo(5)" id="btn-close">---</button>
   </div>
@@ -442,7 +427,13 @@ p{font-size:13px;line-height:1.6;color:#555;margin-bottom:12px;}
     <div class="close-title" id="close-title">---</div>
     <div class="close-sub" id="close-sub">---</div>
   </div>
-  <p style="font-size:12px;text-align:center;color:#888;margin-top:12px;">担当：六郷 代表 / J-PASS 事務局 / 松本 Hub</p>
+  <div class="merit-grid">
+    <div class="merit-card"><div class="merit-icon">🔋</div><div class="merit-txt" id="m1">---</div></div>
+    <div class="merit-card"><div class="merit-icon">🛡</div><div class="merit-txt" id="m2">---</div></div>
+    <div class="merit-card"><div class="merit-icon">🌏</div><div class="merit-txt" id="m3">---</div></div>
+    <div class="merit-card"><div class="merit-icon">⚡</div><div class="merit-txt" id="m4">---</div></div>
+  </div>
+  <p style="font-size:11px;text-align:center;color:#aaa;margin-top:8px;">J-PASS 事務局 / 六郷 代表 / 松本 Hub</p>
   <button class="btn" onclick="restart()" id="btn-reset">---</button>
 </div>
 </div>
@@ -450,60 +441,45 @@ p{font-size:13px;line-height:1.6;color:#555;margin-bottom:12px;}
 <script>
 var T={
   ja:{
-    pname:'パートナー未選択',
-    g0:'営業先のロゴを選んでください。アプリの色が各社のブランドカラーに変わります。',h0:'パートナーを選択',
+    pname:'パートナー未選択',h0:'提携先を選択',
     psub_mb:'直営店でJ-TAGを購入した方専用の安全キー',psub_hs:'滞在中の安全を守るラグジュアリーキー',psub_rk:'楽天IDで即座に使える安全インフラ',
-    g05:'「このタグが命を守ります」——4つのポイントと物理ログの仕組みを説明してください。',h05:'J-TAG 0.8mm とは？',
-    jtag_size:'厚さ わずか 0.8mm — 財布にそのまま入る薄さ',jtag_badge:'ザック・スマホケース・財布に貼るだけ',
-    f1t:'電池ゼロ',f1d:'スマホの電力で動く。永久に使える。',
-    f2t:'圏外でも有効',f2d:'通信なしでも救助隊がNFCで読み取れる。',
-    f3t:'個人情報ゼロ',f3d:'記録は「T-XXXX」の記号のみ。',
-    f4t:'かざすだけ',f4d:'スマホに近づけた瞬間に同期完了。',
-    phylog_title:'物理ログとは？（営業先からの質問への回答）',
-    phylog_1:'J-TAGの内部チップには「匿名トークン」が書き込まれています。スマホが壊れても、電池が切れても、このチップは生き続けます。',
-    phylog_2:'救助隊が専用端末をJ-TAGにかざすだけで、トークンを読み取れます。通信不要・電源不要です。',
-    phylog_3:'読み取ったトークンをサーバーに照会すると、提携保険会社が即座に本人確認・救助費用の承認を行います。',
-    btn_jtag_next:'次へ — 保険パッケージを確認する →',
-    g06:'登録前に費用をご確認ください。追加アプリ不要・その場で即時加入できます。',h06:'保険パッケージ',
-    ins_pkg_title:'J-PASS 安全パッケージ（提携保険会社）',
-    pkg1_name:'スキー場・1日プラン',pkg1_note:'山岳救助・搬送費用カバー',pkg1_price:'¥ 500 / 日',
-    pkg2_name:'山岳・24時間プラン',pkg2_note:'ヘリ救助・病院搬送含む',pkg2_price:'¥ 800 / 日',
-    pkg3_name:'日常生活・月額プラン',pkg3_note:'事故・災害・緊急搬送',pkg3_price:'¥ 300 / 月',
-    ins_note:'※ 保険料は自動決済。ツアー終了時に位置データは即消去されます。個人情報の保存はありません。',
-    btn_pkg_next:'同意して登録へ進む →',
-    g1:'カードをスキャンするか、番号を入力するか選んでください。どちらも個人情報は残りません。',h1:'Step 1 — 登録方法を選択',
-    scan_lbl:'カードを\nスキャン',scan_sub:'楽天カード\nモンベル会員証',
-    input_lbl:'番号を\n入力',input_sub:'保険証券番号\n会員番号',
-    input_field_lbl:'証券番号・会員番号を入力',btn_reg:'登録する →',
-    reg_done_lbl:'登録完了！',reg_done_sub:'個人情報は即座に消去されました',
+    h05:'J-TAG 0.8mm とは？',jtag_size:'厚さ 0.8mm — 財布にそのまま入る薄さ',jtag_badge:'ザック・スマホケース・財布に貼るだけ',
+    f1t:'電池ゼロ',f1d:'スマホ電力で動作。永久に使える。',f2t:'圏外有効',f2d:'通信なしでも救助隊がNFCで読取。',f3t:'個人情報ゼロ',f3d:'記録は「T-XXXX」の記号のみ。',f4t:'かざすだけ',f4d:'スマホに近づけた瞬間に同期。',
+    btn_jtag_next:'次へ — 保険パッケージを確認 →',
+    h06:'保険パッケージを選択',ins_pkg_title:'J-PASS 安全パッケージ（提携保険会社）',
+    pkg1_name:'スキー場・1日プラン',pkg1_note:'山岳救助・搬送費用カバー',pkg1_price:'¥500 / 日',
+    pkg2_name:'山岳・24時間プラン',pkg2_note:'ヘリ救助・病院搬送含む',pkg2_price:'¥800 / 日',
+    pkg3_name:'日常生活・月額プラン',pkg3_note:'事故・災害・緊急搬送',pkg3_price:'¥300 / 月',
+    ins_note:'保険料は自動決済。個人情報の保存はありません。',btn_pkg_next:'同意して登録へ →',
+    h1:'Step 1 — 登録方法を選択',scan_lbl:'カードをスキャン',scan_sub:'楽天カード / 会員証',input_lbl:'番号を入力',input_sub:'証券番号 / 会員番号',
+    input_field_lbl:'証券番号・会員番号を入力',btn_reg:'登録する →',reg_done_lbl:'登録完了！',reg_done_sub:'個人情報は即座に消去されました',
     tok_lbl:'生成された匿名トークン',tok_ok:'✓ 個人情報は一切保存されません',
-    ins_lbl:'提携保険会社（承認済み）',hub_lbl:'J-PASS 松本ハブ（監視中）',
-    btn_next1:'次へ — J-TAG を同期する →',
-    g2:'「ここをタップして」と相手に渡してください。タグが光る瞬間が最大の刺さりポイントです。',h2:'Step 2 — J-TAG 0.8mm 同期',
-    p2:'直営店で取得したJ-TAGをスマホ背面にかざします。電池切れ・圏外でも物理ログが残ります。',
-    pairing:'J-TAG ID',waiting:'---',btn2:'次へ — アクティブモード →',btn_sync_sim:'タップで同期シミュレート',
-    g3:'緑の点灯ドットが「接続中」を示します。指差して「このシステムが今動いています」と伝えてください。',h3:'Step 3 — アクティブモード',
-    live_hub_title:'分散拠点 リアルタイム接続状況',
-    hub_name_1:'松本ハブ',hub_status_1:'接続中',
-    hub_name_2:'豊田ハブ',hub_status_2:'スタンバイ',
-    hub_name_3:'仙台ハブ',hub_status_3:'スタンバイ',
+    ins_lbl:'提携保険会社（承認済み）',hub_lbl:'J-PASS 松本ハブ（監視中）',btn_next1:'次へ — J-TAG を同期する →',
+    h2:'Step 2 — J-TAG 同期',p2txt:'J-TAGをスマホ背面にかざします。電池切れ・圏外でも物理ログが残ります。',
+    phylog_title:'物理ログとは？ — 営業先からの質問への回答',
+    phylog_1:'J-TAGの内部チップに「匿名トークン」が書き込まれています。スマホが壊れても電池が切れても、このチップは生き続けます。',
+    phylog_2:'救助隊が専用端末をJ-TAGにかざすだけでトークンを読み取れます。通信不要・電源不要です。',
+    phylog_3:'読み取ったトークンで提携保険会社が即座に本人確認・救助費用の承認を行います。',
+    btn2:'次へ — アクティブモード →',btn_sync_sim:'タップで同期シミュレート',
+    h3:'Step 3 — アクティブモード',live_hub_title:'分散拠点 リアルタイム接続状況',
+    hub_name_1:'松本ハブ',hub_status_1:'接続中',hub_name_2:'豊田ハブ',hub_status_2:'スタンバイ',hub_name_3:'仙台ハブ',hub_status_3:'スタンバイ',
     tab_ski:'スキー場',tab_yama:'山岳',tab_machi:'市街地',loc_badge:'滞在中',
-    sos_fired:'SOS 送信完了 — 救助信号・最終位置ログを送信しました',
-    btn_sos:'SOS Signal Push',
-    btn_navi:'📍 Googleマップ（母国語）でナビ開始',btn_navi_sub:'現在地から目的地まで母国語でルート案内',
+    sos_fired:'SOS 送信完了 — 救助信号・最終位置ログを送信しました',btn_sos:'SOS Signal Push',
+    navi_panel_title:'ナビ支援',
+    btn_navi:'📍 Googleマップ（母国語）でナビ',btn_navi_sub:'現在地から目的地まで母国語でルート案内',
     btn_3dmap:'🗾 国土地理院3Dマップで地形確認',btn_3dmap_sub:'目的地周辺の詳細地形・標高を3D表示',
     btn_weather:'🌤 現地の天気を確認',btn_weather_sub:'OpenMeteo リアルタイム気象データ',
-    navi_panel_title:'ナビ支援パネル',
     weather_loading:'天気情報を取得中...',w_wind:'風速',w_humid:'湿度',w_precip:'降水量',
     btn_end:'ツアー終了 →',
-    g4:'バーが100%になった瞬間「データは消えました」と伝えてください。',h4:'Step 4 — ツアー終了',p4:'位置データを消去中...',
-    happy_user_lbl:'ユーザー',happy_user:'安全に帰宅',happy_ins_lbl:'提携保険会社',happy_ins:'リスク可視化',
-    btn_close:'提携のご提案へ →',h5:'提携のご提案',
-    close_sub:'J-PASSは御社の会員基盤・実店舗網に<br>プラグインするだけで稼働します。<br><br>新たな開発コストは不要です。',
-    btn_reset:'デモをリセット',
-    scan_label:'カードをかざしてください',scan_ok_lbl:'スキャン完了！',
+    h4:'Step 4 — ツアー終了',p4txt:'位置データを消去中...',
+    happy_user_lbl:'ユーザー',happy_user:'安全に帰宅',happy_ins_lbl:'提携保険会社',happy_ins:'リスク可視化',btn_close:'提携のご提案へ →',
+    h5:'提携のご提案',
+    close_sub:'J-PASSは御社の会員基盤・実店舗網に<br>プラグインするだけで稼働します。<br>新たな開発コストは不要です。',
+    m1:'電池ゼロのJ-TAG',m2:'個人情報ゼロ',m3:'4言語対応',m4:'保険自動承認',
+    btn_reset:'デモをリセット',scan_label:'カードをかざしてください',scan_ok_lbl:'スキャン完了！',
     partClose:{montbell:'モンベルさまへ',hoshino:'星野リゾートさまへ',rakuten:'楽天さまへ'},
-    partHappy:{montbell:'J-TAG販売 + 会員価値向上',hoshino:'滞在価値向上 + 安全差別化',rakuten:'楽天Pay シームレス決済'},
+    partHappy:{montbell:'J-TAG販売 + 会員価値向上',hoshino:'滞在価値 + 安全差別化',rakuten:'楽天Pay シームレス決済'},
+    prog:['提携先選択','J-TAG説明','保険選択','登録・同期','アクティブ'],
     locs:{
       ski:{name:'白馬八方尾根スキー場',desc:'長野県・標高1,831m / 気温 -5℃',hubs:[['長野','接続中'],['豊田','スタンバイ'],['仙台','スタンバイ']]},
       yama:{name:'北アルプス 剱岳',desc:'富山県・標高2,999m / 通信圏外',hubs:[['富山','NFC記録中'],['仙台','スタンバイ'],['豊田','スタンバイ']]},
@@ -511,59 +487,45 @@ var T={
     }
   },
   en:{
-    pname:'Select Partner',
-    g0:'Select your sales partner. The app color will change.',h0:'Select Partner',
-    psub_mb:'Exclusive safety key for mont-bell store customers',psub_hs:'Luxury safety key for resort guests',psub_rk:'Instant safety infrastructure with Rakuten ID',
-    g05:'Say "This tag protects lives" — explain 4 features and Physical Log.',h05:'What is J-TAG 0.8mm?',
-    jtag_size:'Only 0.8mm thin — fits in any wallet',jtag_badge:'Stick to backpack, phone case, or wallet',
-    f1t:'No Battery',f1d:'Powered by your phone. Lasts forever.',
-    f2t:'Works Offline',f2d:'Rescue teams read it via NFC without signal.',
-    f3t:'Zero Personal Data',f3d:'Only a code like "T-XXXX" is stored.',
-    f4t:'Just Hold Near',f4d:'Syncs the instant it touches the phone.',
-    phylog_title:'What is Physical Log? (Answer for sales questions)',
-    phylog_1:'The J-TAG chip stores an anonymous token. Even if the phone breaks or battery dies, this chip keeps working.',
-    phylog_2:'Rescue teams hold their device near the J-TAG to read the token instantly — no network, no power needed.',
-    phylog_3:'The token is sent to the server, and partner insurance instantly verifies identity and approves rescue costs.',
+    pname:'Select Partner',h0:'Select Partner',
+    psub_mb:'Exclusive safety key for mont-bell customers',psub_hs:'Luxury safety key for resort guests',psub_rk:'Instant safety infrastructure with Rakuten ID',
+    h05:'What is J-TAG 0.8mm?',jtag_size:'Only 0.8mm thin — fits in any wallet',jtag_badge:'Stick to backpack, phone case, or wallet',
+    f1t:'No Battery',f1d:'Powered by phone. Lasts forever.',f2t:'Works Offline',f2d:'Rescuers read via NFC without signal.',f3t:'Zero Personal Data',f3d:'Only a code like T-XXXX stored.',f4t:'Just Hold Near',f4d:'Syncs instantly near the phone.',
     btn_jtag_next:'Next — Check Insurance Package →',
-    g06:'Please review costs before registration. Instant enrollment, no extra app needed.',h06:'Insurance Package',
-    ins_pkg_title:'J-PASS Safety Package (Partner Insurance)',
-    pkg1_name:'Ski Resort — 1 Day Plan',pkg1_note:'Mountain rescue & transport covered',pkg1_price:'¥500 / day',
-    pkg2_name:'Mountain — 24h Plan',pkg2_note:'Helicopter rescue & hospital transport',pkg2_price:'¥800 / day',
-    pkg3_name:'Daily Life — Monthly Plan',pkg3_note:'Accidents, disasters, emergency transport',pkg3_price:'¥300 / month',
-    ins_note:'* Auto payment. Location data erased at tour end. No personal data stored.',
-    btn_pkg_next:'Agree and Proceed to Registration →',
-    g1:'Choose how to register. No personal data is stored.',h1:'Step 1 — Registration Method',
-    scan_lbl:'Scan\nCard',scan_sub:'Rakuten Card\nmont-bell Member',
-    input_lbl:'Enter\nNumber',input_sub:'Policy Number\nMember Number',
-    input_field_lbl:'Enter policy / member number',btn_reg:'Register →',
-    reg_done_lbl:'Registered!',reg_done_sub:'Personal data erased instantly',
+    h06:'Select Insurance Package',ins_pkg_title:'J-PASS Safety Package (Partner Insurance)',
+    pkg1_name:'Ski Resort — 1 Day',pkg1_note:'Mountain rescue & transport covered',pkg1_price:'¥500 / day',
+    pkg2_name:'Mountain — 24h',pkg2_note:'Helicopter rescue & hospital transport',pkg2_price:'¥800 / day',
+    pkg3_name:'Daily Life — Monthly',pkg3_note:'Accidents, disasters, emergency transport',pkg3_price:'¥300 / month',
+    ins_note:'Auto payment. No personal data stored.',btn_pkg_next:'Agree and Register →',
+    h1:'Step 1 — Registration',scan_lbl:'Scan Card',scan_sub:'Rakuten Card / Member Card',input_lbl:'Enter Number',input_sub:'Policy / Member Number',
+    input_field_lbl:'Enter policy or member number',btn_reg:'Register →',reg_done_lbl:'Registered!',reg_done_sub:'Personal data erased instantly',
     tok_lbl:'Anonymous Token Generated',tok_ok:'✓ No personal data stored',
-    ins_lbl:'Partner Insurance (Approved)',hub_lbl:'J-PASS Matsumoto Hub (Active)',
-    btn_next1:'Next — Sync J-TAG →',
-    g2:'Hand the phone to your guest. The tag sync is the wow moment.',h2:'Step 2 — J-TAG 0.8mm Sync',
-    p2:'Hold J-TAG near the phone. Works offline and with dead battery.',
-    pairing:'J-TAG ID',waiting:'---',btn2:'Next — Active Mode →',btn_sync_sim:'Tap to Simulate Sync',
-    g3:'The green blinking dot means "Connected". Point to it and say "This system is live right now."',h3:'Step 3 — Active Mode',
-    live_hub_title:'Regional Hubs — Real-time Connection',
-    hub_name_1:'Matsumoto Hub',hub_status_1:'Connected',
-    hub_name_2:'Toyota Hub',hub_status_2:'Standby',
-    hub_name_3:'Sendai Hub',hub_status_3:'Standby',
+    ins_lbl:'Partner Insurance (Approved)',hub_lbl:'J-PASS Matsumoto Hub (Active)',btn_next1:'Next — Sync J-TAG →',
+    h2:'Step 2 — Sync J-TAG',p2txt:'Hold J-TAG near the phone. Works offline and with dead battery.',
+    phylog_title:'What is Physical Log? — Answer for sales questions',
+    phylog_1:'An anonymous token is stored in the J-TAG chip. Even if the phone breaks or battery dies, the chip keeps working.',
+    phylog_2:'Rescue teams hold their device near the J-TAG to read the token instantly — no network, no power needed.',
+    phylog_3:'The token triggers the partner insurance to instantly verify identity and approve rescue costs.',
+    btn2:'Next — Active Mode →',btn_sync_sim:'Tap to Simulate Sync',
+    h3:'Step 3 — Active Mode',live_hub_title:'Regional Hubs — Real-time Status',
+    hub_name_1:'Matsumoto Hub',hub_status_1:'Connected',hub_name_2:'Toyota Hub',hub_status_2:'Standby',hub_name_3:'Sendai Hub',hub_status_3:'Standby',
     tab_ski:'Ski Resort',tab_yama:'Mountain',tab_machi:'City',loc_badge:'Active',
-    sos_fired:'SOS Sent — Rescue signal transmitted',
-    btn_sos:'SOS Signal Push',
-    btn_navi:'📍 Google Maps Navigation (Native Language)',btn_navi_sub:'Route guidance in your language from current location',
-    btn_3dmap:'🗾 GSI 3D Map — Terrain View',btn_3dmap_sub:'Detailed 3D terrain and elevation around destination',
-    btn_weather:'🌤 Check Local Weather',btn_weather_sub:'OpenMeteo real-time weather data',
+    sos_fired:'SOS Sent — Rescue signal transmitted',btn_sos:'SOS Signal Push',
     navi_panel_title:'Navigation Support',
-    weather_loading:'Loading weather data...',w_wind:'Wind',w_humid:'Humidity',w_precip:'Precipitation',
+    btn_navi:'📍 Google Maps Navigation',btn_navi_sub:'Route guidance in your language',
+    btn_3dmap:'🗾 GSI 3D Map — Terrain View',btn_3dmap_sub:'3D terrain and elevation around destination',
+    btn_weather:'🌤 Check Local Weather',btn_weather_sub:'OpenMeteo real-time weather data',
+    weather_loading:'Loading weather...',w_wind:'Wind',w_humid:'Humidity',w_precip:'Precip',
     btn_end:'End Tour →',
-    g4:'When bar hits 100%, say "Data is gone."',h4:'Step 4 — Tour End',p4:'Erasing location data...',
-    happy_user_lbl:'User',happy_user:'Safe Return',happy_ins_lbl:'Partner Insurance',happy_ins:'Risk Visualization',
-    btn_close:'Partnership Proposal →',h5:'Partnership Proposal',
-    close_sub:'J-PASS plugs into your membership base and stores.<br><br>No new development cost required.',
+    h4:'Step 4 — Tour End',p4txt:'Erasing location data...',
+    happy_user_lbl:'User',happy_user:'Safe Return',happy_ins_lbl:'Partner Insurance',happy_ins:'Risk Visualization',btn_close:'Partnership Proposal →',
+    h5:'Partnership Proposal',
+    close_sub:'J-PASS plugs into your membership base and stores.<br>No new development cost required.',
+    m1:'Battery-free J-TAG',m2:'Zero personal data',m3:'4 languages',m4:'Auto insurance',
     btn_reset:'Reset Demo',scan_label:'Hold card near camera',scan_ok_lbl:'Scan Complete!',
     partClose:{montbell:'To mont-bell',hoshino:'To Hoshino Resorts',rakuten:'To Rakuten'},
     partHappy:{montbell:'J-TAG Sales + Member Value',hoshino:'Safety Differentiation',rakuten:'Rakuten Pay Integration'},
+    prog:['Partner','J-TAG','Insurance','Register','Active'],
     locs:{
       ski:{name:'Hakuba Happo-one Ski Resort',desc:'Nagano / Alt. 1,831m / -5℃',hubs:[['Nagano','Connected'],['Toyota','Standby'],['Sendai','Standby']]},
       yama:{name:'Tsurugidake, N. Alps',desc:'Toyama / Alt. 2,999m / No Signal',hubs:[['Toyama','NFC Log'],['Sendai','Standby'],['Toyota','Standby']]},
@@ -571,59 +533,45 @@ var T={
     }
   },
   zh:{
-    pname:'选择合作伙伴',
-    g0:'请选择合作伙伴。应用颜色将切换为对应品牌色。',h0:'选择合作伙伴',
+    pname:'选择合作伙伴',h0:'选择合作伙伴',
     psub_mb:'专为在门店购买J-TAG会员专属安全钥匙',psub_hs:'保护住宿安全的高端钥匙',psub_rk:'使用乐天ID即可使用的安全基础设施',
-    g05:'说「这个标签保护生命」——说明4个特点和物理日志。',h05:'J-TAG 0.8mm 是什么？',
-    jtag_size:'仅0.8mm薄——可直接放入钱包',jtag_badge:'贴在背包、手机壳或钱包上即可',
-    f1t:'无需电池',f1d:'由手机供电，永久使用。',
-    f2t:'离线有效',f2d:'无信号时救援队也能通过NFC读取。',
-    f3t:'零个人信息',f3d:'仅记录「T-XXXX」这样的符号。',
-    f4t:'靠近即可',f4d:'靠近手机瞬间同步完成。',
-    phylog_title:'物理日志是什么？（营销问题解答）',
-    phylog_1:'J-TAG芯片中存储了匿名令牌。即使手机损坏或电量耗尽，芯片仍能正常工作。',
-    phylog_2:'救援队将设备靠近J-TAG即可立即读取令牌——无需网络，无需电源。',
-    phylog_3:'令牌发送至服务器后，合作保险公司立即验证身份并批准救援费用。',
+    h05:'J-TAG 0.8mm 是什么？',jtag_size:'仅0.8mm薄——可直接放入钱包',jtag_badge:'贴在背包、手机壳或钱包上即可',
+    f1t:'无需电池',f1d:'由手机供电，永久使用。',f2t:'离线有效',f2d:'无信号时救援队也能通过NFC读取。',f3t:'零个人信息',f3d:'仅记录「T-XXXX」这样的符号。',f4t:'靠近即可',f4d:'靠近手机瞬间同步完成。',
     btn_jtag_next:'下一步 — 确认保险套餐 →',
-    g06:'注册前请确认费用。无需额外应用，当场即时加入。',h06:'保险套餐',
-    ins_pkg_title:'J-PASS 安全套餐（合作保险公司）',
+    h06:'选择保险套餐',ins_pkg_title:'J-PASS 安全套餐（合作保险公司）',
     pkg1_name:'滑雪场・1日方案',pkg1_note:'山地救援及运输费用',pkg1_price:'¥500 / 日',
     pkg2_name:'山岳・24小时方案',pkg2_note:'直升机救援及医院转运',pkg2_price:'¥800 / 日',
     pkg3_name:'日常生活・月费方案',pkg3_note:'事故、灾害、紧急转运',pkg3_price:'¥300 / 月',
-    ins_note:'※ 自动扣款。行程结束时位置数据立即删除。不保存个人信息。',
-    btn_pkg_next:'同意并继续注册 →',
-    g1:'请选择注册方式。两种方式均不保存个人信息。',h1:'Step 1 — 注册方式选择',
-    scan_lbl:'扫描\n卡片',scan_sub:'乐天卡\n会员证',
-    input_lbl:'输入\n号码',input_sub:'保险单号\n会员号',
-    input_field_lbl:'请输入保险单号或会员号',btn_reg:'注册 →',
-    reg_done_lbl:'注册完成！',reg_done_sub:'个人信息已即时删除',
+    ins_note:'自动扣款。不保存个人信息。',btn_pkg_next:'同意并继续注册 →',
+    h1:'Step 1 — 注册方式选择',scan_lbl:'扫描卡片',scan_sub:'乐天卡 / 会员证',input_lbl:'输入号码',input_sub:'保险单号 / 会员号',
+    input_field_lbl:'请输入保险单号或会员号',btn_reg:'注册 →',reg_done_lbl:'注册完成！',reg_done_sub:'个人信息已即时删除',
     tok_lbl:'生成的匿名令牌',tok_ok:'✓ 不保存任何个人信息',
-    ins_lbl:'合作保险公司（已批准）',hub_lbl:'J-PASS 松本枢纽（监控中）',
-    btn_next1:'下一步 — 同步J-TAG →',
-    g2:'请将手机递给对方。标签同步的瞬间是最大亮点。',h2:'Step 2 — J-TAG 0.8mm 同步',
-    p2:'将J-TAG靠近手机背面。即使断电或无信号也能保留物理日志。',
-    pairing:'J-TAG ID',waiting:'---',btn2:'下一步 — 激活模式 →',btn_sync_sim:'点击模拟同步',
-    g3:'绿色闪烁点表示"已连接"。请指向它说「这个系统现在正在运行」。',h3:'Step 3 — 激活模式',
-    live_hub_title:'分散据点 实时连接状况',
-    hub_name_1:'松本据点',hub_status_1:'已连接',
-    hub_name_2:'丰田据点',hub_status_2:'待机中',
-    hub_name_3:'仙台据点',hub_status_3:'待机中',
+    ins_lbl:'合作保险公司（已批准）',hub_lbl:'J-PASS 松本枢纽（监控中）',btn_next1:'下一步 — 同步J-TAG →',
+    h2:'Step 2 — 同步 J-TAG',p2txt:'将J-TAG靠近手机背面。即使断电或无信号也能保留物理日志。',
+    phylog_title:'物理日志是什么？— 营销问题解答',
+    phylog_1:'J-TAG芯片中存储了匿名令牌。即使手机损坏或电量耗尽，芯片仍能正常工作。',
+    phylog_2:'救援队将设备靠近J-TAG即可立即读取令牌——无需网络，无需电源。',
+    phylog_3:'令牌发送后，合作保险公司立即验证身份并批准救援费用。',
+    btn2:'下一步 — 激活模式 →',btn_sync_sim:'点击模拟同步',
+    h3:'Step 3 — 激活模式',live_hub_title:'分散据点 实时连接状况',
+    hub_name_1:'松本据点',hub_status_1:'已连接',hub_name_2:'丰田据点',hub_status_2:'待机中',hub_name_3:'仙台据点',hub_status_3:'待机中',
     tab_ski:'滑雪场',tab_yama:'山岳',tab_machi:'市区',loc_badge:'使用中',
-    sos_fired:'SOS已发送 — 救援信号已传送',
-    btn_sos:'SOS 紧急求救',
-    btn_navi:'📍 谷歌地图（母语）导航',btn_navi_sub:'从当前位置到目的地的母语路线导航',
-    btn_3dmap:'🗾 国土地理院3D地图 — 地形确认',btn_3dmap_sub:'目的地周边详细地形与海拔3D显示',
-    btn_weather:'🌤 确认当地天气',btn_weather_sub:'OpenMeteo 实时气象数据',
+    sos_fired:'SOS已发送 — 救援信号已传送',btn_sos:'SOS 紧急求救',
     navi_panel_title:'导航支援',
+    btn_navi:'📍 谷歌地图（母语）导航',btn_navi_sub:'从当前位置到目的地的母语路线导航',
+    btn_3dmap:'🗾 国土地理院3D地图',btn_3dmap_sub:'目的地周边详细地形与海拔3D显示',
+    btn_weather:'🌤 确认当地天气',btn_weather_sub:'OpenMeteo 实时气象数据',
     weather_loading:'正在获取天气信息...',w_wind:'风速',w_humid:'湿度',w_precip:'降水量',
     btn_end:'结束行程 →',
-    g4:'进度条达到100%时，请说"数据已删除"。',h4:'Step 4 — 行程结束',p4:'正在删除位置数据...',
-    happy_user_lbl:'用户',happy_user:'安全返回',happy_ins_lbl:'合作保险公司',happy_ins:'风险可视化',
-    btn_close:'合作提案 →',h5:'合作提案',
-    close_sub:'J-PASS只需接入贵司会员基础和门店网络即可运行。<br><br>无需新的开发成本。',
+    h4:'Step 4 — 行程结束',p4txt:'正在删除位置数据...',
+    happy_user_lbl:'用户',happy_user:'安全返回',happy_ins_lbl:'合作保险公司',happy_ins:'风险可视化',btn_close:'合作提案 →',
+    h5:'合作提案',
+    close_sub:'J-PASS只需接入贵司会员基础和门店网络即可运行。<br>无需新的开发成本。',
+    m1:'无需电池的J-TAG',m2:'零个人信息',m3:'4种语言',m4:'保险自动批准',
     btn_reset:'重置演示',scan_label:'请将卡片靠近摄像头',scan_ok_lbl:'扫描完成！',
     partClose:{montbell:'致mont-bell',hoshino:'致星野度假村',rakuten:'致乐天'},
     partHappy:{montbell:'J-TAG销售 + 会员价值提升',hoshino:'安全差异化',rakuten:'乐天Pay无缝支付'},
+    prog:['选择伙伴','J-TAG','保险','注册','激活'],
     locs:{
       ski:{name:'白马八方尾根滑雪场',desc:'长野县・海拔1,831m / 气温-5℃',hubs:[['长野','已连接'],['丰田','待机'],['仙台','待机']]},
       yama:{name:'北阿尔卑斯 剱岳',desc:'富山县・海拔2,999m / 无信号',hubs:[['富山','NFC记录中'],['仙台','待机'],['丰田','待机']]},
@@ -631,59 +579,45 @@ var T={
     }
   },
   fr:{
-    pname:'Choisir partenaire',
-    g0:'Sélectionnez le partenaire. La couleur changera.',h0:'Sélectionner un partenaire',
-    psub_mb:'Clé de sécurité exclusive pour clients mont-bell',psub_hs:'Clé de sécurité luxe pour les résidents',psub_rk:'Infrastructure de sécurité avec Rakuten ID',
-    g05:'Dites « Ce tag protège des vies » — expliquez les 4 points et le Journal Physique.',h05:'Qu\'est-ce que J-TAG 0.8mm ?',
-    jtag_size:'Seulement 0,8mm — tient dans n\'importe quel portefeuille',jtag_badge:'À coller sur sac, coque ou portefeuille',
-    f1t:'Sans batterie',f1d:'Alimenté par le téléphone. Dure toujours.',
-    f2t:'Hors réseau',f2d:'Les secours le lisent via NFC sans signal.',
-    f3t:'Zéro donnée perso',f3d:'Seul un code comme « T-XXXX » est stocké.',
-    f4t:'Approcher suffit',f4d:'Sync instantanée au contact du téléphone.',
-    phylog_title:'Qu\'est-ce que le Journal Physique ? (Réponse aux questions)',
-    phylog_1:'La puce J-TAG stocke un jeton anonyme. Même si le téléphone tombe en panne ou manque de batterie, la puce continue de fonctionner.',
-    phylog_2:'Les secours approchent leur appareil du J-TAG pour lire le jeton instantanément — sans réseau, sans alimentation.',
-    phylog_3:'Le jeton est envoyé au serveur, et l\'assurance partenaire vérifie l\'identité et approuve les frais de secours instantanément.',
-    btn_jtag_next:'Suivant — Voir le package d\'assurance →',
-    g06:'Veuillez vérifier les coûts avant l\'inscription. Adhésion instantanée, sans application supplémentaire.',h06:'Package d\'assurance',
-    ins_pkg_title:'Package Sécurité J-PASS (Assurance Partenaire)',
-    pkg1_name:'Station de ski — 1 jour',pkg1_note:'Sauvetage montagne & transport',pkg1_price:'¥500 / jour',
+    pname:'Choisir partenaire',h0:'Sélectionner un partenaire',
+    psub_mb:'Clé sécurité exclusive pour clients mont-bell',psub_hs:'Clé luxe pour les résidents',psub_rk:'Infrastructure sécurité avec Rakuten ID',
+    h05:'Qu\'est-ce que J-TAG 0.8mm ?',jtag_size:'Seulement 0,8mm — tient dans tout portefeuille',jtag_badge:'À coller sur sac, coque ou portefeuille',
+    f1t:'Sans batterie',f1d:'Alimenté par téléphone. Dure toujours.',f2t:'Hors réseau',f2d:'Secours lisent via NFC sans signal.',f3t:'Zéro donnée perso',f3d:'Seul un code T-XXXX stocké.',f4t:'Approcher suffit',f4d:'Sync instantanée au contact.',
+    btn_jtag_next:'Suivant — Voir le package assurance →',
+    h06:'Choisir un package assurance',ins_pkg_title:'Package Sécurité J-PASS (Assurance Partenaire)',
+    pkg1_name:'Station ski — 1 jour',pkg1_note:'Sauvetage montagne & transport',pkg1_price:'¥500 / jour',
     pkg2_name:'Montagne — 24h',pkg2_note:'Hélitreuillage & transport hospitalier',pkg2_price:'¥800 / jour',
     pkg3_name:'Vie quotidienne — Mensuel',pkg3_note:'Accidents, catastrophes, transport urgent',pkg3_price:'¥300 / mois',
-    ins_note:'* Paiement automatique. Données de localisation effacées à la fin du séjour. Aucune donnée personnelle conservée.',
-    btn_pkg_next:'Accepter et continuer l\'inscription →',
-    g1:'Choisissez votre méthode. Aucune donnée personnelle conservée.',h1:'Étape 1 — Inscription',
-    scan_lbl:'Scanner\nla carte',scan_sub:'Carte Rakuten\nCarte membre',
-    input_lbl:'Saisir\nle numéro',input_sub:'N° de police\nN° membre',
-    input_field_lbl:'Entrez votre numéro de police ou membre',btn_reg:'Enregistrer →',
-    reg_done_lbl:'Inscription réussie !',reg_done_sub:'Données personnelles effacées instantanément',
+    ins_note:'Paiement automatique. Aucune donnée personnelle conservée.',btn_pkg_next:'Accepter et s\'inscrire →',
+    h1:'Étape 1 — Inscription',scan_lbl:'Scanner carte',scan_sub:'Carte Rakuten / Carte membre',input_lbl:'Saisir numéro',input_sub:'N° de police / N° membre',
+    input_field_lbl:'Entrez votre numéro de police ou membre',btn_reg:'S\'inscrire →',reg_done_lbl:'Inscription réussie !',reg_done_sub:'Données personnelles effacées instantanément',
     tok_lbl:'Jeton anonyme généré',tok_ok:'✓ Aucune donnée personnelle stockée',
-    ins_lbl:'Assurance Partenaire (Approuvée)',hub_lbl:'Hub J-PASS Matsumoto (Actif)',
-    btn_next1:'Suivant — Sync J-TAG →',
-    g2:'Passez le téléphone à votre interlocuteur.',h2:'Étape 2 — Sync J-TAG 0.8mm',
-    p2:'Approchez le J-TAG du téléphone. Fonctionne hors ligne et sans batterie.',
-    pairing:'J-TAG ID',waiting:'---',btn2:'Suivant — Mode Actif →',btn_sync_sim:'Simuler la synchronisation',
-    g3:'Le point vert clignotant signifie « Connecté ». Montrez-le en disant « Ce système est actif maintenant ».',h3:'Étape 3 — Mode Actif',
-    live_hub_title:'Hubs Régionaux — Connexion en temps réel',
-    hub_name_1:'Hub Matsumoto',hub_status_1:'Connecté',
-    hub_name_2:'Hub Toyota',hub_status_2:'Veille',
-    hub_name_3:'Hub Sendai',hub_status_3:'Veille',
-    tab_ski:'Station de ski',tab_yama:'Montagne',tab_machi:'Ville',loc_badge:'Actif',
-    sos_fired:'SOS envoyé — Signal de secours transmis',
-    btn_sos:'SOS Signal Push',
-    btn_navi:'📍 Navigation Google Maps (langue natale)',btn_navi_sub:'Itinéraire dans votre langue depuis votre position',
-    btn_3dmap:'🗾 Carte 3D IGJ — Vue du terrain',btn_3dmap_sub:'Terrain 3D et altitude détaillés autour de la destination',
-    btn_weather:'🌤 Météo locale',btn_weather_sub:'Données météo en temps réel OpenMeteo',
+    ins_lbl:'Assurance Partenaire (Approuvée)',hub_lbl:'Hub J-PASS Matsumoto (Actif)',btn_next1:'Suivant — Sync J-TAG →',
+    h2:'Étape 2 — Sync J-TAG',p2txt:'Approchez le J-TAG du téléphone. Fonctionne hors ligne et sans batterie.',
+    phylog_title:'Qu\'est-ce que le Journal Physique ? — Réponse aux questions',
+    phylog_1:'La puce J-TAG stocke un jeton anonyme. Même si le téléphone tombe en panne, la puce continue de fonctionner.',
+    phylog_2:'Les secours approchent leur appareil du J-TAG pour lire le jeton instantanément — sans réseau, sans alimentation.',
+    phylog_3:'Le jeton déclenche l\'assurance partenaire qui approuve instantanément les frais de secours.',
+    btn2:'Suivant — Mode Actif →',btn_sync_sim:'Simuler la synchronisation',
+    h3:'Étape 3 — Mode Actif',live_hub_title:'Hubs Régionaux — Statut en temps réel',
+    hub_name_1:'Hub Matsumoto',hub_status_1:'Connecté',hub_name_2:'Hub Toyota',hub_status_2:'Veille',hub_name_3:'Hub Sendai',hub_status_3:'Veille',
+    tab_ski:'Station ski',tab_yama:'Montagne',tab_machi:'Ville',loc_badge:'Actif',
+    sos_fired:'SOS envoyé — Signal de secours transmis',btn_sos:'SOS Signal Push',
     navi_panel_title:'Support navigation',
-    weather_loading:'Chargement météo...',w_wind:'Vent',w_humid:'Humidité',w_precip:'Précipitation',
+    btn_navi:'📍 Navigation Google Maps',btn_navi_sub:'Itinéraire dans votre langue',
+    btn_3dmap:'🗾 Carte 3D IGJ — Terrain',btn_3dmap_sub:'Terrain 3D et altitude autour de la destination',
+    btn_weather:'🌤 Météo locale',btn_weather_sub:'Données météo en temps réel OpenMeteo',
+    weather_loading:'Chargement météo...',w_wind:'Vent',w_humid:'Humidité',w_precip:'Précip',
     btn_end:'Fin du séjour →',
-    g4:'Quand la barre atteint 100%, dites « Les données ont disparu. »',h4:'Étape 4 — Fin du séjour',p4:'Suppression des données de localisation...',
-    happy_user_lbl:'Utilisateur',happy_user:'Retour sain et sauf',happy_ins_lbl:'Assurance Partenaire',happy_ins:'Visualisation des risques',
-    btn_close:'Proposition de partenariat →',h5:'Proposition de partenariat',
-    close_sub:'J-PASS se branche sur votre réseau de membres et de boutiques.<br><br>Aucun coût de développement supplémentaire.',
-    btn_reset:'Réinitialiser la démo',scan_label:'Approchez la carte de la caméra',scan_ok_lbl:'Scan terminé !',
+    h4:'Étape 4 — Fin du séjour',p4txt:'Suppression des données de localisation...',
+    happy_user_lbl:'Utilisateur',happy_user:'Retour sain et sauf',happy_ins_lbl:'Assurance Partenaire',happy_ins:'Visualisation risques',btn_close:'Proposition partenariat →',
+    h5:'Proposition de partenariat',
+    close_sub:'J-PASS se branche sur votre réseau de membres et de boutiques.<br>Aucun coût de développement supplémentaire.',
+    m1:'J-TAG sans batterie',m2:'Zéro donnée perso',m3:'4 langues',m4:'Assurance auto',
+    btn_reset:'Réinitialiser',scan_label:'Approchez la carte',scan_ok_lbl:'Scan terminé !',
     partClose:{montbell:'À mont-bell',hoshino:'À Hoshino Resorts',rakuten:'À Rakuten'},
     partHappy:{montbell:'Vente J-TAG + Valeur membre',hoshino:'Différenciation sécurité',rakuten:'Paiement Rakuten Pay'},
+    prog:['Partenaire','J-TAG','Assurance','Inscription','Actif'],
     locs:{
       ski:{name:'Station Hakuba Happo-one',desc:'Nagano / Alt. 1 831m / -5℃',hubs:[['Nagano','Connecté'],['Toyota','Veille'],['Sendai','Veille']]},
       yama:{name:'Tsurugidake, Alpes du Nord',desc:'Toyama / Alt. 2 999m / Hors réseau',hubs:[['Toyama','Log NFC'],['Sendai','Veille'],['Toyota','Veille']]},
@@ -692,14 +626,30 @@ var T={
   }
 };
 
-var curLang='ja',curPart='',curMode='ski',cur=0,eTimer=null,scanTimer=null,sosTimer=null,sosCount=0;
+var curLang='ja',curPart='',curMode='ski',cur=0;
+var eTimer=null,scanTimer=null,sosTimer=null,sosCount=0;
+var weatherCache={};
+
 function L(k){return T[curLang][k]||T.ja[k]||'';}
 function setAC(c){document.documentElement.style.setProperty('--ac',c);}
 
-function selectPkg(el,num){
-  document.querySelectorAll('.ins-pkg-btn').forEach(function(b){b.classList.remove('selected');});
-  el.classList.add('selected');
-  if(navigator.vibrate)navigator.vibrate(10);
+/* 進捗バー更新 */
+var stepMap={'0':0,'05':1,'06':2,'1':3,'2':3,'3':4,'4':4,'5':4};
+function updateProgress(n){
+  var idx=stepMap[String(n)]||0;
+  var l=T[curLang];
+  var labels=l.prog||['1','2','3','4','5'];
+  for(var i=1;i<=5;i++){
+    var el=document.getElementById('ps'+i);
+    if(el){
+      el.classList.remove('done','active');
+      if(i-1<idx)el.classList.add('done');
+      else if(i-1===idx)el.classList.add('active');
+    }
+  }
+  var stepNum=Math.min(idx+1,5);
+  document.getElementById('hdr-step').textContent=stepNum+'/5';
+  document.getElementById('prog-label-txt').textContent=labels[idx]||'';
 }
 
 function setLang(lang,btn){
@@ -711,141 +661,107 @@ function setLang(lang,btn){
 
 function applyLang(){
   var l=T[curLang];
-  document.getElementById('g0txt').textContent=l.g0;document.getElementById('h0').textContent=l.h0;
+  document.getElementById('h0').textContent=l.h0;
   document.getElementById('psub-mb').textContent=l.psub_mb;document.getElementById('psub-hs').textContent=l.psub_hs;document.getElementById('psub-rk').textContent=l.psub_rk;
-  document.getElementById('g05txt').textContent=l.g05;document.getElementById('h05').textContent=l.h05;
-  document.getElementById('jtag-size-txt').textContent=l.jtag_size;document.getElementById('jtag-badge-txt').textContent=l.jtag_badge;
+  document.getElementById('h05').textContent=l.h05;document.getElementById('jtag-size-txt').textContent=l.jtag_size;document.getElementById('jtag-badge-txt').textContent=l.jtag_badge;
   document.getElementById('f1t').textContent=l.f1t;document.getElementById('f1d').textContent=l.f1d;
   document.getElementById('f2t').textContent=l.f2t;document.getElementById('f2d').textContent=l.f2d;
   document.getElementById('f3t').textContent=l.f3t;document.getElementById('f3d').textContent=l.f3d;
   document.getElementById('f4t').textContent=l.f4t;document.getElementById('f4d').textContent=l.f4d;
-  document.getElementById('phylog-title').textContent=l.phylog_title;
-  document.getElementById('phylog-1').textContent=l.phylog_1;
-  document.getElementById('phylog-2').textContent=l.phylog_2;
-  document.getElementById('phylog-3').textContent=l.phylog_3;
   document.getElementById('btn-jtag-next').textContent=l.btn_jtag_next;
-  document.getElementById('g06txt').textContent=l.g06;document.getElementById('h06').textContent=l.h06;
-  document.getElementById('ins-pkg-title').textContent=l.ins_pkg_title;
+  document.getElementById('h06').textContent=l.h06;document.getElementById('ins-pkg-title').textContent=l.ins_pkg_title;
   document.getElementById('pkg1-name').textContent=l.pkg1_name;document.getElementById('pkg1-note').textContent=l.pkg1_note;document.getElementById('pkg1-price').textContent=l.pkg1_price;
   document.getElementById('pkg2-name').textContent=l.pkg2_name;document.getElementById('pkg2-note').textContent=l.pkg2_note;document.getElementById('pkg2-price').textContent=l.pkg2_price;
   document.getElementById('pkg3-name').textContent=l.pkg3_name;document.getElementById('pkg3-note').textContent=l.pkg3_note;document.getElementById('pkg3-price').textContent=l.pkg3_price;
-  document.getElementById('ins-note').textContent=l.ins_note;
-  document.getElementById('btn-pkg-next').textContent=l.btn_pkg_next;
-  document.getElementById('g1txt').textContent=l.g1;document.getElementById('h1').textContent=l.h1;
-  document.getElementById('scan-lbl').innerHTML=l.scan_lbl;document.getElementById('scan-sub').innerHTML=l.scan_sub;
-  document.getElementById('input-lbl').innerHTML=l.input_lbl;document.getElementById('input-sub').innerHTML=l.input_sub;
+  document.getElementById('ins-note').textContent=l.ins_note;document.getElementById('btn-pkg-next').textContent=l.btn_pkg_next;
+  document.getElementById('h1').textContent=l.h1;
+  document.getElementById('scan-lbl').textContent=l.scan_lbl;document.getElementById('scan-sub').textContent=l.scan_sub;
+  document.getElementById('input-lbl').textContent=l.input_lbl;document.getElementById('input-sub').textContent=l.input_sub;
   document.getElementById('input-field-lbl').textContent=l.input_field_lbl;document.getElementById('btn-reg').textContent=l.btn_reg;
   document.getElementById('reg-done-lbl').textContent=l.reg_done_lbl;document.getElementById('reg-done-sub').textContent=l.reg_done_sub;
   document.getElementById('tok-lbl').textContent=l.tok_lbl;document.getElementById('tok-ok').textContent=l.tok_ok;
   document.getElementById('ins-lbl').textContent=l.ins_lbl;document.getElementById('hub-lbl').textContent=l.hub_lbl;
   document.getElementById('btnSc2').textContent=l.btn_next1;
-  document.getElementById('g2txt').textContent=l.g2;document.getElementById('h2').textContent=l.h2;document.getElementById('p2txt').textContent=l.p2;
-  document.getElementById('pairing-lbl').textContent=l.pairing;
+  document.getElementById('h2').textContent=l.h2;document.getElementById('p2txt').textContent=l.p2txt;
+  document.getElementById('phylog-title').textContent=l.phylog_title;
+  document.getElementById('phylog-1').textContent=l.phylog_1;document.getElementById('phylog-2').textContent=l.phylog_2;document.getElementById('phylog-3').textContent=l.phylog_3;
   document.getElementById('btn2').textContent=l.btn2;document.getElementById('btn-sync-sim').textContent=l.btn_sync_sim;
-  document.getElementById('g3txt').textContent=l.g3;document.getElementById('h3').textContent=l.h3;
-  document.getElementById('live-hub-title').textContent=l.live_hub_title;
+  document.getElementById('h3').textContent=l.h3;document.getElementById('live-hub-title').textContent=l.live_hub_title;
   document.getElementById('hub-name-1').textContent=l.hub_name_1;document.getElementById('hub-status-1').textContent=l.hub_status_1;
   document.getElementById('hub-name-2').textContent=l.hub_name_2;document.getElementById('hub-status-2').textContent=l.hub_status_2;
   document.getElementById('hub-name-3').textContent=l.hub_name_3;document.getElementById('hub-status-3').textContent=l.hub_status_3;
   document.getElementById('tab-ski').textContent=l.tab_ski;document.getElementById('tab-yama').textContent=l.tab_yama;document.getElementById('tab-machi').textContent=l.tab_machi;
   document.getElementById('loc-badge').textContent=l.loc_badge;
   document.getElementById('btn-sos').textContent=l.btn_sos;
-  document.getElementById('btn-navi').textContent=l.btn_navi;
-  document.getElementById('btn-navi-sub').textContent=l.btn_navi_sub;
-  document.getElementById('btn-3dmap').textContent=l.btn_3dmap;
-  document.getElementById('btn-3dmap-sub').textContent=l.btn_3dmap_sub;
-  document.getElementById('btn-weather').textContent=l.btn_weather;
-  document.getElementById('btn-weather-sub').textContent=l.btn_weather_sub;
   document.getElementById('navi-panel-title').textContent=l.navi_panel_title;
+  document.getElementById('btn-navi').textContent=l.btn_navi;document.getElementById('btn-navi-sub').textContent=l.btn_navi_sub;
+  document.getElementById('btn-3dmap').textContent=l.btn_3dmap;document.getElementById('btn-3dmap-sub').textContent=l.btn_3dmap_sub;
+  document.getElementById('btn-weather').textContent=l.btn_weather;document.getElementById('btn-weather-sub').textContent=l.btn_weather_sub;
   document.getElementById('weatherLoading').textContent=l.weather_loading;
   document.getElementById('btn-end').textContent=l.btn_end;
-  document.getElementById('g4txt').textContent=l.g4;document.getElementById('h4').textContent=l.h4;document.getElementById('p4txt').textContent=l.p4;
+  document.getElementById('h4').textContent=l.h4;document.getElementById('p4txt').textContent=l.p4txt;
   document.getElementById('happy-user-lbl').textContent=l.happy_user_lbl;document.getElementById('happy-user').textContent=l.happy_user;
   document.getElementById('happy-ins-lbl').textContent=l.happy_ins_lbl;document.getElementById('happy-ins').textContent=l.happy_ins;
   document.getElementById('btn-close').textContent=l.btn_close;
-  document.getElementById('h5').textContent=l.h5;document.getElementById('close-sub').innerHTML=l.close_sub;document.getElementById('btn-reset').textContent=l.btn_reset;
+  document.getElementById('h5').textContent=l.h5;document.getElementById('close-sub').innerHTML=l.close_sub;
+  document.getElementById('m1').textContent=l.m1;document.getElementById('m2').textContent=l.m2;
+  document.getElementById('m3').textContent=l.m3;document.getElementById('m4').textContent=l.m4;
+  document.getElementById('btn-reset').textContent=l.btn_reset;
   document.getElementById('scan-label-txt').textContent=l.scan_label;document.getElementById('scan-ok-lbl').textContent=l.scan_ok_lbl;
   if(curPart){
-    document.getElementById('pname').textContent=curPart==='montbell'?'mont-bell様':curPart==='hoshino'?'星野リゾート様':'楽天様';
+    document.getElementById('pname').textContent=curPart==='montbell'?'mont-bell':curPart==='hoshino'?'星野リゾート':'楽天';
     document.getElementById('close-title').textContent=l.partClose[curPart];
     document.getElementById('happy-p-lbl').textContent=l.partClose[curPart].replace('さまへ','').replace('To ','').replace('致','').replace('À ','');
     document.getElementById('happy-p').textContent=l.partHappy[curPart];
-    document.getElementById('p-lbl1').textContent=l.partClose[curPart].replace('さまへ','').replace('To ','').replace('致','').replace('À ','')+'（接続済み）';
-  }else{
-    document.getElementById('pname').textContent=l.pname;
-  }
+    document.getElementById('p-lbl1').textContent=curPart==='montbell'?'mont-bell':curPart==='hoshino'?'星野リゾート':'楽天';
+  }else{document.getElementById('pname').textContent=l.pname;}
   setMode(document.querySelector('.mtab.on'),curMode);
+  updateProgress(cur);
 }
 
+/* 音・エフェクト */
 var actx=null;
 function getCtx(){if(!actx)actx=new(window.AudioContext||window.webkitAudioContext)();return actx;}
-function playBeep(f,d,t,v){try{var c=getCtx();var o=c.createOscillator();var g=c.createGain();o.connect(g);g.connect(c.destination);o.type=t||'sine';o.frequency.value=f;g.gain.setValueAtTime(v||0.3,c.currentTime);g.gain.exponentialRampToValueAtTime(0.001,c.currentTime+d);o.start(c.currentTime);o.stop(c.currentTime+d);}catch(e){}}
-function flashScreen(color,dur){var el=document.getElementById('flashOverlay');el.style.background=color;el.style.opacity='0.45';setTimeout(function(){el.style.opacity='0';},dur||150);}
-function effectReg(){playBeep(880,0.15,'sine',0.3);setTimeout(function(){playBeep(1100,0.2,'sine',0.25);},150);flashScreen('rgba(0,200,100,0.5)',200);if(navigator.vibrate)navigator.vibrate(10);}
-function effectSync(){playBeep(660,0.1,'square',0.2);setTimeout(function(){playBeep(880,0.15,'square',0.2);},120);flashScreen('rgba(26,75,140,0.5)',200);if(navigator.vibrate)navigator.vibrate(200);}
-function playSOS(){var p=[{f:440,dl:0},{f:440,dl:400},{f:440,dl:800},{f:220,dl:1400},{f:220,dl:2000},{f:220,dl:2600},{f:440,dl:3400},{f:440,dl:3800},{f:440,dl:4200},{f:880,dl:5000}];p.forEach(function(n){setTimeout(function(){playBeep(n.f,0.5,'sawtooth',0.4);},n.dl);});}
+function beep(f,d,t,v){try{var c=getCtx();var o=c.createOscillator();var g=c.createGain();o.connect(g);g.connect(c.destination);o.type=t||'sine';o.frequency.value=f;g.gain.setValueAtTime(v||0.3,c.currentTime);g.gain.exponentialRampToValueAtTime(0.001,c.currentTime+d);o.start(c.currentTime);o.stop(c.currentTime+d);}catch(e){}}
+function flash(c,d){var el=document.getElementById('flashOverlay');el.style.background=c;el.style.opacity='0.45';setTimeout(function(){el.style.opacity='0';},d||150);}
+function effReg(){beep(880,0.15);setTimeout(function(){beep(1100,0.2);},150);flash('rgba(0,200,100,0.5)',200);if(navigator.vibrate)navigator.vibrate(10);}
+function effSync(){beep(660,0.1,'square');setTimeout(function(){beep(880,0.15,'square');},120);flash('rgba(26,75,140,0.5)',200);if(navigator.vibrate)navigator.vibrate(200);}
+function playSOS(){var p=[{f:440,dl:0},{f:440,dl:400},{f:440,dl:800},{f:220,dl:1400},{f:220,dl:2000},{f:220,dl:2600},{f:440,dl:3400},{f:440,dl:3800},{f:440,dl:4200},{f:880,dl:5000}];p.forEach(function(n){setTimeout(function(){beep(n.f,0.5,'sawtooth',0.4);},n.dl);});}
 
+/* ナビ */
 var naviCoords={ski:{lat:36.6989,lng:137.7703},yama:{lat:36.5685,lng:137.6619},machi:{lat:36.2281,lng:137.9689}};
-function openNavi(){
-  var dest=naviCoords[curMode];
-  if(!dest)return;
-  var mapLang=curLang==='zh'?'zh-CN':curLang;
-  var url='https://www.google.com/maps/dir/?api=1&destination='+dest.lat+','+dest.lng+'&hl='+mapLang+'&travelmode=driving';
-  window.open(url,'_blank');
-}
+function openNavi(){var dest=naviCoords[curMode];if(!dest)return;var ml=curLang==='zh'?'zh-CN':curLang;window.open('https://www.google.com/maps/dir/?api=1&destination='+dest.lat+','+dest.lng+'&hl='+ml+'&travelmode=driving','_blank');}
+function open3DMap(){var dest=naviCoords[curMode];if(!dest)return;window.open('https://maps.gsi.go.jp/3d/?lon='+dest.lng+'&lat='+dest.lat+'&height=3000&heading=0&pitch=-45&roll=0','_blank');}
 
-/* ===== 国土地理院3Dマップ（通番17） ===== */
-function open3DMap(){
-  var dest=naviCoords[curMode];
-  if(!dest)return;
-  var url='https://maps.gsi.go.jp/3d/?lon='+dest.lng+'&lat='+dest.lat+'&height=3000&heading=0&pitch=-45&roll=0';
-  window.open(url,'_blank');
-}
-
-/* ===== ウェザー（OpenMeteo 無料API）（通番18） ===== */
-var weatherCache={};
+var WMO={0:'☀️ 快晴',1:'🌤 ほぼ晴れ',2:'⛅ 一部曇り',3:'☁️ 曇り',45:'🌫 霧',51:'🌦 霧雨',61:'🌧 小雨',63:'🌧 雨',65:'🌧 大雨',71:'🌨 小雪',73:'❄️ 雪',80:'🌦 にわか雨',95:'⛈ 雷雨'};
+var WMO_en={0:'☀️ Clear',1:'🌤 Mostly clear',2:'⛅ Partly cloudy',3:'☁️ Overcast',45:'🌫 Fog',61:'🌧 Light rain',63:'🌧 Rain',65:'🌧 Heavy rain',73:'❄️ Snow',80:'🌦 Showers',95:'⛈ Thunderstorm'};
+var WMO_zh={0:'☀️ 晴朗',1:'🌤 基本晴朗',2:'⛅ 部分多云',3:'☁️ 阴天',61:'🌧 小雨',63:'🌧 雨',73:'❄️ 雪',80:'🌦 阵雨',95:'⛈ 雷雨'};
+var WMO_fr={0:'☀️ Ensoleillé',1:'🌤 Dégagé',2:'⛅ Partiellement nuageux',3:'☁️ Couvert',61:'🌧 Pluie légère',63:'🌧 Pluie',73:'❄️ Neige',80:'🌦 Averses',95:'⛈ Orage'};
+function getDesc(code){var m={ja:WMO,en:WMO_en,zh:WMO_zh,fr:WMO_fr}[curLang]||WMO_en;return m[code]||m[0]||'--';}
 function loadWeather(){
-  var dest=naviCoords[curMode];
-  if(!dest)return;
-  var l=T[curLang];
+  var dest=naviCoords[curMode];if(!dest)return;
   document.getElementById('weatherBox').style.display='block';
   document.getElementById('weatherLoading').style.display='block';
   document.getElementById('weatherResult').style.display='none';
   var key=curMode;
   if(weatherCache[key]){showWeather(weatherCache[key]);return;}
-  var url='https://api.open-meteo.com/v1/forecast?latitude='+dest.lat+'&longitude='+dest.lng
-    +'&current=temperature_2m,relative_humidity_2m,wind_speed_10m,precipitation,weather_code'
-    +'&wind_speed_unit=ms&timezone=Asia%2FTokyo';
-  fetch(url).then(function(r){return r.json();}).then(function(d){
-    weatherCache[key]=d;
-    showWeather(d);
-  }).catch(function(){
-    document.getElementById('weatherLoading').textContent='--';
-  });
+  fetch('https://api.open-meteo.com/v1/forecast?latitude='+dest.lat+'&longitude='+dest.lng+'&current=temperature_2m,relative_humidity_2m,wind_speed_10m,precipitation,weather_code&wind_speed_unit=ms&timezone=Asia%2FTokyo')
+    .then(function(r){return r.json();}).then(function(d){weatherCache[key]=d;showWeather(d);})
+    .catch(function(){document.getElementById('weatherLoading').textContent='--';});
 }
-
-var WMO={0:'☀️ 快晴',1:'🌤 ほぼ晴れ',2:'⛅ 一部曇り',3:'☁️ 曇り',45:'🌫 霧',48:'🌫 霧氷',51:'🌦 霧雨',61:'🌧 小雨',63:'🌧 雨',65:'🌧 大雨',71:'🌨 小雪',73:'❄️ 雪',75:'❄️ 大雪',80:'🌦 にわか雨',95:'⛈ 雷雨'};
-var WMO_en={0:'☀️ Clear',1:'🌤 Mostly clear',2:'⛅ Partly cloudy',3:'☁️ Overcast',45:'🌫 Fog',51:'🌦 Drizzle',61:'🌧 Light rain',63:'🌧 Rain',65:'🌧 Heavy rain',71:'🌨 Light snow',73:'❄️ Snow',75:'❄️ Heavy snow',80:'🌦 Showers',95:'⛈ Thunderstorm'};
-var WMO_zh={0:'☀️ 晴朗',1:'🌤 基本晴朗',2:'⛅ 部分多云',3:'☁️ 阴天',45:'🌫 雾',61:'🌧 小雨',63:'🌧 雨',65:'🌧 大雨',73:'❄️ 雪',80:'🌦 阵雨',95:'⛈ 雷雨'};
-var WMO_fr={0:'☀️ Ensoleillé',1:'🌤 Dégagé',2:'⛅ Partiellement nuageux',3:'☁️ Couvert',45:'🌫 Brouillard',61:'🌧 Pluie légère',63:'🌧 Pluie',65:'🌧 Forte pluie',73:'❄️ Neige',80:'🌦 Averses',95:'⛈ Orage'};
-
-function getDesc(code){
-  var maps={ja:WMO,en:WMO_en,zh:WMO_zh,fr:WMO_fr};
-  var m=maps[curLang]||WMO_en;
-  return m[code]||m[0]||'--';
-}
-
 function showWeather(d){
-  var c=d.current;
+  var c=d.current;var l=T[curLang];
   document.getElementById('weatherLoading').style.display='none';
   document.getElementById('weatherResult').style.display='block';
   document.getElementById('w-temp').textContent=Math.round(c.temperature_2m)+'°C';
   document.getElementById('w-desc').textContent=getDesc(c.weather_code);
-  var l=T[curLang];
   document.getElementById('w-wind').textContent=l.w_wind+': '+Math.round(c.wind_speed_10m)+'m/s';
   document.getElementById('w-humid').textContent=l.w_humid+': '+Math.round(c.relative_humidity_2m)+'%';
   document.getElementById('w-precip').textContent=l.w_precip+': '+c.precipitation+'mm';
 }
+
+/* フロー */
+function selPkg(el){document.querySelectorAll('.pkg-btn').forEach(function(b){b.classList.remove('sel');});el.classList.add('sel');if(navigator.vibrate)navigator.vibrate(8);}
 
 function setP(p,c){
   curPart=p;setAC(c);applyLang();
@@ -854,8 +770,7 @@ function setP(p,c){
   document.getElementById('tokenBox').style.display='none';
   document.getElementById('netBox').style.display='none';
   document.getElementById('btnSc2').style.display='none';
-  var tok='T-'+Math.floor(Math.random()*9000+1000)+'-'+p.toUpperCase().substring(0,2);
-  document.getElementById('tokval').textContent=tok;
+  document.getElementById('tokval').textContent='T-'+Math.floor(Math.random()*9000+1000)+'-'+p.toUpperCase().substring(0,2);
   goTo('05');
 }
 
@@ -863,46 +778,28 @@ function goTo(n){
   document.querySelectorAll('.sc').forEach(function(s){s.classList.remove('on');});
   cur=n;
   document.getElementById('sc'+n).classList.add('on');
+  updateProgress(n);
   if(n===4)startProg();
+  window.scrollTo(0,0);
 }
 
 function startScan(){
-  var overlay=document.getElementById('scanOverlay');
+  var o=document.getElementById('scanOverlay');
   document.getElementById('scanActive').style.display='block';
   document.getElementById('scanDone').style.display='none';
-  overlay.classList.add('show');
+  o.classList.add('show');
   scanTimer=setTimeout(function(){
     document.getElementById('scanActive').style.display='none';
     document.getElementById('scanDone').style.display='flex';
-    setTimeout(function(){
-      overlay.classList.remove('show');
-      showRegComplete();
-    },1500);
+    setTimeout(function(){o.classList.remove('show');showRegComplete();},1400);
   },2000);
 }
-
-function startInput(){
-  document.getElementById('inputBox').style.display='block';
-  document.getElementById('inputField').focus();
-}
-
-function completeInput(){
-  var val=document.getElementById('inputField').value;
-  if(!val){alert(L('input_field_lbl'));return;}
-  document.getElementById('inputBox').style.display='none';
-  showRegComplete();
-}
-
-function showRegComplete(){
-  effectReg();
-  document.getElementById('regComplete').classList.add('show');
-  document.getElementById('tokenBox').style.display='block';
-  document.getElementById('netBox').style.display='block';
-  document.getElementById('btnSc2').style.display='block';
-}
+function startInput(){document.getElementById('inputBox').style.display='block';document.getElementById('inputField').focus();}
+function completeInput(){var v=document.getElementById('inputField').value;if(!v)return;document.getElementById('inputBox').style.display='none';showRegComplete();}
+function showRegComplete(){effReg();document.getElementById('regComplete').classList.add('show');document.getElementById('tokenBox').style.display='block';document.getElementById('netBox').style.display='block';document.getElementById('btnSc2').style.display='block';}
 
 function doSync(){
-  effectSync();
+  effSync();
   document.getElementById('nfcring').style.animation='none';
   document.getElementById('syncdone').style.display='block';
   document.getElementById('tagid').textContent='JT-'+Math.floor(Math.random()*9000+1000)+'-08';
@@ -913,8 +810,7 @@ function setMode(el,mode){
   curMode=mode;
   document.querySelectorAll('.mtab').forEach(function(t){t.classList.remove('on');});
   if(el)el.classList.add('on');
-  var l=T[curLang];
-  var loc=l.locs[mode];
+  var l=T[curLang];var loc=l.locs[mode];
   document.getElementById('locname').textContent=loc.name;
   document.getElementById('locdesc').textContent=loc.desc;
   document.getElementById('hubs').innerHTML=loc.hubs.map(function(h){return'<div class="hubrow"><span>'+h[0]+'</span><span>'+h[1]+'</span></div>';}).join('');
@@ -928,13 +824,12 @@ function fireSOS(){
   if(sosTimer){clearTimeout(sosTimer);sosTimer=null;}
   document.getElementById('sosfired').textContent=L('sos_fired');
   document.getElementById('sosfired').style.display='block';
-  flashScreen('rgba(180,0,0,0.6)',150);
-  setTimeout(function(){flashScreen('rgba(180,0,0,0.6)',150);},300);
-  setTimeout(function(){flashScreen('rgba(180,0,0,0.8)',300);},600);
+  flash('rgba(180,0,0,0.6)',150);
+  setTimeout(function(){flash('rgba(180,0,0,0.6)',150);},300);
+  setTimeout(function(){flash('rgba(180,0,0,0.8)',300);},600);
   if(navigator.vibrate)navigator.vibrate([100,50,100,50,300]);
   sosCount=0;
-  function cycle(){playSOS();sosCount++;if(sosCount<3)sosTimer=setTimeout(cycle,10500);}
-  cycle();
+  function cycle(){playSOS();sosCount++;if(sosCount<3)sosTimer=setTimeout(cycle,10500);}cycle();
 }
 
 function startProg(){
@@ -942,33 +837,29 @@ function startProg(){
   var pct=0;
   document.getElementById('progfill').style.width='0%';
   document.getElementById('finalcard').style.display='none';
-  eTimer=setInterval(function(){
-    pct+=10;document.getElementById('progfill').style.width=pct+'%';
-    if(pct>=100){clearInterval(eTimer);eTimer=null;document.getElementById('finalcard').style.display='block';}
-  },200);
+  eTimer=setInterval(function(){pct+=10;document.getElementById('progfill').style.width=pct+'%';if(pct>=100){clearInterval(eTimer);eTimer=null;document.getElementById('finalcard').style.display='block';}},200);
 }
 
 function restart(){
   if(eTimer){clearInterval(eTimer);eTimer=null;}
   if(scanTimer){clearTimeout(scanTimer);scanTimer=null;}
   if(sosTimer){clearTimeout(sosTimer);sosTimer=null;}
-  sosCount=0;
+  sosCount=0;weatherCache={};
   document.getElementById('scanOverlay').classList.remove('show');
   document.getElementById('nfcring').style.animation='pulse 1.5s infinite';
   document.getElementById('syncdone').style.display='none';
-  document.getElementById('tagid').textContent='---';
   document.getElementById('btn2').style.display='none';
   document.getElementById('sosfired').style.display='none';
-  document.getElementById('weatherBox').style.display='none';
-  document.getElementById('weatherResult').style.display='none';
-  weatherCache={};
   document.getElementById('inputBox').style.display='none';
   document.getElementById('inputField').value='';
   document.getElementById('regComplete').classList.remove('show');
   document.getElementById('tokenBox').style.display='none';
   document.getElementById('netBox').style.display='none';
   document.getElementById('btnSc2').style.display='none';
+  document.getElementById('weatherBox').style.display='none';
+  document.getElementById('weatherResult').style.display='none';
   document.querySelectorAll('.mtab').forEach(function(t,i){t.classList.toggle('on',i===0);});
+  document.querySelectorAll('.pkg-btn').forEach(function(b){b.classList.remove('sel');});
   setAC('#1A4B8C');curPart='';
   applyLang();goTo(0);
 }
