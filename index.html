@@ -177,7 +177,7 @@ p{font-size:13px;line-height:1.6;color:#555;margin-bottom:10px;}
     <div id="scan-ok-lbl" style="color:#4CAF50;font-size:15px;font-weight:500;">---</div>
   </div>
 </div>
-
+ 
 <!-- 19番: 国土地理院利用規約モーダル（初回のみ） -->
 <div class="terms-modal" id="termsModal">
   <div class="terms-inner">
@@ -190,7 +190,7 @@ p{font-size:13px;line-height:1.6;color:#555;margin-bottom:10px;}
     <button id="terms-agree-btn" onclick="agreeTerms()" style="background:#1B4F8A;color:#fff;border:none;border-radius:10px;padding:12px 24px;font-size:13px;font-weight:500;width:100%;cursor:pointer;">同意して地図を表示</button>
   </div>
 </div>
-
+ 
 <div class="wrap">
 <div class="hdr">
   <div class="hdr-left">
@@ -213,7 +213,7 @@ p{font-size:13px;line-height:1.6;color:#555;margin-bottom:10px;}
   <button class="lang-flag" onclick="setLang('zh',this)">🇨🇳 中文</button>
   <button class="lang-flag" onclick="setLang('fr',this)">🇫🇷 FR</button>
 </div>
-
+ 
 <!-- Step 0 -->
 <div class="sc on" id="sc0">
   <h2 id="h0">---</h2>
@@ -232,7 +232,7 @@ p{font-size:13px;line-height:1.6;color:#555;margin-bottom:10px;}
     </div>
   </div>
 </div>
-
+ 
 <!-- Step 0.5 -->
 <div class="sc" id="sc05">
   <h2 id="h05">---</h2>
@@ -254,7 +254,7 @@ p{font-size:13px;line-height:1.6;color:#555;margin-bottom:10px;}
   </div>
   <button class="btn" onclick="goTo('06')" id="btn-jtag-next">---</button>
 </div>
-
+ 
 <!-- Step 0.6 -->
 <div class="sc" id="sc06">
   <h2 id="h06">---</h2>
@@ -274,7 +274,7 @@ p{font-size:13px;line-height:1.6;color:#555;margin-bottom:10px;}
   <div class="ins-note" id="ins-note">---</div>
   <button class="btn" onclick="goTo(1)" id="btn-pkg-next">---</button>
 </div>
-
+ 
 <!-- Step 1 -->
 <div class="sc" id="sc1">
   <h2 id="h1">---</h2>
@@ -312,7 +312,7 @@ p{font-size:13px;line-height:1.6;color:#555;margin-bottom:10px;}
   </div>
   <button class="btn" id="btnSc2" style="display:none;" onclick="goTo(2)">---</button>
 </div>
-
+ 
 <!-- Step 2 -->
 <div class="sc" id="sc2">
   <h2 id="h2">---</h2>
@@ -331,7 +331,7 @@ p{font-size:13px;line-height:1.6;color:#555;margin-bottom:10px;}
   <button class="btn" id="btn2" style="display:none;margin-top:10px;" onclick="goTo(3)">---</button>
   <button class="btn btn-gray" onclick="doSync()" id="btn-sync-sim" style="margin-top:8px;">---</button>
 </div>
-
+ 
 <!-- Step 3 -->
 <div class="sc" id="sc3">
   <h2 id="h3">---</h2>
@@ -411,7 +411,7 @@ p{font-size:13px;line-height:1.6;color:#555;margin-bottom:10px;}
   </div>
   <button class="btn btn-gray" onclick="goTo(4)" id="btn-end">---</button>
 </div>
-
+ 
 <!-- Step 4 -->
 <div class="sc" id="sc4">
   <h2 id="h4">---</h2>
@@ -426,7 +426,7 @@ p{font-size:13px;line-height:1.6;color:#555;margin-bottom:10px;}
     <button class="btn" onclick="goTo(5)" id="btn-close">---</button>
   </div>
 </div>
-
+ 
 <!-- Step 5 -->
 <div class="sc" id="sc5">
   <h2 id="h5">---</h2>
@@ -444,7 +444,7 @@ p{font-size:13px;line-height:1.6;color:#555;margin-bottom:10px;}
   <button class="btn" onclick="restart()" id="btn-reset">---</button>
 </div>
 </div>
-
+ 
 <script>
 var T={
   ja:{
@@ -640,14 +640,14 @@ var T={
     }
   }
 };
-
+ 
 var curLang='ja',curPart='',curMode='ski',cur=0;
 var eTimer=null,scanTimer=null,sosTimer=null,sosCount=0;
 var weatherCache={};
-
+ 
 function L(k){return T[curLang][k]||T.ja[k]||'';}
 function setAC(c){document.documentElement.style.setProperty('--ac',c);}
-
+ 
 var stepMap={'0':0,'05':1,'06':2,'1':3,'2':3,'3':4,'4':4,'5':4};
 function updateProgress(n){
   var idx=stepMap[String(n)]||0;
@@ -665,14 +665,14 @@ function updateProgress(n){
   document.getElementById('hdr-step').textContent=stepNum+'/5';
   document.getElementById('prog-label-txt').textContent=labels[idx]||'';
 }
-
+ 
 function setLang(lang,btn){
   curLang=lang;
   document.querySelectorAll('.lang-flag').forEach(function(b){b.classList.remove('on');});
   btn.classList.add('on');
   applyLang();
 }
-
+ 
 function applyLang(){
   var l=T[curLang];
   document.getElementById('h0').textContent=l.h0;
@@ -736,7 +736,7 @@ function applyLang(){
   setMode(document.querySelector('.mtab.on'),curMode);
   updateProgress(cur);
 }
-
+ 
 var actx=null;
 function getCtx(){if(!actx)actx=new(window.AudioContext||window.webkitAudioContext)();return actx;}
 function beep(f,d,t,v){try{var c=getCtx();var o=c.createOscillator();var g=c.createGain();o.connect(g);g.connect(c.destination);o.type=t||'sine';o.frequency.value=f;g.gain.setValueAtTime(v||0.3,c.currentTime);g.gain.exponentialRampToValueAtTime(0.001,c.currentTime+d);o.start(c.currentTime);o.stop(c.currentTime+d);}catch(e){}}
@@ -744,16 +744,16 @@ function flash(c,d){var el=document.getElementById('flashOverlay');el.style.back
 function effReg(){beep(880,0.15);setTimeout(function(){beep(1100,0.2);},150);flash('rgba(0,200,100,0.5)',200);if(navigator.vibrate)navigator.vibrate(10);}
 function effSync(){beep(660,0.1,'square');setTimeout(function(){beep(880,0.15,'square');},120);flash('rgba(26,75,140,0.5)',200);if(navigator.vibrate)navigator.vibrate(200);}
 function playSOS(){var p=[{f:440,dl:0},{f:440,dl:400},{f:440,dl:800},{f:220,dl:1400},{f:220,dl:2000},{f:220,dl:2600},{f:440,dl:3400},{f:440,dl:3800},{f:440,dl:4200},{f:880,dl:5000}];p.forEach(function(n){setTimeout(function(){beep(n.f,0.5,'sawtooth',0.4);},n.dl);});}
-
+ 
 var naviCoords={ski:{lat:36.6989,lng:137.7703},yama:{lat:36.5685,lng:137.6619},machi:{lat:36.2281,lng:137.9689}};
-
+ 
 /* Googleマップ（母国語） */
 function openNavi(){
   var dest=naviCoords[curMode];if(!dest)return;
   var ml=curLang==='zh'?'zh-CN':curLang;
   window.open('https://www.google.com/maps/dir/?api=1&destination='+dest.lat+','+dest.lng+'&hl='+ml+'&travelmode=driving','_blank');
 }
-
+ 
 /* ===== 17番: 国土地理院3Dマップ（別タブで目的地を直接表示・19番の利用規約統合） ===== */
 function open3DMapInPanel(){
   var termsAccepted=localStorage.getItem('jpass_gsi_terms');
@@ -763,41 +763,51 @@ function open3DMapInPanel(){
     document.getElementById('termsModal').classList.add('show');
   }
 }
-
+ 
 function agreeTerms(){
   localStorage.setItem('jpass_gsi_terms','1');
   document.getElementById('termsModal').classList.remove('show');
   openGSINewTab();
 }
-
+ 
 function openGSINewTab(){
-  var dest=naviCoords[curMode];if(!dest)return;
-  /* 国土地理院3DマップURL：目的地座標・高度3000m・俯瞰45度で直接表示 */
-  var url='https://maps.gsi.go.jp/3d/?lon='+dest.lng+'&lat='+dest.lat+'&height=3000&heading=0&pitch=-45&roll=0';
+  /* 17番：モード別に国土地理院3Dマップへ直行（mountain.htmlのURLパターンを使用） */
+  var gsi3dUrls={
+    ski:'https://maps.gsi.go.jp/index_3d.html?lat=36.6989&lon=137.7703&z=15&pxsize=2048&ls=std',   /* 白馬八方尾根 */
+    yama:'https://maps.gsi.go.jp/index_3d.html?lat=36.5685&lon=137.6619&z=15&pxsize=2048&ls=std',  /* 剱岳 */
+    machi:'https://maps.gsi.go.jp/index_3d.html?lat=36.2281&lon=137.9689&z=15&pxsize=2048&ls=std'  /* 松本 */
+  };
+  var url=gsi3dUrls[curMode];
+  if(!url)return;
   window.open(url,'_blank');
   /* パネルに案内メッセージ表示 */
   var panel=document.getElementById('gsiPanel');
   panel.style.display='block';
   var log=document.getElementById('gsiLog');
   var locName=T[curLang].locs[curMode].name;
-  var msgs={ja:'🗾 '+locName+' の3Dマップを別タブで開きました',en:'🗾 3D map opened in new tab: '+locName,zh:'🗾 已在新标签页打开3D地图：'+locName,fr:'🗾 Carte 3D ouverte dans un nouvel onglet : '+locName};
+  var msgs={
+    ja:'🗾 '+locName+' の3D地形を別タブで開きました',
+    en:'🗾 3D terrain opened: '+locName,
+    zh:'🗾 已在新标签页打开3D地形：'+locName,
+    fr:'🗾 Terrain 3D ouvert : '+locName
+  };
   log.textContent=msgs[curLang]||msgs.ja;
   /* 天気ボックスを閉じる */
   document.getElementById('weatherBox').style.display='none';
   document.getElementById('weatherResult').style.display='none';
 }
-
+ 
 function closeGSIPanel(){
   document.getElementById('gsiPanel').style.display='none';
 }
-
+ 
 /* ===== 18番: 天気情報（雷警報→振動連動） ===== */
 var WMO={0:'☀️ 快晴',1:'🌤 ほぼ晴れ',2:'⛅ 一部曇り',3:'☁️ 曇り',45:'🌫 霧',51:'🌦 霧雨',61:'🌧 小雨',63:'🌧 雨',65:'🌧 大雨',71:'🌨 小雪',73:'❄️ 雪',80:'🌦 にわか雨',95:'⛈ 雷雨'};
 var WMO_en={0:'☀️ Clear',1:'🌤 Mostly clear',2:'⛅ Partly cloudy',3:'☁️ Overcast',45:'🌫 Fog',61:'🌧 Light rain',63:'🌧 Rain',65:'🌧 Heavy rain',73:'❄️ Snow',80:'🌦 Showers',95:'⛈ Thunderstorm'};
 var WMO_zh={0:'☀️ 晴朗',1:'🌤 基本晴朗',2:'⛅ 部分多云',3:'☁️ 阴天',61:'🌧 小雨',63:'🌧 雨',73:'❄️ 雪',80:'🌦 阵雨',95:'⛈ 雷雨'};
 var WMO_fr={0:'☀️ Ensoleillé',1:'🌤 Dégagé',2:'⛅ Partiellement nuageux',3:'☁️ Couvert',61:'🌧 Pluie légère',63:'🌧 Pluie',73:'❄️ Neige',80:'🌦 Averses',95:'⛈ Orage'};
 function getDesc(code){var m={ja:WMO,en:WMO_en,zh:WMO_zh,fr:WMO_fr}[curLang]||WMO_en;return m[code]||m[0]||'--';}
-
+ 
 function loadWeather(){
   var dest=naviCoords[curMode];if(!dest)return;
   /* 地図パネルを閉じる */
@@ -812,7 +822,7 @@ function loadWeather(){
     .then(function(r){return r.json();}).then(function(d){weatherCache[key]=d;showWeather(d);})
     .catch(function(){document.getElementById('weatherLoading').textContent='--';});
 }
-
+ 
 function showWeather(d){
   var c=d.current;var l=T[curLang];
   document.getElementById('weatherLoading').style.display='none';
@@ -830,9 +840,9 @@ function showWeather(d){
     beep(440,0.5,'sawtooth',0.4);
   }
 }
-
+ 
 function selPkg(el){document.querySelectorAll('.pkg-btn').forEach(function(b){b.classList.remove('sel');});el.classList.add('sel');if(navigator.vibrate)navigator.vibrate(8);}
-
+ 
 function setP(p,c){
   curPart=p;setAC(c);applyLang();
   document.getElementById('inputBox').style.display='none';
@@ -843,7 +853,7 @@ function setP(p,c){
   document.getElementById('tokval').textContent='T-'+Math.floor(Math.random()*9000+1000)+'-'+p.toUpperCase().substring(0,2);
   goTo('05');
 }
-
+ 
 function goTo(n){
   document.querySelectorAll('.sc').forEach(function(s){s.classList.remove('on');});
   cur=n;
@@ -852,7 +862,7 @@ function goTo(n){
   if(n===4)startProg();
   window.scrollTo(0,0);
 }
-
+ 
 function startScan(){
   var o=document.getElementById('scanOverlay');
   document.getElementById('scanActive').style.display='block';
@@ -867,7 +877,7 @@ function startScan(){
 function startInput(){document.getElementById('inputBox').style.display='block';document.getElementById('inputField').focus();}
 function completeInput(){var v=document.getElementById('inputField').value;if(!v)return;document.getElementById('inputBox').style.display='none';showRegComplete();}
 function showRegComplete(){effReg();document.getElementById('regComplete').classList.add('show');document.getElementById('tokenBox').style.display='block';document.getElementById('netBox').style.display='block';document.getElementById('btnSc2').style.display='block';}
-
+ 
 function doSync(){
   effSync();
   document.getElementById('nfcring').style.animation='none';
@@ -875,7 +885,7 @@ function doSync(){
   document.getElementById('tagid').textContent='JT-'+Math.floor(Math.random()*9000+1000)+'-08';
   document.getElementById('btn2').style.display='block';
 }
-
+ 
 function setMode(el,mode){
   curMode=mode;
   document.querySelectorAll('.mtab').forEach(function(t){t.classList.remove('on');});
@@ -891,7 +901,7 @@ function setMode(el,mode){
   closeGSIPanel();
   weatherCache={};
 }
-
+ 
 function fireSOS(){
   if(sosTimer){clearTimeout(sosTimer);sosTimer=null;}
   document.getElementById('sosfired').textContent=L('sos_fired');
@@ -903,7 +913,7 @@ function fireSOS(){
   sosCount=0;
   function cycle(){playSOS();sosCount++;if(sosCount<3)sosTimer=setTimeout(cycle,10500);}cycle();
 }
-
+ 
 function startProg(){
   if(eTimer)clearInterval(eTimer);
   var pct=0;
@@ -911,7 +921,7 @@ function startProg(){
   document.getElementById('finalcard').style.display='none';
   eTimer=setInterval(function(){pct+=10;document.getElementById('progfill').style.width=pct+'%';if(pct>=100){clearInterval(eTimer);eTimer=null;document.getElementById('finalcard').style.display='block';}},200);
 }
-
+ 
 function restart(){
   if(eTimer){clearInterval(eTimer);eTimer=null;}
   if(scanTimer){clearTimeout(scanTimer);scanTimer=null;}
@@ -937,7 +947,7 @@ function restart(){
   setAC('#1A4B8C');curPart='';
   applyLang();goTo(0);
 }
-
+ 
 applyLang();
 setMode(document.querySelector('.mtab.on'),'ski');
 </script>
