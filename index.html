@@ -10,59 +10,41 @@
 *{box-sizing:border-box;margin:0;padding:0;}
 body{background:#f0f4f8;display:flex;justify-content:center;min-height:100vh;font-family:-apple-system,BlinkMacSystemFont,'Hiragino Sans',sans-serif;}
 .wrap{width:100%;max-width:390px;background:#fff;min-height:100vh;display:flex;flex-direction:column;}
-
-/* ヘッダー */
 .hdr{background:var(--ac);color:#fff;padding:12px 18px 8px;display:flex;justify-content:space-between;align-items:flex-start;}
 .hdr-left{display:flex;flex-direction:column;}
 .hdr-title{font-size:15px;font-weight:500;}
 .hdr-partner{font-size:11px;opacity:.8;margin-top:2px;}
 .hdr-right{font-size:13px;font-weight:500;}
-
-/* 進捗バー */
 .progress-bar{display:flex;align-items:center;padding:0 16px;background:var(--ac);padding-bottom:10px;gap:4px;}
 .prog-step{height:4px;flex:1;border-radius:2px;background:rgba(255,255,255,0.25);transition:background .3s;}
 .prog-step.done{background:rgba(255,255,255,0.9);}
 .prog-step.active{background:#fff;}
 .prog-label{font-size:10px;color:rgba(255,255,255,0.7);margin-left:6px;white-space:nowrap;}
-
-/* 言語バー */
 .lang-bar{display:flex;gap:6px;padding:8px 14px;border-bottom:1px solid #e0e0e0;background:#f8f8f8;overflow-x:auto;}
 .lang-flag{padding:4px 10px;border-radius:20px;font-size:12px;cursor:pointer;border:1px solid #e0e0e0;background:#fff;transition:all .15s;white-space:nowrap;}
 .lang-flag.on{background:var(--ac);color:#fff;border-color:var(--ac);}
-
-/* 画面 */
 .sc{display:none;padding:18px;flex-direction:column;flex:1;}
 .sc.on{display:flex;}
 .flash-overlay{position:fixed;top:0;left:0;width:100%;height:100%;z-index:200;pointer-events:none;opacity:0;transition:opacity .1s;}
-
-/* スキャンオーバーレイ */
 .scan-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.9);z-index:100;justify-content:center;align-items:center;flex-direction:column;}
 .scan-overlay.show{display:flex;}
 .scan-frame{width:220px;height:160px;border:2px solid #fff;border-radius:12px;position:relative;overflow:hidden;background:#111;}
 .scan-line{width:100%;height:2px;background:var(--ac);position:absolute;animation:scanline 1.5s linear infinite;}
 @keyframes scanline{0%{top:0;}100%{top:100%;}}
 .scan-label{color:#fff;font-size:14px;margin-top:14px;font-weight:500;}
-
-/* タイポグラフィ */
 h2{color:var(--ac);font-size:18px;font-weight:500;margin-bottom:10px;}
 p{font-size:13px;line-height:1.6;color:#555;margin-bottom:10px;}
-
-/* ボタン */
 .btn{background:var(--ac);color:#fff;border:none;padding:14px;border-radius:12px;font-size:14px;font-weight:500;cursor:pointer;width:100%;margin-top:10px;transition:all .1s;}
 .btn:active{opacity:.85;transform:scale(.98);}
 .btn-gray{background:#666;}
 .btn-green{background:var(--ok);}
 .btn-red{background:var(--ng);}
-
-/* Step 0: パートナー */
 .pgrid{display:flex;flex-direction:column;gap:10px;margin:8px 0;}
 .pcard{background:#fff;border:1.5px solid #e0e0e0;border-radius:14px;padding:14px 16px;display:flex;align-items:center;gap:14px;cursor:pointer;transition:all .15s;}
 .pcard:active{transform:scale(.98);}
 .pcolor{width:36px;height:36px;border-radius:8px;flex-shrink:0;}
 .pname{font-size:14px;font-weight:500;color:#222;}
 .psub{font-size:11px;color:#888;margin-top:2px;}
-
-/* Step 0.5: J-TAG */
 .jtag-visual{background:#f0f6ff;border:1px solid #b5d4f4;border-radius:14px;padding:16px;text-align:center;margin-bottom:14px;}
 .jtag-card{width:100px;height:64px;border-radius:8px;background:var(--ac);margin:0 auto 8px;display:flex;align-items:center;justify-content:center;}
 .jtag-card-txt{color:#fff;font-size:12px;font-weight:500;}
@@ -73,8 +55,6 @@ p{font-size:13px;line-height:1.6;color:#555;margin-bottom:10px;}
 .feat-icon{font-size:20px;margin-bottom:4px;}
 .feat-title{font-size:12px;font-weight:500;color:#222;}
 .feat-desc{font-size:10px;color:#888;line-height:1.4;margin-top:2px;}
-
-/* NFC波アニメ */
 .nfc-demo{height:56px;display:flex;align-items:center;justify-content:center;gap:14px;margin-bottom:12px;}
 .tag-box{width:40px;height:24px;border-radius:5px;background:var(--ac);display:flex;align-items:center;justify-content:center;}
 .tag-txt{color:#fff;font-size:8px;font-weight:500;}
@@ -84,8 +64,6 @@ p{font-size:13px;line-height:1.6;color:#555;margin-bottom:10px;}
 @keyframes wv{0%{transform:scale(.5);opacity:.8;}100%{transform:scale(2.5);opacity:0;}}
 .ph-box{width:30px;height:52px;border:2px solid var(--ac);border-radius:7px;background:#f0f6ff;display:flex;align-items:center;justify-content:center;}
 .ph-dot{width:5px;height:5px;border-radius:50%;background:var(--ac);}
-
-/* Step 0.6: 保険 */
 .ins-pkg-title{font-size:11px;font-weight:500;color:#a32d2d;margin-bottom:10px;}
 .pkg-btn{display:flex;justify-content:space-between;align-items:center;padding:12px 14px;border:1.5px solid #e0e0e0;border-radius:12px;background:#fff;cursor:pointer;margin-bottom:8px;width:100%;transition:all .15s;}
 .pkg-btn:last-child{margin-bottom:0;}
@@ -98,8 +76,6 @@ p{font-size:13px;line-height:1.6;color:#555;margin-bottom:10px;}
 .pkg-check{font-size:16px;opacity:0;margin-top:2px;}
 .pkg-btn.sel .pkg-check{opacity:1;}
 .ins-note{background:#f0f6ff;border:1px solid #b5d4f4;border-radius:10px;padding:10px 12px;font-size:11px;color:#0c447c;margin-top:10px;}
-
-/* Step 1: 登録 */
 .reg-method{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:10px 0;}
 .reg-btn{border:1.5px solid var(--ac);border-radius:14px;padding:14px 10px;text-align:center;cursor:pointer;background:#fff;transition:all .2s;}
 .reg-btn:active{transform:scale(.97);}
@@ -113,8 +89,6 @@ p{font-size:13px;line-height:1.6;color:#555;margin-bottom:10px;}
 .input-box{background:#f8f8f8;border:1px solid #e0e0e0;border-radius:12px;padding:14px;margin:8px 0;}
 .input-field{width:100%;padding:10px;border:1.5px solid #e0e0e0;border-radius:8px;font-size:15px;font-family:monospace;text-align:center;background:#fff;}
 .input-field:focus{outline:none;border-color:var(--ac);}
-
-/* Step 2: NFC */
 .nfc-area{height:130px;display:flex;align-items:center;justify-content:center;position:relative;margin:14px 0;cursor:pointer;}
 .nfc-ring{width:76px;height:76px;border:2.5px solid var(--ac);border-radius:50%;position:absolute;animation:pulse 1.5s infinite;}
 @keyframes pulse{0%{transform:scale(.8);opacity:1;}100%{transform:scale(1.5);opacity:0;}}
@@ -124,8 +98,6 @@ p{font-size:13px;line-height:1.6;color:#555;margin-bottom:10px;}
 .phylog-title{font-size:12px;font-weight:500;color:#E65100;margin-bottom:8px;}
 .phylog-row{display:flex;gap:8px;margin-bottom:6px;font-size:11px;color:#555;line-height:1.5;}
 .phylog-num{width:16px;height:16px;border-radius:50%;background:#E65100;color:#fff;font-size:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
-
-/* Step 3: アクティブ */
 .live-box{background:#f8f8f8;border:1px solid #e0e0e0;border-radius:12px;padding:12px;margin-bottom:10px;}
 .live-title{font-size:10px;color:#888;font-weight:500;margin-bottom:8px;}
 .live-row{display:flex;justify-content:space-between;align-items:center;padding:3px 0;}
@@ -147,8 +119,6 @@ p{font-size:13px;line-height:1.6;color:#555;margin-bottom:10px;}
 .sos-fired{display:none;padding:10px;background:#fcebeb;border:1px solid #f7c1c1;border-radius:10px;font-size:12px;color:var(--ng);text-align:center;margin-bottom:10px;font-weight:500;}
 .sos-btn{width:100%;padding:14px;background:var(--ng);color:#fff;border:none;border-radius:12px;font-size:15px;font-weight:500;cursor:pointer;margin-bottom:10px;}
 .sos-btn:active{opacity:.85;}
-
-/* ナビパネル */
 .navi-panel{border:1px solid #e0e0e0;border-radius:12px;overflow:hidden;margin-bottom:10px;}
 .navi-panel-hdr{background:#f8f8f8;padding:7px 12px;font-size:11px;font-weight:500;color:#888;border-bottom:1px solid #e0e0e0;}
 .navi-btns{display:flex;flex-direction:column;gap:7px;padding:10px;}
@@ -160,21 +130,34 @@ p{font-size:13px;line-height:1.6;color:#555;margin-bottom:10px;}
 .navi-btn.g{border-color:var(--ok);}.navi-btn.g .navi-btn-title{color:var(--ok);}
 .navi-btn.b{border-color:var(--ac);}.navi-btn.b .navi-btn-title{color:var(--ac);}
 .navi-btn.t{border-color:#0E7490;}.navi-btn.t .navi-btn-title{color:#0E7490;}
+/* 17番: 国土地理院3Dマップパネル */
+.gsi-panel{display:none;margin:0 10px 10px;border:1px solid #b5d4f4;border-radius:10px;overflow:hidden;}
+.gsi-panel-hdr{background:linear-gradient(135deg,#1B4F8A,#1a6b3a);padding:8px 12px;display:flex;justify-content:space-between;align-items:center;}
+.gsi-panel-title{font-size:11px;font-weight:500;color:#fff;}
+.gsi-close-btn{background:none;border:none;color:rgba(255,255,255,0.7);font-size:14px;cursor:pointer;padding:0 4px;}
+.gsi-iframe-wrap{position:relative;width:100%;height:200px;background:#1a1a2e;}
+.gsi-iframe-wrap iframe{width:100%;height:100%;border:none;}
+.gsi-log{background:#f0f6ff;padding:8px 12px;font-size:10px;color:#0c447c;border-top:1px solid #b5d4f4;}
+/* 18番: 天気パネル（拡張版） */
 .weather-box{background:#EFF8FF;border:1px solid #b5d4f4;border-radius:10px;padding:10px;margin:0 10px 10px;}
 .weather-row{display:flex;justify-content:space-between;align-items:center;}
 .weather-temp{font-size:22px;font-weight:500;color:#0c447c;}
 .weather-desc{font-size:12px;color:#378ADD;}
 .weather-detail{display:flex;gap:10px;margin-top:5px;font-size:11px;color:#555;flex-wrap:wrap;}
-
-/* Step 4: 終了 */
+.weather-alert{display:none;background:#FF3B30;border-radius:8px;padding:8px;text-align:center;font-size:11px;font-weight:500;color:#fff;margin-top:6px;animation:wblink 1s infinite;}
+@keyframes wblink{0%,100%{opacity:1;}50%{opacity:0.5;}}
+/* 19番: 地理院利用規約モーダル */
+.terms-modal{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.7);z-index:9999;align-items:center;justify-content:center;padding:20px;}
+.terms-modal.show{display:flex;}
+.terms-inner{background:#fff;border-radius:16px;padding:20px;max-width:320px;width:100%;text-align:center;}
+/* Step 4 */
 .prog-bar{background:#e0e0e0;height:10px;border-radius:5px;overflow:hidden;margin:12px 0;}
 .prog-fill{background:var(--ac);height:100%;width:0%;transition:width .2s;}
 .happy{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin:12px 0;}
 .hcard{padding:10px;border-radius:10px;font-size:12px;text-align:center;background:#f0f6ff;color:#0c447c;}
 .hcard.full{grid-column:1/-1;background:#eaf3de;color:#3b6d11;}
 .hcard-lbl{font-weight:500;font-size:11px;margin-bottom:2px;}
-
-/* Step 5: クロージング */
+/* Step 5 */
 .close-box{background:#f8f8f8;border:1px solid #e0e0e0;border-radius:14px;padding:18px;text-align:center;margin:10px 0;}
 .close-title{font-size:16px;font-weight:500;color:var(--ac);margin-bottom:6px;}
 .close-sub{font-size:12px;color:#666;line-height:1.7;}
@@ -194,6 +177,19 @@ p{font-size:13px;line-height:1.6;color:#555;margin-bottom:10px;}
   <div id="scanDone" style="display:none;flex-direction:column;align-items:center;">
     <div style="font-size:44px;margin-bottom:8px;">✅</div>
     <div id="scan-ok-lbl" style="color:#4CAF50;font-size:15px;font-weight:500;">---</div>
+  </div>
+</div>
+
+<!-- 19番: 国土地理院利用規約モーダル（初回のみ） -->
+<div class="terms-modal" id="termsModal">
+  <div class="terms-inner">
+    <div style="font-size:32px;margin-bottom:10px;">🗾</div>
+    <div id="terms-title" style="font-size:14px;font-weight:500;margin-bottom:10px;color:#1B4F8A;">地図データについて</div>
+    <div id="terms-body" style="font-size:11px;color:#555;margin-bottom:16px;line-height:1.7;">
+      国土地理院の地図データを使用します。<br>
+      <a href="https://www.gsi.go.jp/kikakuchousei/kikakuchousei40182.html" target="_blank" style="color:#1B4F8A;">利用規約を確認する</a>
+    </div>
+    <button id="terms-agree-btn" onclick="agreeTerms()" style="background:#1B4F8A;color:#fff;border:none;border-radius:10px;padding:12px 24px;font-size:13px;font-weight:500;width:100%;cursor:pointer;">同意して地図を表示</button>
   </div>
 </div>
 
@@ -220,7 +216,7 @@ p{font-size:13px;line-height:1.6;color:#555;margin-bottom:10px;}
   <button class="lang-flag" onclick="setLang('fr',this)">🇫🇷 FR</button>
 </div>
 
-<!-- Step 0: パートナー選択 -->
+<!-- Step 0 -->
 <div class="sc on" id="sc0">
   <h2 id="h0">---</h2>
   <div class="pgrid">
@@ -239,7 +235,7 @@ p{font-size:13px;line-height:1.6;color:#555;margin-bottom:10px;}
   </div>
 </div>
 
-<!-- Step 0.5: J-TAG説明 -->
+<!-- Step 0.5 -->
 <div class="sc" id="sc05">
   <h2 id="h05">---</h2>
   <div class="jtag-visual">
@@ -261,7 +257,7 @@ p{font-size:13px;line-height:1.6;color:#555;margin-bottom:10px;}
   <button class="btn" onclick="goTo('06')" id="btn-jtag-next">---</button>
 </div>
 
-<!-- Step 0.6: 保険パッケージ -->
+<!-- Step 0.6 -->
 <div class="sc" id="sc06">
   <h2 id="h06">---</h2>
   <div class="ins-pkg-title" id="ins-pkg-title">---</div>
@@ -281,7 +277,7 @@ p{font-size:13px;line-height:1.6;color:#555;margin-bottom:10px;}
   <button class="btn" onclick="goTo(1)" id="btn-pkg-next">---</button>
 </div>
 
-<!-- Step 1: 登録 -->
+<!-- Step 1 -->
 <div class="sc" id="sc1">
   <h2 id="h1">---</h2>
   <div class="reg-method">
@@ -319,7 +315,7 @@ p{font-size:13px;line-height:1.6;color:#555;margin-bottom:10px;}
   <button class="btn" id="btnSc2" style="display:none;" onclick="goTo(2)">---</button>
 </div>
 
-<!-- Step 2: J-TAG同期 -->
+<!-- Step 2 -->
 <div class="sc" id="sc2">
   <h2 id="h2">---</h2>
   <p id="p2txt">---</p>
@@ -338,7 +334,7 @@ p{font-size:13px;line-height:1.6;color:#555;margin-bottom:10px;}
   <button class="btn btn-gray" onclick="doSync()" id="btn-sync-sim" style="margin-top:8px;">---</button>
 </div>
 
-<!-- Step 3: アクティブ -->
+<!-- Step 3 -->
 <div class="sc" id="sc3">
   <h2 id="h3">---</h2>
   <div class="live-box">
@@ -378,15 +374,29 @@ p{font-size:13px;line-height:1.6;color:#555;margin-bottom:10px;}
         <div class="navi-btn-icon">📍</div>
         <div><div class="navi-btn-title" id="btn-navi">---</div><div class="navi-btn-sub" id="btn-navi-sub">---</div></div>
       </button>
-      <button class="navi-btn b" onclick="open3DMap()">
+      <!-- 17番: 国土地理院3Dマップボタン（アナウンス省略済み） -->
+      <button class="navi-btn b" onclick="open3DMapInPanel()">
         <div class="navi-btn-icon">🗾</div>
         <div><div class="navi-btn-title" id="btn-3dmap">---</div><div class="navi-btn-sub" id="btn-3dmap-sub">---</div></div>
       </button>
+      <!-- 18番: 天気ボタン -->
       <button class="navi-btn t" onclick="loadWeather()">
         <div class="navi-btn-icon">🌤</div>
         <div><div class="navi-btn-title" id="btn-weather">---</div><div class="navi-btn-sub" id="btn-weather-sub">---</div></div>
       </button>
     </div>
+    <!-- 17番: 国土地理院3Dマップパネル（インライン表示） -->
+    <div class="gsi-panel" id="gsiPanel">
+      <div class="gsi-panel-hdr">
+        <span class="gsi-panel-title" id="gsi-panel-title-txt">🗾 国土地理院 3Dマップ</span>
+        <button class="gsi-close-btn" onclick="closeGSIPanel()">✕</button>
+      </div>
+      <div class="gsi-iframe-wrap">
+        <iframe id="gsiIframe" src="" title="国土地理院3Dマップ"></iframe>
+      </div>
+      <div class="gsi-log" id="gsiLog">📍 現在地：取得中...</div>
+    </div>
+    <!-- 18番: 天気パネル（拡張版） -->
     <div class="weather-box" id="weatherBox" style="display:none;">
       <div id="weatherLoading" style="font-size:12px;color:#888;text-align:center;padding:6px 0;">---</div>
       <div id="weatherResult" style="display:none;">
@@ -399,13 +409,15 @@ p{font-size:13px;line-height:1.6;color:#555;margin-bottom:10px;}
           <span id="w-humid">---</span>
           <span id="w-precip">---</span>
         </div>
+        <!-- 18番: 雷警報エリア（4番の緊急振動と連動） -->
+        <div class="weather-alert" id="weatherAlert">⚡ 雷接近警報 — 安全な場所に避難してください</div>
       </div>
     </div>
   </div>
   <button class="btn btn-gray" onclick="goTo(4)" id="btn-end">---</button>
 </div>
 
-<!-- Step 4: 終了 -->
+<!-- Step 4 -->
 <div class="sc" id="sc4">
   <h2 id="h4">---</h2>
   <p id="p4txt">---</p>
@@ -420,7 +432,7 @@ p{font-size:13px;line-height:1.6;color:#555;margin-bottom:10px;}
   </div>
 </div>
 
-<!-- Step 5: クロージング -->
+<!-- Step 5 -->
 <div class="sc" id="sc5">
   <h2 id="h5">---</h2>
   <div class="close-box">
@@ -470,6 +482,8 @@ var T={
     btn_3dmap:'🗾 国土地理院3Dマップで地形確認',btn_3dmap_sub:'目的地周辺の詳細地形・標高を3D表示',
     btn_weather:'🌤 現地の天気を確認',btn_weather_sub:'OpenMeteo リアルタイム気象データ',
     weather_loading:'天気情報を取得中...',w_wind:'風速',w_humid:'湿度',w_precip:'降水量',
+    gsi_panel_title:'🗾 国土地理院 3Dマップ',
+    terms_title:'地図データについて',terms_body:'国土地理院の地図データを使用します。',terms_btn:'同意して地図を表示',
     btn_end:'ツアー終了 →',
     h4:'Step 4 — ツアー終了',p4txt:'位置データを消去中...',
     happy_user_lbl:'ユーザー',happy_user:'安全に帰宅',happy_ins_lbl:'提携保険会社',happy_ins:'リスク可視化',btn_close:'提携のご提案へ →',
@@ -516,6 +530,8 @@ var T={
     btn_3dmap:'🗾 GSI 3D Map — Terrain View',btn_3dmap_sub:'3D terrain and elevation around destination',
     btn_weather:'🌤 Check Local Weather',btn_weather_sub:'OpenMeteo real-time weather data',
     weather_loading:'Loading weather...',w_wind:'Wind',w_humid:'Humidity',w_precip:'Precip',
+    gsi_panel_title:'🗾 GSI 3D Terrain Map',
+    terms_title:'About Map Data',terms_body:'This app uses Geospatial Information Authority of Japan map data.',terms_btn:'Agree & Show Map',
     btn_end:'End Tour →',
     h4:'Step 4 — Tour End',p4txt:'Erasing location data...',
     happy_user_lbl:'User',happy_user:'Safe Return',happy_ins_lbl:'Partner Insurance',happy_ins:'Risk Visualization',btn_close:'Partnership Proposal →',
@@ -562,6 +578,8 @@ var T={
     btn_3dmap:'🗾 国土地理院3D地图',btn_3dmap_sub:'目的地周边详细地形与海拔3D显示',
     btn_weather:'🌤 确认当地天气',btn_weather_sub:'OpenMeteo 实时气象数据',
     weather_loading:'正在获取天气信息...',w_wind:'风速',w_humid:'湿度',w_precip:'降水量',
+    gsi_panel_title:'🗾 国土地理院 3D地图',
+    terms_title:'关于地图数据',terms_body:'本应用使用日本国土地理院地图数据。',terms_btn:'同意并显示地图',
     btn_end:'结束行程 →',
     h4:'Step 4 — 行程结束',p4txt:'正在删除位置数据...',
     happy_user_lbl:'用户',happy_user:'安全返回',happy_ins_lbl:'合作保险公司',happy_ins:'风险可视化',btn_close:'合作提案 →',
@@ -594,7 +612,7 @@ var T={
     tok_lbl:'Jeton anonyme généré',tok_ok:'✓ Aucune donnée personnelle stockée',
     ins_lbl:'Assurance Partenaire (Approuvée)',hub_lbl:'Hub J-PASS Matsumoto (Actif)',btn_next1:'Suivant — Sync J-TAG →',
     h2:'Étape 2 — Sync J-TAG',p2txt:'Approchez le J-TAG du téléphone. Fonctionne hors ligne et sans batterie.',
-    phylog_title:'Qu\'est-ce que le Journal Physique ? — Réponse aux questions',
+    phylog_title:'Qu\'est-ce que le Journal Physique ?',
     phylog_1:'La puce J-TAG stocke un jeton anonyme. Même si le téléphone tombe en panne, la puce continue de fonctionner.',
     phylog_2:'Les secours approchent leur appareil du J-TAG pour lire le jeton instantanément — sans réseau, sans alimentation.',
     phylog_3:'Le jeton déclenche l\'assurance partenaire qui approuve instantanément les frais de secours.',
@@ -608,6 +626,8 @@ var T={
     btn_3dmap:'🗾 Carte 3D IGJ — Terrain',btn_3dmap_sub:'Terrain 3D et altitude autour de la destination',
     btn_weather:'🌤 Météo locale',btn_weather_sub:'Données météo en temps réel OpenMeteo',
     weather_loading:'Chargement météo...',w_wind:'Vent',w_humid:'Humidité',w_precip:'Précip',
+    gsi_panel_title:'🗾 Carte 3D IGJ',
+    terms_title:'À propos des données cartographiques',terms_body:'Cette application utilise les données cartographiques de l\'Autorité géospatiale du Japon.',terms_btn:'Accepter et afficher la carte',
     btn_end:'Fin du séjour →',
     h4:'Étape 4 — Fin du séjour',p4txt:'Suppression des données de localisation...',
     happy_user_lbl:'Utilisateur',happy_user:'Retour sain et sauf',happy_ins_lbl:'Assurance Partenaire',happy_ins:'Visualisation risques',btn_close:'Proposition partenariat →',
@@ -633,7 +653,6 @@ var weatherCache={};
 function L(k){return T[curLang][k]||T.ja[k]||'';}
 function setAC(c){document.documentElement.style.setProperty('--ac',c);}
 
-/* 進捗バー更新 */
 var stepMap={'0':0,'05':1,'06':2,'1':3,'2':3,'3':4,'4':4,'5':4};
 function updateProgress(n){
   var idx=stepMap[String(n)]||0;
@@ -698,6 +717,10 @@ function applyLang(){
   document.getElementById('btn-3dmap').textContent=l.btn_3dmap;document.getElementById('btn-3dmap-sub').textContent=l.btn_3dmap_sub;
   document.getElementById('btn-weather').textContent=l.btn_weather;document.getElementById('btn-weather-sub').textContent=l.btn_weather_sub;
   document.getElementById('weatherLoading').textContent=l.weather_loading;
+  document.getElementById('gsi-panel-title-txt').textContent=l.gsi_panel_title||'🗾 3D Map';
+  document.getElementById('terms-title').textContent=l.terms_title||'地図データについて';
+  document.getElementById('terms-body').textContent=l.terms_body||'国土地理院の地図データを使用します。';
+  document.getElementById('terms-agree-btn').textContent=l.terms_btn||'同意して表示';
   document.getElementById('btn-end').textContent=l.btn_end;
   document.getElementById('h4').textContent=l.h4;document.getElementById('p4txt').textContent=l.p4txt;
   document.getElementById('happy-user-lbl').textContent=l.happy_user_lbl;document.getElementById('happy-user').textContent=l.happy_user;
@@ -719,7 +742,6 @@ function applyLang(){
   updateProgress(cur);
 }
 
-/* 音・エフェクト */
 var actx=null;
 function getCtx(){if(!actx)actx=new(window.AudioContext||window.webkitAudioContext)();return actx;}
 function beep(f,d,t,v){try{var c=getCtx();var o=c.createOscillator();var g=c.createGain();o.connect(g);g.connect(c.destination);o.type=t||'sine';o.frequency.value=f;g.gain.setValueAtTime(v||0.3,c.currentTime);g.gain.exponentialRampToValueAtTime(0.001,c.currentTime+d);o.start(c.currentTime);o.stop(c.currentTime+d);}catch(e){}}
@@ -728,27 +750,74 @@ function effReg(){beep(880,0.15);setTimeout(function(){beep(1100,0.2);},150);fla
 function effSync(){beep(660,0.1,'square');setTimeout(function(){beep(880,0.15,'square');},120);flash('rgba(26,75,140,0.5)',200);if(navigator.vibrate)navigator.vibrate(200);}
 function playSOS(){var p=[{f:440,dl:0},{f:440,dl:400},{f:440,dl:800},{f:220,dl:1400},{f:220,dl:2000},{f:220,dl:2600},{f:440,dl:3400},{f:440,dl:3800},{f:440,dl:4200},{f:880,dl:5000}];p.forEach(function(n){setTimeout(function(){beep(n.f,0.5,'sawtooth',0.4);},n.dl);});}
 
-/* ナビ */
 var naviCoords={ski:{lat:36.6989,lng:137.7703},yama:{lat:36.5685,lng:137.6619},machi:{lat:36.2281,lng:137.9689}};
-function openNavi(){var dest=naviCoords[curMode];if(!dest)return;var ml=curLang==='zh'?'zh-CN':curLang;window.open('https://www.google.com/maps/dir/?api=1&destination='+dest.lat+','+dest.lng+'&hl='+ml+'&travelmode=driving','_blank');}
-function open3DMap(){var dest=naviCoords[curMode];if(!dest)return;window.open('https://maps.gsi.go.jp/3d/?lon='+dest.lng+'&lat='+dest.lat+'&height=3000&heading=0&pitch=-45&roll=0','_blank');}
 
+/* Googleマップ（母国語） */
+function openNavi(){
+  var dest=naviCoords[curMode];if(!dest)return;
+  var ml=curLang==='zh'?'zh-CN':curLang;
+  window.open('https://www.google.com/maps/dir/?api=1&destination='+dest.lat+','+dest.lng+'&hl='+ml+'&travelmode=driving','_blank');
+}
+
+/* ===== 17番: 国土地理院3Dマップ（パネル内表示・19番の利用規約統合） ===== */
+function open3DMapInPanel(){
+  var termsAccepted=localStorage.getItem('jpass_gsi_terms');
+  if(termsAccepted){
+    showGSIPanel();
+  } else {
+    document.getElementById('termsModal').classList.add('show');
+  }
+}
+
+function agreeTerms(){
+  localStorage.setItem('jpass_gsi_terms','1');
+  document.getElementById('termsModal').classList.remove('show');
+  showGSIPanel();
+}
+
+function showGSIPanel(){
+  var dest=naviCoords[curMode];if(!dest)return;
+  var panel=document.getElementById('gsiPanel');
+  var iframe=document.getElementById('gsiIframe');
+  /* 国土地理院3DマップURL（無料・商用利用可） */
+  var url='https://maps.gsi.go.jp/3d/?lon='+dest.lng+'&lat='+dest.lat+'&height=3000&heading=0&pitch=-45&roll=0';
+  iframe.src=url;
+  panel.style.display='block';
+  var log=document.getElementById('gsiLog');
+  var locName=T[curLang].locs[curMode].name;
+  log.textContent='📍 '+locName+' 周辺 — J-TAG位置ログ記録中';
+  /* 天気ボックスを閉じる */
+  document.getElementById('weatherBox').style.display='none';
+  document.getElementById('weatherResult').style.display='none';
+}
+
+function closeGSIPanel(){
+  document.getElementById('gsiPanel').style.display='none';
+  document.getElementById('gsiIframe').src='';
+}
+
+/* ===== 18番: 天気情報（雷警報→振動連動） ===== */
 var WMO={0:'☀️ 快晴',1:'🌤 ほぼ晴れ',2:'⛅ 一部曇り',3:'☁️ 曇り',45:'🌫 霧',51:'🌦 霧雨',61:'🌧 小雨',63:'🌧 雨',65:'🌧 大雨',71:'🌨 小雪',73:'❄️ 雪',80:'🌦 にわか雨',95:'⛈ 雷雨'};
 var WMO_en={0:'☀️ Clear',1:'🌤 Mostly clear',2:'⛅ Partly cloudy',3:'☁️ Overcast',45:'🌫 Fog',61:'🌧 Light rain',63:'🌧 Rain',65:'🌧 Heavy rain',73:'❄️ Snow',80:'🌦 Showers',95:'⛈ Thunderstorm'};
 var WMO_zh={0:'☀️ 晴朗',1:'🌤 基本晴朗',2:'⛅ 部分多云',3:'☁️ 阴天',61:'🌧 小雨',63:'🌧 雨',73:'❄️ 雪',80:'🌦 阵雨',95:'⛈ 雷雨'};
 var WMO_fr={0:'☀️ Ensoleillé',1:'🌤 Dégagé',2:'⛅ Partiellement nuageux',3:'☁️ Couvert',61:'🌧 Pluie légère',63:'🌧 Pluie',73:'❄️ Neige',80:'🌦 Averses',95:'⛈ Orage'};
 function getDesc(code){var m={ja:WMO,en:WMO_en,zh:WMO_zh,fr:WMO_fr}[curLang]||WMO_en;return m[code]||m[0]||'--';}
+
 function loadWeather(){
   var dest=naviCoords[curMode];if(!dest)return;
+  /* 地図パネルを閉じる */
+  closeGSIPanel();
   document.getElementById('weatherBox').style.display='block';
   document.getElementById('weatherLoading').style.display='block';
   document.getElementById('weatherResult').style.display='none';
+  document.getElementById('weatherAlert').style.display='none';
   var key=curMode;
   if(weatherCache[key]){showWeather(weatherCache[key]);return;}
   fetch('https://api.open-meteo.com/v1/forecast?latitude='+dest.lat+'&longitude='+dest.lng+'&current=temperature_2m,relative_humidity_2m,wind_speed_10m,precipitation,weather_code&wind_speed_unit=ms&timezone=Asia%2FTokyo')
     .then(function(r){return r.json();}).then(function(d){weatherCache[key]=d;showWeather(d);})
     .catch(function(){document.getElementById('weatherLoading').textContent='--';});
 }
+
 function showWeather(d){
   var c=d.current;var l=T[curLang];
   document.getElementById('weatherLoading').style.display='none';
@@ -758,9 +827,15 @@ function showWeather(d){
   document.getElementById('w-wind').textContent=l.w_wind+': '+Math.round(c.wind_speed_10m)+'m/s';
   document.getElementById('w-humid').textContent=l.w_humid+': '+Math.round(c.relative_humidity_2m)+'%';
   document.getElementById('w-precip').textContent=l.w_precip+': '+c.precipitation+'mm';
+  /* 18番: 雷警報チェック → J-TAG緊急振動と連動（4番統合） */
+  if(c.weather_code===95||c.weather_code===96||c.weather_code===99){
+    document.getElementById('weatherAlert').style.display='block';
+    /* 緊急振動パターン（4番: 緊急時力強く） */
+    if(navigator.vibrate)navigator.vibrate([500,200,500,200,500]);
+    beep(440,0.5,'sawtooth',0.4);
+  }
 }
 
-/* フロー */
 function selPkg(el){document.querySelectorAll('.pkg-btn').forEach(function(b){b.classList.remove('sel');});el.classList.add('sel');if(navigator.vibrate)navigator.vibrate(8);}
 
 function setP(p,c){
@@ -817,6 +892,8 @@ function setMode(el,mode){
   document.getElementById('sosfired').style.display='none';
   document.getElementById('weatherBox').style.display='none';
   document.getElementById('weatherResult').style.display='none';
+  document.getElementById('weatherAlert').style.display='none';
+  closeGSIPanel();
   weatherCache={};
 }
 
@@ -858,6 +935,8 @@ function restart(){
   document.getElementById('btnSc2').style.display='none';
   document.getElementById('weatherBox').style.display='none';
   document.getElementById('weatherResult').style.display='none';
+  document.getElementById('weatherAlert').style.display='none';
+  closeGSIPanel();
   document.querySelectorAll('.mtab').forEach(function(t,i){t.classList.toggle('on',i===0);});
   document.querySelectorAll('.pkg-btn').forEach(function(b){b.classList.remove('sel');});
   setAC('#1A4B8C');curPart='';
