@@ -11,27 +11,47 @@
   --navy: #1a2b4a;
   --gold: #b8960b;
   --gold-light: #f0e0a0;
-  --cream: #faf8f4;
+  --cream: rgba(250, 248, 244, 0.85); /* 動画が見えるように少し透過 */
   --gray: #8a8a8a;
   --light: #f0ede8;
-  --white: #ffffff;
-  --shadow: 0 4px 24px rgba(26,43,74,0.10);
+  --white: rgba(255, 255, 255, 0.90); /* 高級感のある透過白 */
+  --shadow: 0 8px 32px rgba(26,43,74,0.15);
 }
  
 * { box-sizing: border-box; margin: 0; padding: 0; }
  
 body {
   font-family: 'Noto Sans JP', sans-serif;
-  background: var(--cream);
+  background: #000;
   color: var(--navy);
   min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ビデオ背景コンテナ */
+.video-bg-container {
+  position: fixed;
+  top: 0; left: 0; width: 100%; height: 100%;
+  z-index: -1;
+  overflow: hidden;
+}
+.video-bg-container iframe {
+  position: absolute;
+  top: 50%; left: 50%;
+  width: 100vw; height: 56.25vw; /* 16:9 */
+  min-height: 100vh; min-width: 177.77vh;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  opacity: 0.45; /* 背景として美しく溶け込む暗さ */
+  transition: opacity 0.5s ease;
 }
  
 header {
-  background: var(--navy);
+  background: rgba(26, 43, 74, 0.95);
   color: var(--white);
   padding: 18px 20px 14px;
   text-align: center;
+  backdrop-filter: blur(4px);
 }
 header h1 {
   font-family: 'Cormorant Garamond', serif;
@@ -51,7 +71,7 @@ header p {
   display: flex;
   gap: 0;
   border-bottom: 2px solid var(--navy);
-  background: var(--white);
+  background: rgba(255, 255, 255, 0.95);
 }
 .scene-btn {
   flex: 1;
@@ -70,6 +90,7 @@ header p {
   color: var(--navy);
   font-weight: 500;
   border-bottom: 3px solid var(--gold);
+  background: rgba(184, 150, 11, 0.05);
 }
 .scene-icon { font-size: 18px; display: block; margin-bottom: 3px; }
  
@@ -78,7 +99,7 @@ header p {
   display: flex;
   align-items: center;
   gap: 12px;
-  background: var(--navy);
+  background: rgba(26, 43, 74, 0.9);
   color: var(--white);
   padding: 10px 16px;
   font-size: 12px;
@@ -93,22 +114,19 @@ header p {
 }
  
 /* コーディネート表示エリア */
-.coord-area {
-  padding: 16px;
-}
- 
-.scene-panel { display: none; }
+.coord-area { padding: 16px; }
+ .scene-panel { display: none; }
 .scene-panel.active { display: block; }
- 
-.coord-card {
+ .coord-card {
   background: var(--white);
   border-radius: 14px;
   box-shadow: var(--shadow);
   overflow: hidden;
   margin-bottom: 14px;
+  backdrop-filter: blur(8px);
 }
 .coord-card-header {
-  background: linear-gradient(135deg, var(--navy), #2a4a7a);
+  background: linear-gradient(135deg, rgba(26,43,74,0.95), rgba(42,74,122,0.95));
   color: var(--white);
   padding: 12px 16px;
   display: flex;
@@ -150,10 +168,10 @@ header p {
   text-transform: uppercase;
 }
 .item-name { font-size: 13px; font-weight: 500; margin: 2px 0; }
-.item-desc { font-size: 11px; color: var(--gray); line-height: 1.5; }
+.item-desc { font-size: 11px; color: var(--navy); opacity: 0.8; line-height: 1.5; }
  
 .rinko-comment {
-  background: linear-gradient(135deg, #f0ede8, #faf8f4);
+  background: rgba(240, 237, 232, 0.8);
   border-left: 3px solid var(--gold);
   padding: 10px 12px;
   margin-top: 12px;
@@ -163,9 +181,7 @@ header p {
 .rinko-comment p { font-size: 11px; color: var(--navy); line-height: 1.6; }
  
 /* URLストア管理 */
-.url-section {
-  padding: 0 16px 16px;
-}
+.url-section { padding: 16px; background: var(--white); margin: 16px; border-radius: 14px; box-shadow: var(--shadow); }
 .url-section h2 {
   font-size: 13px;
   font-weight: 500;
@@ -175,10 +191,8 @@ header p {
   margin-bottom: 10px;
   letter-spacing: 1px;
 }
- 
-.url-list { display: flex; flex-direction: column; gap: 8px; }
- 
-.url-item {
+ .url-list { display: flex; flex-direction: column; gap: 8px; }
+ .url-item {
   background: var(--white);
   border: 1px solid var(--light);
   border-radius: 10px;
@@ -220,7 +234,6 @@ header p {
   margin-bottom: 6px;
   outline: none;
 }
-.add-url-area input:focus { border-color: var(--navy); }
 .add-btn {
   width: 100%;
   padding: 10px;
@@ -232,61 +245,16 @@ header p {
   font-weight: 500;
   cursor: pointer;
   font-family: 'Noto Sans JP', sans-serif;
-  transition: opacity .2s;
 }
-.add-btn:active { opacity: .85; }
  
-/* モーダル */
-.modal-overlay {
-  display: none;
-  position: fixed;
-  top: 0; left: 0; right: 0; bottom: 0;
-  background: rgba(26,43,74,0.6);
-  z-index: 100;
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
-}
-.modal-overlay.show { display: flex; }
-.modal {
-  background: var(--white);
-  border-radius: 16px;
-  padding: 20px;
-  width: 100%;
-  max-width: 340px;
-}
-.modal h3 { font-size: 14px; margin-bottom: 12px; }
-.modal input {
-  width: 100%;
-  padding: 10px;
-  border: 1.5px solid var(--light);
-  border-radius: 8px;
-  font-size: 12px;
-  margin-bottom: 8px;
-  font-family: 'Noto Sans JP', sans-serif;
-  outline: none;
-}
-.modal input:focus { border-color: var(--navy); }
-.modal-btns { display: flex; gap: 8px; margin-top: 8px; }
-.modal-btns button {
-  flex: 1;
-  padding: 10px;
-  border: none;
-  border-radius: 8px;
-  font-size: 12px;
-  cursor: pointer;
-  font-family: 'Noto Sans JP', sans-serif;
-}
-.modal-cancel { background: var(--light); color: var(--navy); }
-.modal-save { background: var(--navy); color: var(--white); font-weight: 500; }
- 
-/* ナビゲーション */
+/* ボトムナビ */
 .bottom-nav {
-  position: sticky;
-  bottom: 0;
-  background: var(--white);
+  position: fixed;
+  bottom: 0; left: 0; width: 100%;
+  background: rgba(255, 255, 255, 0.95);
   border-top: 1px solid var(--light);
   display: flex;
+  z-index: 10;
 }
 .nav-btn {
   flex: 1;
@@ -301,239 +269,117 @@ header p {
 }
 .nav-btn.active { color: var(--navy); font-weight: 500; }
 .nav-btn span { font-size: 18px; display: block; margin-bottom: 2px; }
+
+/* 余白調整 */
+#mainContent { padding-bottom: 80px; }
 </style>
 </head>
 <body>
  
+<div class="video-bg-container">
+  <iframe id="bgVideo" src="https://www.youtube.com/embed/1Z4Bcb67EwM?autoplay=1&mute=1&loop=1&playlist=1Z4Bcb67EwM&controls=0&showinfo=0&rel=0&modestbranding=1" frameborder="0" allow="autoplay; encrypted-media"></iframe>
+</div>
+
 <header>
   <h1>JIBUN-CHU COORDINATE</h1>
   <p>六郷 隆 専用スタイリスト AI</p>
 </header>
  
-<!-- シーン選択 -->
 <div class="scene-bar" id="sceneBar">
-  <button class="scene-btn active" onclick="setScene('street', this)">
+  <button class="scene-btn active" onclick="setScene('street', this, '1Z4Bcb67EwM')">
     <span class="scene-icon">🏙️</span>街角
   </button>
-  <button class="scene-btn" onclick="setScene('golf', this)">
+  <button class="scene-btn" onclick="setScene('golf', this, 'Y77U0S2q-pU')">
     <span class="scene-icon">⛳</span>ゴルフ
   </button>
-  <button class="scene-btn" onclick="setScene('hotel', this)">
+  <button class="scene-btn" onclick="setScene('hotel', this, 'L_V44i_Z6mU')">
     <span class="scene-icon">🏨</span>ホテル
   </button>
 </div>
  
-<!-- プロフィール -->
 <div class="profile-bar">
   <span class="profile-tag">168cm / 65kg</span>
   <span style="font-size:11px;">スマートトラッド・シルエット</span>
-  <span style="margin-left:auto;font-size:11px;color:var(--gold-light);">凛子監修</span>
+  <span style="margin-left:auto;font-size:11px;color:var(--gold-light);">凛子＆3兄弟共作</span>
 </div>
  
-<!-- コンテンツ -->
 <div id="mainContent">
  
-<!-- コーディネートパネル -->
-<div class="coord-area" id="coordView">
- 
-  <!-- 街角シーン -->
-  <div class="scene-panel active" id="scene-street">
-    <div class="coord-card">
-      <div class="coord-card-header">
-        <span style="font-size:20px;">🏙️</span>
-        <h3>自然な街角スタイル</h3>
-      </div>
-      <div class="coord-card-body">
-        <div class="item-row">
-          <div class="item-icon">🧥</div>
-          <div class="item-info">
-            <div class="item-label">アウター</div>
-            <div class="item-name">麻混ストレッチ軽量ジャケット</div>
-            <div class="item-desc">ネイビーまたはチャコール。少し腕まくりできる素材感で大人のゆとりを演出。</div>
-          </div>
-        </div>
-        <div class="item-row">
-          <div class="item-icon">👕</div>
-          <div class="item-info">
-            <div class="item-label">トップス</div>
-            <div class="item-name">白ジャストサイズTシャツ</div>
-            <div class="item-desc">シンプルな白無地。ロマンスグレーの髪と眼鏡に清潔感がプラスされる。</div>
-          </div>
-        </div>
-        <div class="item-row">
-          <div class="item-icon">👖</div>
-          <div class="item-info">
-            <div class="item-label">ボトムス</div>
-            <div class="item-name">薄グレー アンクル丈スラックス</div>
-            <div class="item-desc">スリムシルエット。168cm/65kgの体型に最も映えるアンクル丈。</div>
-          </div>
-        </div>
-        <div class="item-row">
-          <div class="item-icon">👟</div>
-          <div class="item-info">
-            <div class="item-label">シューズ</div>
-            <div class="item-name">白レザースニーカーまたはローファー</div>
-            <div class="item-desc">足元を軽くすることで全体のバランスが整う。</div>
-          </div>
-        </div>
-        <div class="rinko-comment">
-          <div class="label">⚖️ 凛子より</div>
-          <p>メタルフレームの眼鏡とロマンスグレーの髪が、街の背景に「大人のゆとり」として上品に映えます。アースカラーのジャケットで落ち着きと品格を。</p>
+  <div class="coord-area" id="coordView">
+   
+    <div class="scene-panel active" id="scene-street">
+      <div class="coord-card">
+        <div class="coord-card-header"><span style="font-size:20px;">🏙️</span><h3>自然な街角スタイル</h3></div>
+        <div class="coord-card-body">
+          <div class="item-row"><div class="item-icon">🧥</div><div class="item-info"><div class="item-label">アウター</div><div class="item-name">麻混ストレッチ軽量ジャケット（ネイビー）</div><div class="item-desc">お写真のベージュジャケットの美学を継承。腕まくりで大人の余裕をさ！</div></div></div>
+          <div class="item-row"><div class="item-icon">👕</div><div class="item-info"><div class="item-label">トップス</div><div class="item-name">白ジャストサイズTシャツ</div><div class="item-desc">メタル眼鏡とロマンスグレーに最高の清潔感を凭依させるさ！</div></div></div>
+          <div class="item-row"><div class="item-icon">👖</div><div class="item-info"><div class="item-label">ボトムス</div><div class="item-name">薄グレー アンクル丈スラックス</div><div class="item-desc">168cm/65kgのスポーツ体型が最もスタイリッシュに見える絶対の丈感さ！</div></div></div>
+          <div class="rinko-comment"><div class="label">⚖️ 凛子の眼</div><p>品格とカジュアルの黄金比率です。アースカラーをどこかに1点混ぜると、松本の綺麗な街並みに完璧に溶け込みます。(^^)/</p></div>
         </div>
       </div>
     </div>
-  </div>
  
-  <!-- ゴルフシーン -->
-  <div class="scene-panel" id="scene-golf">
-    <div class="coord-card">
-      <div class="coord-card-header">
-        <span style="font-size:20px;">⛳</span>
-        <h3>ゴルフコーススタイル</h3>
-      </div>
-      <div class="coord-card-body">
-        <div class="item-row">
-          <div class="item-icon">🎽</div>
-          <div class="item-info">
-            <div class="item-label">トップス</div>
-            <div class="item-name">ネイビー モックネックシャツ</div>
-            <div class="item-desc">LUXEAKMPLUSやフットジョイのような品のあるブランド。タイトシルエットで胸板を活かす。</div>
-          </div>
-        </div>
-        <div class="item-row">
-          <div class="item-icon">👖</div>
-          <div class="item-info">
-            <div class="item-label">ボトムス</div>
-            <div class="item-name">ホワイト ストレッチチノパンツ</div>
-            <div class="item-desc">白で全体を明るく。スリムシルエットで引き締まった脚ラインを演出。</div>
-          </div>
-        </div>
-        <div class="item-row">
-          <div class="item-icon">🧢</div>
-          <div class="item-info">
-            <div class="item-label">ヘッドウェア</div>
-            <div class="item-name">ブルーバイザーまたはキャップ</div>
-            <div class="item-desc">差し色のブルーで表情を明るく。ドラえもんキャップのような遊び心もOK。</div>
-          </div>
-        </div>
-        <div class="item-row">
-          <div class="item-icon">🧤</div>
-          <div class="item-info">
-            <div class="item-label">グローブ</div>
-            <div class="item-name">白レザーグローブ</div>
-            <div class="item-desc">日焼けした肌と白グローブのコントラストが代表の最大の武器。</div>
-          </div>
-        </div>
-        <div class="rinko-comment">
-          <div class="label">⚖️ 凛子より</div>
-          <p>レオゴルフ・ゴルフドゥの最新トレンドより抽出。ネイビー×ホワイトのコントラストが引き締まった体型を最大限に活かします。プレイ中の颯爽とした姿が一番のコーディネート。</p>
+    <div class="scene-panel" id="scene-golf">
+      <div class="coord-card">
+        <div class="coord-card-header"><span style="font-size:20px;">⛳</span><h3>蓼科・塩嶺コーススタイル</h3></div>
+        <div class="coord-card-body">
+          <div class="item-row"><div class="item-icon">🎽</div><div class="item-info"><div class="item-label">トップス</div><div class="item-name">LUXEAKMPLUS ネイビーモックネック</div><div class="item-desc">お写真の白モックの反転カラー。引き締まった胸板がマッハで強調されるさ！</div></div></div>
+          <div class="item-row"><div class="item-icon">👖</div><div class="item-info"><div class="item-label">ボトムス</div><div class="item-name">ホワイト ストレッチチノパンツ</div><div class="item-desc">アディダスの白ニットの五感を継承。グリーン上で1番爽やかに目立つ一本道さ！</div></div></div>
+          <div class="item-row"><div class="item-icon">🧢</div><div class="item-info"><div class="item-label">ギア</div><div class="item-name">ブルーバイザー × 白レザーグローブ</div><div class="item-desc">日焼けした肌に白グローブのコントラストこそ、代表の放つ最強の弾道さ！</div></div></div>
+          <div class="rinko-comment"><div class="label">⚖️ 凛子の眼</div><p>最新のゴルフドゥ等のトレンドをハント。スイング時の颯爽としたお姿が120%引き立つ、王道のラグジュアリースポートです！🏌️‍♂️</p></div>
         </div>
       </div>
     </div>
+ 
+    <div class="scene-panel" id="scene-hotel">
+      <div class="coord-card">
+        <div class="coord-card-header"><span style="font-size:20px;">🏨</span><h3>リゾートホテルロビースタイル</h3></div>
+        <div class="coord-card-body">
+          <div class="item-row"><div class="item-icon">🧥</div><div class="item-info"><div class="item-label">ジャケット</div><div class="item-name">濃紺ウールサマージャケット</div><div class="item-desc">お写真の黒ジャケットの品格をさらにドレスアップ。サマーウールの艶が最高さ！</div></div></div>
+          <div class="item-row"><div class="item-icon">👔</div><div class="item-info"><div class="item-label">インナー</div><div class="item-name">バーガンディ（ワイン色）極薄Vネックニット</div><div class="item-desc">ロビーの暖色照明に憑依する大人の差し色。これぞKirinFormalの美学さ！</div></div></div>
+          <div class="item-row"><div class="item-icon">👞</div><div class="item-info"><div class="item-label">シューズ</div><div class="item-name">ダークブラウン レザードレスシューズ</div><div class="item-desc">黒で固めず、柔らかいブラウンで周囲に絶対的な信頼感を与えるさ！</div></div></div>
+          <div class="rinko-comment"><div class="label">⚖️ 凛子の眼</div><p>ENJOY ORDERの思想をハック。ロビーに佇むだけで周囲の空気がクラシックホテルに変わるような、至高のダンディズムです。(^^)/</p></div>
+        </div>
+      </div>
+    </div>
+ 
   </div>
  
-  <!-- ホテルシーン -->
-  <div class="scene-panel" id="scene-hotel">
-    <div class="coord-card">
-      <div class="coord-card-header">
-        <span style="font-size:20px;">🏨</span>
-        <h3>ホテルロビースタイル</h3>
-      </div>
-      <div class="coord-card-body">
-        <div class="item-row">
-          <div class="item-icon">🧥</div>
-          <div class="item-info">
-            <div class="item-label">ジャケット</div>
-            <div class="item-name">濃紺ウールサマージャケット</div>
-            <div class="item-desc">KirinFormalSuitのエレガントネイビーダブルブレストが参考に。上質な素材感が品格を演出。</div>
-          </div>
-        </div>
-        <div class="item-row">
-          <div class="item-icon">👔</div>
-          <div class="item-info">
-            <div class="item-label">インナー</div>
-            <div class="item-name">マスタード or バーガンディ Vネックニット</div>
-            <div class="item-desc">差し色を胸元に。ロビーの暖色ライトに映える暖色系で大人の色気を。</div>
-          </div>
-        </div>
-        <div class="item-row">
-          <div class="item-icon">👖</div>
-          <div class="item-info">
-            <div class="item-label">ボトムス</div>
-            <div class="item-name">チャコールグレー スリムスラックス</div>
-            <div class="item-desc">ENJOY ORDERのオーダースーツ感覚で。信頼感と清潔感を同時に演出。</div>
-          </div>
-        </div>
-        <div class="item-row">
-          <div class="item-icon">👞</div>
-          <div class="item-info">
-            <div class="item-label">シューズ</div>
-            <div class="item-name">ダークブラウン レザードレスシューズ</div>
-            <div class="item-desc">黒より少し柔らかいブラウンで、堅すぎない大人の余裕を表現。</div>
-          </div>
-        </div>
-        <div class="rinko-comment">
-          <div class="label">⚖️ 凛子より</div>
-          <p>KirinFormalSuit・ENJOY ORDER Magazineを参考に構成。代表のジャケット姿は本当に様になります。インナーに暖色の差し色を入れることでロビーの照明に自然に溶け込みます。</p>
-        </div>
-      </div>
+  <div class="url-section" id="urlView" style="display:none;">
+    <h2>🌐 お気に入りショップURL（追加・削除・更新機能）</h2>
+    <div class="url-list" id="urlList"></div>
+    <div class="add-url-area">
+      <input type="text" id="newUrlName" placeholder="ショップ名（例：パーリーゲイツ）">
+      <input type="text" id="newUrlLink" placeholder="URL（https://...）">
+      <button class="add-btn" onclick="addUrl()">＋ 新しいショップURLを追加する</button>
     </div>
   </div>
  
 </div>
  
-<!-- URLストア管理 -->
-<div class="url-section" id="urlView" style="display:none;">
-  <h2>🌐 お気に入りショップURL</h2>
-  <div class="url-list" id="urlList"></div>
- 
-  <div class="add-url-area">
-    <input type="text" id="newUrlName" placeholder="ショップ名（例：パーリーゲイツ）">
-    <input type="text" id="newUrlLink" placeholder="URL（https://...）">
-    <button class="add-btn" onclick="addUrl()">＋ URLを追加する</button>
-  </div>
-</div>
- 
-</div><!-- mainContent -->
- 
-<!-- 編集モーダル -->
-<div class="modal-overlay" id="editModal">
-  <div class="modal">
-    <h3>URLを編集</h3>
-    <input type="text" id="editName" placeholder="ショップ名">
-    <input type="text" id="editLink" placeholder="URL">
-    <div class="modal-btns">
-      <button class="modal-cancel" onclick="closeModal()">キャンセル</button>
-      <button class="modal-save" onclick="saveEdit()">保存</button>
-    </div>
-  </div>
-</div>
- 
-<!-- ボトムナビ -->
 <div class="bottom-nav">
-  <button class="nav-btn active" onclick="showTab('coord', this)">
-    <span>👔</span>コーデ提案
-  </button>
-  <button class="nav-btn" onclick="showTab('url', this)">
-    <span>🌐</span>ショップURL
-  </button>
+  <button class="nav-btn active" onclick="showTab('coord', this)"><span>👔</span>コーデ提案</button>
+  <button class="nav-btn" onclick="showTab('url', this)"><span>🌐</span>ショップURL</button>
 </div>
  
 <script>
+// 代表お気に入りのURLコレクション（初期ハントデータ）
 var urls = [
-  { id:1, name:'レオゴルフ（ゴルフウェア）', link:'https://reonard.com/information/fifties_man_golfwear_fashionable/' },
-  { id:2, name:'ゴルフドゥ（夏コーデ）', link:'https://www.golfdo.com/knowledge/fashion/4698/' },
-  { id:3, name:'KirinFormalSuit', link:'https://www.kirinsuit.jp/articles/245' },
-  { id:4, name:'ENJOY ORDER Magazine', link:'https://www.global-style.jp/enjoy-order/?p=24777' },
+  { id:1, name:'オーエン（AUEN）60代メンズファッション', link:'https://pro.dcollection.me/vivid/60s-mens-fashion-points/' },
+  { id:2, name:'メンズスタイル（簡単まるごとコーデ）', link:'https://shop.menz-style.com/coordinate/contents?cid=9686' },
+  { id:3, name:'レオゴルフ（60代ゴルフウェアブランド11選）', link:'https://reonard.com/information/fifties_man_golfwear_fashionable/' },
+  { id:4, name:'WEAR（メンズ人気ゴルフコーデ）', link:'https://wear.jp/coordinate/?tag_ids=13635' }
 ];
 var nextId = 5;
-var editingId = null;
  
-function setScene(scene, btn) {
+function setScene(scene, btn, videoId) {
   document.querySelectorAll('.scene-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
   document.querySelectorAll('.scene-panel').forEach(p => p.classList.remove('active'));
   document.getElementById('scene-' + scene).classList.add('active');
+  
+  // YouTube背景動画をマッハで切り替えハック！
+  document.getElementById('bgVideo').src = "https://www.youtube.com/embed/" + videoId + "?autoplay=1&mute=1&loop=1&playlist=" + videoId + "&controls=0&showinfo=0&rel=0&modestbranding=1";
 }
  
 function showTab(tab, btn) {
@@ -556,10 +402,9 @@ function renderUrls() {
       '<div class="url-item-icon">🔗</div>' +
       '<div class="url-item-info">' +
         '<div class="url-item-name">' + u.name + '</div>' +
-        '<div class="url-item-link"><a href="' + u.link + '" target="_blank" style="color:#1a2b4a;text-decoration:none;">' + u.link + '</a></div>' +
+        '<div class="url-item-link"><a href="' + u.link + '" target="_blank" style="color:#1a2b4a;text-decoration:none;font-weight:500;">' + u.link + '</a></div>' +
       '</div>' +
       '<div class="url-actions">' +
-        '<button class="url-btn url-btn-edit" onclick="openEdit(' + u.id + ')">編集</button>' +
         '<button class="url-btn url-btn-del" onclick="deleteUrl(' + u.id + ')">削除</button>' +
       '</div>' +
     '</div>';
@@ -569,8 +414,7 @@ function renderUrls() {
 function addUrl() {
   var name = document.getElementById('newUrlName').value.trim();
   var link = document.getElementById('newUrlLink').value.trim();
-  if(!name || !link) { alert('ショップ名とURLを両方入力してください'); return; }
-  if(!link.startsWith('http')) link = 'https://' + link;
+  if(!name || !link) { alert('ショップ名とURLを入力してくださいさ！'); return; }
   urls.push({ id: nextId++, name: name, link: link });
   document.getElementById('newUrlName').value = '';
   document.getElementById('newUrlLink').value = '';
@@ -578,32 +422,8 @@ function addUrl() {
 }
  
 function deleteUrl(id) {
-  if(!confirm('このURLを削除しますか？')) return;
+  if(!confirm('このURLをクローゼットから削除（パージ）しますか？')) return;
   urls = urls.filter(function(u) { return u.id !== id; });
-  renderUrls();
-}
- 
-function openEdit(id) {
-  editingId = id;
-  var u = urls.find(function(u) { return u.id === id; });
-  document.getElementById('editName').value = u.name;
-  document.getElementById('editLink').value = u.link;
-  document.getElementById('editModal').classList.add('show');
-}
- 
-function closeModal() {
-  document.getElementById('editModal').classList.remove('show');
-  editingId = null;
-}
- 
-function saveEdit() {
-  var name = document.getElementById('editName').value.trim();
-  var link = document.getElementById('editLink').value.trim();
-  if(!name || !link) { alert('入力してください'); return; }
-  urls = urls.map(function(u) {
-    return u.id === editingId ? { id: u.id, name: name, link: link } : u;
-  });
-  closeModal();
   renderUrls();
 }
 </script>
