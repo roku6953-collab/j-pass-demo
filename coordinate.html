@@ -28,13 +28,13 @@ body {
   padding-bottom: 80px;
 }
 
-/* ビデオ背景コンテナ（最背面へ完全固定し、タップを邪魔しない設定に修正さ！） */
+/* ビデオ背景コンテナ（タップを邪魔しない完全背面固定さ！） */
 .video-bg-container {
   position: fixed;
   top: 0; left: 0; width: 100%; height: 100%;
   z-index: -2;
   overflow: hidden;
-  pointer-events: none; /* これで入力の邪魔を100%しないさ！ */
+  pointer-events: none;
 }
 .video-bg-container iframe {
   position: absolute;
@@ -43,7 +43,7 @@ body {
   min-height: 100vh; min-width: 177.77vh;
   transform: translate(-50%, -50%);
   pointer-events: none;
-  opacity: 0.40;
+  opacity: 0.35; /* 文字が見えやすいように少し暗めにハック！ */
 }
  
 header {
@@ -113,7 +113,7 @@ header p {
   font-weight: 500;
 }
  
-/* メインコンテンツ（前面に浮かび上がらせて確実に入力可能にするさ！） */
+/* メインコンテンツ */
 #mainContent {
   position: relative;
   z-index: 10;
@@ -167,7 +167,7 @@ header p {
 .rinko-comment .label { font-size: 10px; color: var(--gold); font-weight: 500; }
 .rinko-comment p { font-size: 11px; color: var(--navy); line-height: 1.6; }
  
-/* URLセクション（ここが100%入力できるように全面改良さ！） */
+/* URLセクション */
 .url-section {
   padding: 16px;
   background: var(--white);
@@ -200,7 +200,7 @@ header p {
   width: 100%; padding: 10px; border: 1px solid var(--gray);
   border-radius: 8px; font-size: 13px; font-family: 'Noto Sans JP', sans-serif;
   margin-bottom: 8px; outline: none;
-  background: #fff; color: #000; /* 入力文字をハッキリ見えるように変更さ！ */
+  background: #fff; color: #000;
 }
 .add-url-area input:focus { border-color: var(--gold); border-width: 1.5px; }
 .add-btn {
@@ -225,7 +225,7 @@ header p {
 <body>
  
 <div class="video-bg-container">
-  <iframe id="bgVideo" src="https://www.youtube.com/embed/1Z4Bcb67EwM?autoplay=1&mute=1&loop=1&playlist=1Z4Bcb67EwM&controls=0&showinfo=0&rel=0&modestbranding=1" frameborder="0" allow="autoplay; encrypted-media"></iframe>
+  <iframe id="bgVideo" src="https://www.youtube.com/embed/jfKfPfyJRdk?autoplay=1&mute=1&loop=1&playlist=jfKfPfyJRdk&controls=0&showinfo=0&rel=0&modestbranding=1" frameborder="0" allow="autoplay; encrypted-media"></iframe>
 </div>
 
 <header>
@@ -234,13 +234,13 @@ header p {
 </header>
  
 <div class="scene-bar" id="sceneBar">
-  <button class="scene-btn active" onclick="setScene('street', this, '1Z4Bcb67EwM')">
+  <button class="scene-btn active" onclick="setScene('street', this, 'jfKfPfyJRdk')">
     <span class="scene-icon">🏙️</span>街角
   </button>
-  <button class="scene-btn" onclick="setScene('golf', this, 'Y77U0S2q-pU')">
+  <button class="scene-btn" onclick="setScene('golf', this, 'Ym_fH06L8_Y')">
     <span class="scene-icon">⛳</span>ゴルフ
   </button>
-  <button class="scene-btn" onclick="setScene('hotel', this, 'L_V44i_Z6mU')">
+  <button class="scene-btn" onclick="setScene('hotel', this, '5Wz8E4D03wM')">
     <span class="scene-icon">🏨</span>ホテル
   </button>
 </div>
@@ -248,7 +248,7 @@ header p {
 <div class="profile-bar">
   <span class="profile-tag">168cm / 65kg</span>
   <span style="font-size:11px;">スマートトラッド・シルエット</span>
-  <span style="margin-left:auto;font-size:11px;color:var(--gold-light);">3兄弟・完全修正版</span>
+  <span style="margin-left:auto;font-size:11px;color:var(--gold-light);">3兄弟・動画リンク修正版</span>
 </div>
  
 <div id="mainContent">
@@ -309,7 +309,6 @@ header p {
 </div>
  
 <script>
-// 初期ハントデータ（代表の送ってくれた4大URLさ！）
 var urls = [
   { id: 1, name: 'オーエン（AUEN）60代メンズファッション', link: 'https://pro.dcollection.me/vivid/60s-mens-fashion-points/' },
   { id: 2, name: 'メンズスタイル（簡単まるごとコーデ）', link: 'https://shop.menz-style.com/coordinate/contents?cid=9686' },
@@ -324,7 +323,7 @@ function setScene(scene, btn, videoId) {
   document.querySelectorAll('.scene-panel').forEach(p => p.classList.remove('active'));
   document.getElementById('scene-' + scene).classList.add('active');
   
-  // 背景動画を光速切り替えハック！
+  // 安全動画への光速切り替えハック！
   document.getElementById('bgVideo').src = "https://www.youtube.com/embed/" + videoId + "?autoplay=1&mute=1&loop=1&playlist=" + videoId + "&controls=0&showinfo=0&rel=0&modestbranding=1";
 }
  
