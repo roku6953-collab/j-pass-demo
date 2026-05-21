@@ -28,7 +28,7 @@ body {
   padding-bottom: 80px;
 }
 
-/* ビデオ背景コンテナ（タップを邪魔しない完全背面固定さ！） */
+/* ビデオ背景コンテナ（絶対にライブストリームを使わない安定固定仕様さ！） */
 .video-bg-container {
   position: fixed;
   top: 0; left: 0; width: 100%; height: 100%;
@@ -43,7 +43,7 @@ body {
   min-height: 100vh; min-width: 177.77vh;
   transform: translate(-50%, -50%);
   pointer-events: none;
-  opacity: 0.35; /* 文字が見えやすいように少し暗めにハック！ */
+  opacity: 0.35;
 }
  
 header {
@@ -225,7 +225,7 @@ header p {
 <body>
  
 <div class="video-bg-container">
-  <iframe id="bgVideo" src="https://www.youtube.com/embed/jfKfPfyJRdk?autoplay=1&mute=1&loop=1&playlist=jfKfPfyJRdk&controls=0&showinfo=0&rel=0&modestbranding=1" frameborder="0" allow="autoplay; encrypted-media"></iframe>
+  <iframe id="bgVideo" src="https://www.youtube.com/embed/ZqRco9U6vIs?autoplay=1&mute=1&loop=1&playlist=ZqRco9U6vIs&controls=0&showinfo=0&rel=0&modestbranding=1" frameborder="0" allow="autoplay; encrypted-media"></iframe>
 </div>
 
 <header>
@@ -234,13 +234,13 @@ header p {
 </header>
  
 <div class="scene-bar" id="sceneBar">
-  <button class="scene-btn active" onclick="setScene('street', this, 'jfKfPfyJRdk')">
+  <button class="scene-btn active" onclick="setScene('street', this, 'ZqRco9U6vIs')">
     <span class="scene-icon">🏙️</span>街角
   </button>
-  <button class="scene-btn" onclick="setScene('golf', this, 'Ym_fH06L8_Y')">
+  <button class="scene-btn" onclick="setScene('golf', this, '3b9pS1AEvYI')">
     <span class="scene-icon">⛳</span>ゴルフ
   </button>
-  <button class="scene-btn" onclick="setScene('hotel', this, '5Wz8E4D03wM')">
+  <button class="scene-btn" onclick="setScene('hotel', this, 'e9mC_D7w7Yg')">
     <span class="scene-icon">🏨</span>ホテル
   </button>
 </div>
@@ -248,7 +248,7 @@ header p {
 <div class="profile-bar">
   <span class="profile-tag">168cm / 65kg</span>
   <span style="font-size:11px;">スマートトラッド・シルエット</span>
-  <span style="margin-left:auto;font-size:11px;color:var(--gold-light);">3兄弟・動画リンク修正版</span>
+  <span style="margin-left:auto;font-size:11px;color:var(--gold-light);">3兄弟・ライブ制限パージ版</span>
 </div>
  
 <div id="mainContent">
@@ -323,7 +323,7 @@ function setScene(scene, btn, videoId) {
   document.querySelectorAll('.scene-panel').forEach(p => p.classList.remove('active'));
   document.getElementById('scene-' + scene).classList.add('active');
   
-  // 安全動画への光速切り替えハック！
+  // 通常の動画リンクへの光速切り替えハック！
   document.getElementById('bgVideo').src = "https://www.youtube.com/embed/" + videoId + "?autoplay=1&mute=1&loop=1&playlist=" + videoId + "&controls=0&showinfo=0&rel=0&modestbranding=1";
 }
  
@@ -348,7 +348,7 @@ function renderUrls() {
         '<div class="url-item-name" style="font-size:12px; font-weight:500; margin-bottom:2px;">' + u.name + '</div>' +
         '<div class="url-item-link"><a href="' + u.link + '" target="_blank">' + u.link + '</a></div>' +
       '</div>' +
-      '<button class="url-btn-del" onclick="deleteUrl(' + u.id + ')">削除</button>' +
+      '<button class="url-btn-del" onclick="deleteUrl(' + id + ')">削除</button>' +
     '</div>';
   }).join('');
 }
