@@ -11,222 +11,179 @@
   --navy: #1a2b4a;
   --gold: #b8960b;
   --gold-light: #f0e0a0;
-  --cream: rgba(250, 248, 244, 0.90);
+  --cream: rgba(250, 248, 244, 0.94);
   --gray: #8a8a8a;
   --light: #f0ede8;
-  --white: rgba(255, 255, 255, 0.92);
-  --shadow: 0 8px 32px rgba(26,43,74,0.15);
+  --white: rgba(255, 255, 255, 0.95);
+  --shadow: 0 10px 40px rgba(26,43,74,0.20);
 }
  
 * { box-sizing: border-box; margin: 0; padding: 0; }
  
 body {
   font-family: 'Noto Sans JP', sans-serif;
-  background: #000;
+  background: #111;
   color: var(--navy);
   min-height: 100vh;
-  padding-bottom: 80px;
+  padding-bottom: 90px;
 }
 
-/* ビデオ背景コンテナ（絶対にライブストリームを使わない安定固定仕様さ！） */
-.video-bg-container {
+/* 四季のハイクオリティー静止画背景コンテナ（超軽量・エラー100%ナシ仕様さ！） */
+.visual-bg-backdrop {
   position: fixed;
   top: 0; left: 0; width: 100%; height: 100%;
   z-index: -2;
-  overflow: hidden;
-  pointer-events: none;
+  background-size: cover;
+  background-position: center;
+  transition: background-image 0.6s ease-in-out;
 }
-.video-bg-container iframe {
+
+/* 画面中央の「六郷代表・AI重ね着ステージ」 */
+.stage-container {
+  width: 100%;
+  height: 280px;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 10px;
+}
+.avatar-silhouette {
+  height: 90%;
+  z-index: 1;
+  filter: drop-shadow(0 8px 16px rgba(0,0,0,0.5));
+  transition: all 0.3s;
+}
+/* AIが拾ってきた服を上にパッと透過で重ねるための「重ね着レイヤー」の設計さ！ */
+.ai-clothing-layer {
   position: absolute;
-  top: 50%; left: 50%;
-  width: 100vw; height: 56.25vw;
-  min-height: 100vh; min-width: 177.77vh;
-  transform: translate(-50%, -50%);
-  pointer-events: none;
-  opacity: 0.35;
+  top: 25%;
+  height: 45%;
+  z-index: 2;
+  opacity: 0.95;
+  animation: clothesPulse 0.5s ease-out;
+}
+
+@keyframes clothesPulse {
+  0% { transform: scale(0.9); opacity: 0; }
+  100% { transform: scale(1); opacity: 0.95; }
 }
  
 header {
-  background: rgba(26, 43, 74, 0.95);
+  background: rgba(26, 43, 74, 0.96);
   color: #fff;
-  padding: 18px 20px 14px;
+  padding: 16px 20px 12px;
   text-align: center;
+  border-bottom: 1px solid var(--gold);
 }
 header h1 {
   font-family: 'Cormorant Garamond', serif;
-  font-size: 22px;
+  font-size: 20px;
   font-weight: 300;
   letter-spacing: 3px;
 }
-header p {
-  font-size: 11px;
-  color: var(--gold-light);
-  margin-top: 3px;
-}
+header p { font-size: 10px; color: var(--gold-light); margin-top: 2px; }
  
-/* シーン選択バー */
+/* シーン・四季連動バー */
 .scene-bar {
   display: flex;
-  background: rgba(255, 255, 255, 0.95);
+  background: rgba(255, 255, 255, 0.96);
   border-bottom: 2px solid var(--navy);
-  position: relative;
-  z-index: 5;
 }
 .scene-btn {
-  flex: 1;
-  padding: 12px 6px;
-  border: none;
-  background: transparent;
-  font-family: 'Noto Sans JP', sans-serif;
-  font-size: 11px;
-  color: var(--gray);
-  cursor: pointer;
-  border-bottom: 3px solid transparent;
-  text-align: center;
+  flex: 1; padding: 12px 4px; border: none; background: transparent;
+  font-family: 'Noto Sans JP', sans-serif; font-size: 11px; color: var(--gray);
+  cursor: pointer; text-align: center; transition: all 0.2s;
 }
 .scene-btn.active {
-  color: var(--navy);
-  font-weight: 500;
-  border-bottom: 3px solid var(--gold);
-  background: rgba(184, 150, 11, 0.05);
+  color: var(--navy); font-weight: 500; border-bottom: 3px solid var(--gold);
+  background: rgba(184, 150, 11, 0.06);
 }
-.scene-icon { font-size: 18px; display: block; margin-bottom: 3px; }
+.scene-icon { font-size: 18px; display: block; margin-bottom: 2px; }
  
 /* プロフィールバー */
 .profile-bar {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  background: rgba(26, 43, 74, 0.9);
-  color: #fff;
-  padding: 10px 16px;
-  font-size: 12px;
-  position: relative;
-  z-index: 5;
+  display: flex; align-items: center; gap: 12px;
+  background: rgba(26, 43, 74, 0.92); color: #fff; padding: 8px 16px; font-size: 11px;
 }
 .profile-tag {
-  background: var(--gold);
-  color: var(--navy);
-  padding: 2px 8px;
-  border-radius: 10px;
-  font-size: 10px;
-  font-weight: 500;
+  background: var(--gold); color: var(--navy); padding: 1px 6px; border-radius: 8px; font-weight: 500;
 }
  
 /* メインコンテンツ */
-#mainContent {
-  position: relative;
-  z-index: 10;
-}
-.coord-area { padding: 16px; }
+#mainContent { position: relative; z-index: 10; }
+.coord-area { padding: 12px; }
 .scene-panel { display: none; }
 .scene-panel.active { display: block; }
  
 .coord-card {
-  background: var(--white);
-  border-radius: 14px;
-  box-shadow: var(--shadow);
-  overflow: hidden;
-  margin-bottom: 14px;
+  background: var(--white); border-radius: 14px; box-shadow: var(--shadow);
+  overflow: hidden; margin-bottom: 12px; backdrop-filter: blur(10px);
 }
 .coord-card-header {
-  background: linear-gradient(135deg, var(--navy), #2a4a7a);
-  color: #fff;
-  padding: 12px 16px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
+  background: linear-gradient(135deg, rgba(26,43,74,0.95), rgba(42,74,122,0.95));
+  color: #fff; padding: 10px 16px; display: flex; align-items: center; gap: 10px;
 }
 .coord-card-header h3 { font-size: 13px; font-weight: 500; }
-.coord-card-body { padding: 14px 16px; }
+.coord-card-body { padding: 12px 16px; }
  
 .item-row {
-  display: flex;
-  align-items: flex-start;
-  gap: 12px;
-  padding: 10px 0;
-  border-bottom: 1px solid var(--light);
+  display: flex; align-items: center; gap: 12px; padding: 8px 0; border-bottom: 1px solid var(--light);
 }
 .item-row:last-child { border-bottom: none; }
 .item-icon {
-  width: 40px; height: 40px; border-radius: 8px; background: var(--light);
-  display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0;
+  width: 36px; height: 36px; border-radius: 8px; background: var(--light);
+  display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0;
 }
 .item-info { flex: 1; }
-.item-label { font-size: 10px; color: var(--gold); font-weight: 500; }
-.item-name { font-size: 13px; font-weight: 500; margin: 2px 0; }
-.item-desc { font-size: 11px; color: var(--navy); opacity: 0.8; line-height: 1.5; }
+.item-label { font-size: 9px; color: var(--gold); font-weight: 500; }
+.item-name { font-size: 12px; font-weight: 500; margin: 1px 0; }
+.item-desc { font-size: 11px; color: var(--navy); opacity: 0.85; }
  
 .rinko-comment {
-  background: rgba(240, 237, 232, 0.8);
-  border-left: 3px solid var(--gold);
-  padding: 10px 12px;
-  margin-top: 12px;
-  border-radius: 0 8px 8px 0;
+  background: rgba(240, 237, 232, 0.85); border-left: 3px solid var(--gold);
+  padding: 10px 12px; margin-top: 10px; border-radius: 0 8px 8px 0;
 }
-.rinko-comment .label { font-size: 10px; color: var(--gold); font-weight: 500; }
-.rinko-comment p { font-size: 11px; color: var(--navy); line-height: 1.6; }
+.rinko-comment .label { font-size: 9px; color: var(--gold); font-weight: 500; }
+.rinko-comment p { font-size: 11px; color: var(--navy); line-height: 1.5; }
  
 /* URLセクション */
 .url-section {
-  padding: 16px;
-  background: var(--white);
-  margin: 16px;
-  border-radius: 14px;
-  box-shadow: var(--shadow);
+  padding: 16px; background: var(--white); margin: 12px; border-radius: 14px; box-shadow: var(--shadow);
 }
-.url-section h2 {
-  font-size: 13px; font-weight: 500; color: var(--navy);
-  padding-bottom: 8px; border-bottom: 1px solid var(--light); margin-bottom: 10px;
-}
-.url-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 14px; }
+.url-section h2 { font-size: 13px; color: var(--navy); padding-bottom: 6px; border-bottom: 1px solid var(--light); margin-bottom: 10px; }
+.url-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 12px; }
 .url-item {
   background: #fff; border: 1px solid var(--light); border-radius: 10px;
-  padding: 10px 12px; display: flex; align-items: center; gap: 10px;
+  padding: 8px 12px; display: flex; align-items: center; gap: 10px;
 }
 .url-item-info { flex: 1; min-width: 0; }
-.url-item-name { font-size: 12px; font-weight: 500; }
-.url-item-link a { font-size: 10px; color: var(--navy); text-decoration: none; word-break: break-all; }
+.url-item-name { font-size: 11px; font-weight: 500; }
+.url-item-link a { font-size: 10px; color: var(--navy); text-decoration: none; }
 .url-btn-del {
-  padding: 6px 10px; background: #ffe4e4; color: #8b0000;
-  border: none; border-radius: 6px; font-size: 10px; cursor: pointer;
+  padding: 6px 10px; background: #ffe4e4; color: #8b0000; border: none; border-radius: 6px; font-size: 10px; cursor: pointer;
 }
  
-.add-url-area {
-  background: #fff; border: 1.5px dashed var(--navy);
-  border-radius: 10px; padding: 14px;
-}
+.add-url-area { background: #fff; border: 1.5px dashed var(--navy); border-radius: 10px; padding: 12px; }
 .add-url-area input {
-  width: 100%; padding: 10px; border: 1px solid var(--gray);
-  border-radius: 8px; font-size: 13px; font-family: 'Noto Sans JP', sans-serif;
-  margin-bottom: 8px; outline: none;
-  background: #fff; color: #000;
+  width: 100%; padding: 8px; border: 1px solid var(--gray); border-radius: 6px;
+  font-size: 12px; margin-bottom: 6px; outline: none; background: #fff; color: #000;
 }
-.add-url-area input:focus { border-color: var(--gold); border-width: 1.5px; }
-.add-btn {
-  width: 100%; padding: 12px; background: var(--navy); color: #fff;
-  border: none; border-radius: 8px; font-size: 12px; font-weight: 500; cursor: pointer;
-}
+.add-btn { width: 100%; padding: 10px; background: var(--navy); color: #fff; border: none; border-radius: 8px; font-size: 12px; }
  
 /* ボトムナビ */
 .bottom-nav {
   position: fixed; bottom: 0; left: 0; width: 100%;
-  background: rgba(255, 255, 255, 0.95);
-  border-top: 1px solid var(--light); display: flex; z-index: 100;
+  background: rgba(255, 255, 255, 0.96); border-top: 1px solid var(--light); display: flex; z-index: 100;
 }
-.nav-btn {
-  flex: 1; padding: 12px 6px; border: none; background: transparent;
-  font-size: 10px; color: var(--gray); cursor: pointer; text-align: center;
-}
+.nav-btn { flex: 1; padding: 10px 4px; border: none; background: transparent; font-size: 10px; color: var(--gray); cursor: pointer; }
 .nav-btn.active { color: var(--navy); font-weight: 500; }
-.nav-btn span { font-size: 18px; display: block; margin-bottom: 2px; }
+.nav-btn span { font-size: 16px; display: block; margin-bottom: 1px; }
 </style>
 </head>
 <body>
  
-<div class="video-bg-container">
-  <iframe id="bgVideo" src="https://www.youtube.com/embed/ZqRco9U6vIs?autoplay=1&mute=1&loop=1&playlist=ZqRco9U6vIs&controls=0&showinfo=0&rel=0&modestbranding=1" frameborder="0" allow="autoplay; encrypted-media"></iframe>
-</div>
+<div class="visual-bg-backdrop" id="seasonsBg"></div>
 
 <header>
   <h1>JIBUN-CHU COORDINATE</h1>
@@ -234,65 +191,67 @@ header p {
 </header>
  
 <div class="scene-bar" id="sceneBar">
-  <button class="scene-btn active" onclick="setScene('street', this, 'ZqRco9U6vIs')">
-    <span class="scene-icon">🏙️</span>街角
+  <button class="scene-btn active" onclick="updateScene('street', this, 'https://images.unsplash.com/photo-1549880338-65ddcdfd017b?auto=format&fit=crop&w=800&q=80', '🧥')">
+    <span class="scene-icon">🌸</span>春の街角
   </button>
-  <button class="scene-btn" onclick="setScene('golf', this, '3b9pS1AEvYI')">
-    <span class="scene-icon">⛳</span>ゴルフ
+  <button class="scene-btn" onclick="updateScene('golf', this, 'https://images.unsplash.com/photo-1587174486073-ae5e5cff23aa?auto=format&fit=crop&w=800&q=80', '🎽')">
+    <span class="scene-icon">☀️</span>夏のゴルフ
   </button>
-  <button class="scene-btn" onclick="setScene('hotel', this, 'e9mC_D7w7Yg')">
-    <span class="scene-icon">🏨</span>ホテル
+  <button class="scene-btn" onclick="updateScene('hotel', this, 'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=800&q=80', '👔')">
+    <span class="scene-icon">🍁</span>秋のロビー
   </button>
 </div>
  
 <div class="profile-bar">
   <span class="profile-tag">168cm / 65kg</span>
-  <span style="font-size:11px;">スマートトラッド・シルエット</span>
-  <span style="margin-left:auto;font-size:11px;color:var(--gold-light);">3兄弟・ライブ制限パージ版</span>
+  <span>四季のハイブリッド重ね着仕様</span>
+  <span style="margin-left:auto; color:var(--gold-light); font-weight:500;">製品版プロトタイプ</span>
 </div>
  
+<div class="stage-container" id="stageContainer">
+  <span class="avatar-silhouette" style="font-size: 140px; display: flex; align-items: center;">👨‍💼</span>
+  <div class="ai-clothing-layer" id="clothingOverlay" style="font-size: 110px;">🧥</div>
+</div>
+
 <div id="mainContent">
  
   <div class="coord-area" id="coordView">
     <div class="scene-panel active" id="scene-street">
       <div class="coord-card">
-        <div class="coord-card-header"><span style="font-size:20px;">🏙️</span><h3>自然な街角スタイル</h3></div>
+        <div class="coord-card-header"><h3>春の街角 × スマートトラッド</h3></div>
         <div class="coord-card-body">
-          <div class="item-row"><div class="item-icon">🧥</div><div class="item-info"><div class="item-label">アウター</div><div class="item-name">麻混ストレッチ軽量ジャケット（ネイビー）</div><div class="item-desc">お写真のジャケットスタイルを現代ハック！腕まくりで大人の風格さ。</div></div></div>
-          <div class="item-row"><div class="item-icon">👕</div><div class="item-info"><div class="item-label">トップス</div><div class="item-name">白ジャストサイズTシャツ</div><div class="item-desc">メタル眼鏡とロマンスグレーに最高の清潔感を凭依させるさ！</div></div></div>
-          <div class="item-row"><div class="item-icon">👖</div><div class="item-info"><div class="item-label">ボトムス</div><div class="item-name">薄グレー アンクル丈スラックス</div><div class="item-desc">引き締まった体型が最も美しく見えるテーパードラインさ！</div></div></div>
-          <div class="rinko-comment"><div class="label">⚖️ 凛子の眼</div><p>品格とカジュアルの黄金比率です。松本の綺麗な街並みに完璧に溶け込みます。(^^)/</p></div>
+          <div class="item-row"><div class="item-icon">🧥</div><div class="item-info"><div class="item-label">AI重ね着</div><div class="item-name">麻混ストレッチ軽量ジャケット（ネイビー）</div><div class="item-desc">25年前に笑ったソフト屋を唸らせる、腕まくり大人のジャケット美学さ！</div></div></div>
+          <div class="item-row"><div class="item-icon">👕</div><div class="item-info"><div class="item-label">インナー</div><div class="item-name">白ジャストサイズ高級Tシャツ</div><div class="item-desc">メタル眼鏡とロマンスグレーに最高の清潔感を自動マウントさ！</div></div></div>
+          <div class="rinko-comment"><div class="label">⚖️ 凛子の眼</div><p>春の新緑の背景に、ネイビーとホワイトが120%綺麗に引き立ちます。大人の男の引き算コーデです。(^^)/</p></div>
         </div>
       </div>
     </div>
  
     <div class="scene-panel" id="scene-golf">
       <div class="coord-card">
-        <div class="coord-card-header"><span style="font-size:20px;">⛳</span><h3>蓼科・塩嶺コーススタイル</h3></div>
+        <div class="coord-card-header"><h3>夏の蓼科・塩嶺コース × ラグジュアリースポーツ</h3></div>
         <div class="coord-card-body">
-          <div class="item-row"><div class="item-icon">🎽</div><div class="item-info"><div class="item-label">トップス</div><div class="item-name">LUXEAKMPLUS ネイビーモックネック</div><div class="item-desc">お写真の白モックの反転カラー。引き締まった胸板をマッハで強調さ！</div></div></div>
-          <div class="item-row"><div class="item-icon">👖</div><div class="item-info"><div class="item-label">ボトムス</div><div class="item-name">ホワイト ストレッチチノパンツ</div><div class="item-desc">グリーン上で1番爽やかに目立つ、アディダス白ニットの遺伝子さ！</div></div></div>
-          <div class="item-row"><div class="item-icon">🧢</div><div class="item-info"><div class="item-label">ギア</div><div class="item-name">ブルーバイザー × 白レザーグローブ</div><div class="item-desc">日焼けした肌に白グローブのコントラストこそ、代表の最大の武器さ！</div></div></div>
-          <div class="rinko-comment"><div class="label">⚖️ 凛子の眼</div><p>スイング時の颯爽としたお姿が120%引き立つ、至高のゴルフスタイルです！🏌️‍♂️</p></div>
+          <div class="item-row"><div class="item-icon">🎽</div><div class="item-info"><div class="item-label">AI重ね着</div><div class="item-name">LUXEAKMPLUS ネイビーモックネック</div><div class="item-desc">お写真の白モックを反転！引き締まった胸板（168/65）を強調さ！</div></div></div>
+          <div class="item-row"><div class="item-icon">👖</div><div class="item-info"><div class="item-label">ボトムス</div><div class="item-name">ホワイト ストレッチスリムチノ</div><div class="item-desc">グリーン上で1番颯爽と目立つ、アディダス白ニットの遺伝子さ！</div></div></div>
+          <div class="rinko-comment"><div class="label">⚖️ 凛子の眼</div><p>夏の最高に晴れ渡るフェアウェイの静止画に、ダークネイビーのモックネックが美しく映える一本道です！🏌️‍♂️</p></div>
         </div>
       </div>
     </div>
  
     <div class="scene-panel" id="scene-hotel">
       <div class="coord-card">
-        <div class="coord-card-header"><span style="font-size:20px;">🏨</span><h3>リゾートホテルロビースタイル</h3></div>
+        <div class="coord-card-header"><h3>秋のホテルロビー × プレミアムクラシック</h3></div>
         <div class="coord-card-body">
-          <div class="item-row"><div class="item-icon">🧥</div><div class="item-info"><div class="item-label">ジャケット</div><div class="item-name">濃紺ウールサマージャケット</div><div class="item-desc">お写真の黒ジャケットの品格をさらにドレスアップ。サマーウールの艶が最高さ！</div></div></div>
-          <div class="item-row"><div class="item-icon">👔</div><div class="item-info"><div class="item-label">インナー</div><div class="item-name">バーガンディ（ワイン色）極薄Vネックニット</div><div class="item-desc">ロビーの暖色照明に憑依する大人の差し色。これぞKirinFormalの美学さ！</div></div></div>
-          <div class="item-row"><div class="item-icon">👞</div><div class="item-info"><div class="item-label">シューズ</div><div class="item-name">ダークブラウン レザードレスシューズ</div><div class="item-desc">黒で固めず、柔らかいブラウンで周囲に絶対的な信頼感を与えるさ！</div></div></div>
-          <div class="rinko-comment"><div class="label">⚖️ 凛子の眼</div><p>ロビーに佇むだけで周囲の空気がクラシックホテルに変わるような、至高のダンディズムです。(^^)/</p></div>
+          <div class="item-row"><div class="item-icon">👔</div><div class="item-info"><div class="item-label">AI重ね着</div><div class="item-name">バーガンディ（ワイン色）極薄Vネックニット</div><div class="item-desc">ロビーの暖色照明に凭依する大人の差し色。これぞKirinFormalの美学さ！</div></div></div>
+          <div class="item-row"><div class="item-icon">🧥</div><div class="item-info"><div class="item-label">ジャケット</div><div class="item-name">濃紺サマーウール テーラードジャケット</div><div class="item-desc">お写真の黒ジャケットの品格をさらにドレスアップする最高の一着さ！</div></div></div>
+          <div class="rinko-comment"><div class="label">⚖️ 凛子の眼</div><p>ロビーに佇むだけで周囲の空気をヨーロッパの高級ホテルに変えてしまうような、至高のダンディズムです。(^^)/</p></div>
         </div>
       </div>
     </div>
   </div>
  
   <div class="url-section" id="urlView" style="display:none;">
-    <h2>🌐 お気に入りショップURL管理</h2>
+    <h2>🌐 お気に入りショップURL（追加・削除機能）</h2>
     <div class="url-list" id="urlList"></div>
     <div class="add-url-area">
       <input type="text" id="newUrlName" placeholder="ショップ名（例：パーリーゲイツ）">
@@ -316,15 +275,26 @@ var urls = [
   { id: 4, name: 'WEAR（メンズ人気ゴルフコーデ）', link: 'https://wear.jp/coordinate/?tag_ids=13635' }
 ];
 var nextId = 5;
+
+// 初期背景の設定（春の街角さ！）
+document.getElementById('seasonsBg').style.backgroundImage = "url('https://images.unsplash.com/photo-1549880338-65ddcdfd017b?auto=format&fit=crop&w=800&q=80')";
  
-function setScene(scene, btn, videoId) {
+function updateScene(scene, btn, bgUrl, clothIcon) {
   document.querySelectorAll('.scene-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
   document.querySelectorAll('.scene-panel').forEach(p => p.classList.remove('active'));
   document.getElementById('scene-' + scene).classList.add('active');
   
-  // 通常の動画リンクへの光速切り替えハック！
-  document.getElementById('bgVideo').src = "https://www.youtube.com/embed/" + videoId + "?autoplay=1&mute=1&loop=1&playlist=" + videoId + "&controls=0&showinfo=0&rel=0&modestbranding=1";
+  // 100%エラーフリーで背景の四季静止画をチェンジさ！
+  document.getElementById('seasonsBg').style.backgroundImage = "url('" + bgUrl + "')";
+  
+  // AIが服を切り抜いて中央の代表にパッと重ね着させるギミックさ！
+  var overlay = document.getElementById('clothingOverlay');
+  overlay.style.display = 'none';
+  setTimeout(function() {
+    overlay.innerHTML = clothIcon;
+    overlay.style.display = 'block';
+  }, 50);
 }
  
 function showTab(tab, btn) {
@@ -333,6 +303,7 @@ function showTab(tab, btn) {
   document.getElementById('coordView').style.display = tab === 'coord' ? 'block' : 'none';
   document.getElementById('urlView').style.display = tab === 'url' ? 'block' : 'none';
   document.getElementById('sceneBar').style.display = tab === 'coord' ? 'flex' : 'none';
+  document.getElementById('stageContainer').style.display = tab === 'coord' ? 'flex' : 'none';
   if(tab === 'url') renderUrls();
 }
  
@@ -348,7 +319,7 @@ function renderUrls() {
         '<div class="url-item-name" style="font-size:12px; font-weight:500; margin-bottom:2px;">' + u.name + '</div>' +
         '<div class="url-item-link"><a href="' + u.link + '" target="_blank">' + u.link + '</a></div>' +
       '</div>' +
-      '<button class="url-btn-del" onclick="deleteUrl(' + id + ')">削除</button>' +
+      '<button class="url-btn-del" onclick="deleteUrl(' + u.id + ')">削除</button>' +
     '</div>';
   }).join('');
 }
