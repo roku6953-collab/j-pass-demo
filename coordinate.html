@@ -11,10 +11,10 @@
   --navy: #1a2b4a;
   --gold: #b8960b;
   --gold-light: #f0e0a0;
-  --cream: rgba(250, 248, 244, 0.85); /* 動画が見えるように少し透過 */
+  --cream: rgba(250, 248, 244, 0.90);
   --gray: #8a8a8a;
   --light: #f0ede8;
-  --white: rgba(255, 255, 255, 0.90); /* 高級感のある透過白 */
+  --white: rgba(255, 255, 255, 0.92);
   --shadow: 0 8px 32px rgba(26,43,74,0.15);
 }
  
@@ -25,33 +25,32 @@ body {
   background: #000;
   color: var(--navy);
   min-height: 100vh;
-  overflow-x: hidden;
+  padding-bottom: 80px;
 }
 
-/* ビデオ背景コンテナ */
+/* ビデオ背景コンテナ（最背面へ完全固定し、タップを邪魔しない設定に修正さ！） */
 .video-bg-container {
   position: fixed;
   top: 0; left: 0; width: 100%; height: 100%;
-  z-index: -1;
+  z-index: -2;
   overflow: hidden;
+  pointer-events: none; /* これで入力の邪魔を100%しないさ！ */
 }
 .video-bg-container iframe {
   position: absolute;
   top: 50%; left: 50%;
-  width: 100vw; height: 56.25vw; /* 16:9 */
+  width: 100vw; height: 56.25vw;
   min-height: 100vh; min-width: 177.77vh;
   transform: translate(-50%, -50%);
   pointer-events: none;
-  opacity: 0.45; /* 背景として美しく溶け込む暗さ */
-  transition: opacity 0.5s ease;
+  opacity: 0.40;
 }
  
 header {
   background: rgba(26, 43, 74, 0.95);
-  color: var(--white);
+  color: #fff;
   padding: 18px 20px 14px;
   text-align: center;
-  backdrop-filter: blur(4px);
 }
 header h1 {
   font-family: 'Cormorant Garamond', serif;
@@ -63,15 +62,15 @@ header p {
   font-size: 11px;
   color: var(--gold-light);
   margin-top: 3px;
-  letter-spacing: 1px;
 }
  
-/* シーン選択 */
+/* シーン選択バー */
 .scene-bar {
   display: flex;
-  gap: 0;
-  border-bottom: 2px solid var(--navy);
   background: rgba(255, 255, 255, 0.95);
+  border-bottom: 2px solid var(--navy);
+  position: relative;
+  z-index: 5;
 }
 .scene-btn {
   flex: 1;
@@ -83,7 +82,6 @@ header p {
   color: var(--gray);
   cursor: pointer;
   border-bottom: 3px solid transparent;
-  transition: all .2s;
   text-align: center;
 }
 .scene-btn.active {
@@ -94,15 +92,17 @@ header p {
 }
 .scene-icon { font-size: 18px; display: block; margin-bottom: 3px; }
  
-/* プロフィール */
+/* プロフィールバー */
 .profile-bar {
   display: flex;
   align-items: center;
   gap: 12px;
   background: rgba(26, 43, 74, 0.9);
-  color: var(--white);
+  color: #fff;
   padding: 10px 16px;
   font-size: 12px;
+  position: relative;
+  z-index: 5;
 }
 .profile-tag {
   background: var(--gold);
@@ -113,31 +113,31 @@ header p {
   font-weight: 500;
 }
  
-/* コーディネート表示エリア */
+/* メインコンテンツ（前面に浮かび上がらせて確実に入力可能にするさ！） */
+#mainContent {
+  position: relative;
+  z-index: 10;
+}
 .coord-area { padding: 16px; }
- .scene-panel { display: none; }
+.scene-panel { display: none; }
 .scene-panel.active { display: block; }
- .coord-card {
+ 
+.coord-card {
   background: var(--white);
   border-radius: 14px;
   box-shadow: var(--shadow);
   overflow: hidden;
   margin-bottom: 14px;
-  backdrop-filter: blur(8px);
 }
 .coord-card-header {
-  background: linear-gradient(135deg, rgba(26,43,74,0.95), rgba(42,74,122,0.95));
-  color: var(--white);
+  background: linear-gradient(135deg, var(--navy), #2a4a7a);
+  color: #fff;
   padding: 12px 16px;
   display: flex;
   align-items: center;
   gap: 10px;
 }
-.coord-card-header h3 {
-  font-size: 13px;
-  font-weight: 500;
-  letter-spacing: 1px;
-}
+.coord-card-header h3 { font-size: 13px; font-weight: 500; }
 .coord-card-body { padding: 14px 16px; }
  
 .item-row {
@@ -149,24 +149,11 @@ header p {
 }
 .item-row:last-child { border-bottom: none; }
 .item-icon {
-  width: 40px;
-  height: 40px;
-  border-radius: 8px;
-  background: var(--light);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 18px;
-  flex-shrink: 0;
+  width: 40px; height: 40px; border-radius: 8px; background: var(--light);
+  display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0;
 }
 .item-info { flex: 1; }
-.item-label {
-  font-size: 10px;
-  color: var(--gold);
-  font-weight: 500;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-}
+.item-label { font-size: 10px; color: var(--gold); font-weight: 500; }
 .item-name { font-size: 13px; font-weight: 500; margin: 2px 0; }
 .item-desc { font-size: 11px; color: var(--navy); opacity: 0.8; line-height: 1.5; }
  
@@ -177,101 +164,62 @@ header p {
   margin-top: 12px;
   border-radius: 0 8px 8px 0;
 }
-.rinko-comment .label { font-size: 10px; color: var(--gold); font-weight: 500; margin-bottom: 4px; }
+.rinko-comment .label { font-size: 10px; color: var(--gold); font-weight: 500; }
 .rinko-comment p { font-size: 11px; color: var(--navy); line-height: 1.6; }
  
-/* URLストア管理 */
-.url-section { padding: 16px; background: var(--white); margin: 16px; border-radius: 14px; box-shadow: var(--shadow); }
-.url-section h2 {
-  font-size: 13px;
-  font-weight: 500;
-  color: var(--navy);
-  padding: 12px 0 8px;
-  border-bottom: 1px solid var(--light);
-  margin-bottom: 10px;
-  letter-spacing: 1px;
-}
- .url-list { display: flex; flex-direction: column; gap: 8px; }
- .url-item {
+/* URLセクション（ここが100%入力できるように全面改良さ！） */
+.url-section {
+  padding: 16px;
   background: var(--white);
-  border: 1px solid var(--light);
-  border-radius: 10px;
-  padding: 10px 12px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
+  margin: 16px;
+  border-radius: 14px;
+  box-shadow: var(--shadow);
 }
-.url-item-icon { font-size: 16px; }
+.url-section h2 {
+  font-size: 13px; font-weight: 500; color: var(--navy);
+  padding-bottom: 8px; border-bottom: 1px solid var(--light); margin-bottom: 10px;
+}
+.url-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 14px; }
+.url-item {
+  background: #fff; border: 1px solid var(--light); border-radius: 10px;
+  padding: 10px 12px; display: flex; align-items: center; gap: 10px;
+}
 .url-item-info { flex: 1; min-width: 0; }
-.url-item-name { font-size: 12px; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.url-item-link { font-size: 10px; color: var(--gray); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.url-actions { display: flex; gap: 4px; }
-.url-btn {
-  padding: 4px 8px;
-  border-radius: 6px;
-  border: none;
-  font-size: 10px;
-  cursor: pointer;
-  font-family: 'Noto Sans JP', sans-serif;
+.url-item-name { font-size: 12px; font-weight: 500; }
+.url-item-link a { font-size: 10px; color: var(--navy); text-decoration: none; word-break: break-all; }
+.url-btn-del {
+  padding: 6px 10px; background: #ffe4e4; color: #8b0000;
+  border: none; border-radius: 6px; font-size: 10px; cursor: pointer;
 }
-.url-btn-edit { background: var(--light); color: var(--navy); }
-.url-btn-del { background: #ffe4e4; color: #8b0000; }
  
 .add-url-area {
-  background: var(--white);
-  border: 1.5px dashed var(--navy);
-  border-radius: 10px;
-  padding: 12px;
-  margin-top: 10px;
+  background: #fff; border: 1.5px dashed var(--navy);
+  border-radius: 10px; padding: 14px;
 }
 .add-url-area input {
-  width: 100%;
-  padding: 8px 10px;
-  border: 1px solid var(--light);
-  border-radius: 8px;
-  font-size: 12px;
-  font-family: 'Noto Sans JP', sans-serif;
-  margin-bottom: 6px;
-  outline: none;
+  width: 100%; padding: 10px; border: 1px solid var(--gray);
+  border-radius: 8px; font-size: 13px; font-family: 'Noto Sans JP', sans-serif;
+  margin-bottom: 8px; outline: none;
+  background: #fff; color: #000; /* 入力文字をハッキリ見えるように変更さ！ */
 }
+.add-url-area input:focus { border-color: var(--gold); border-width: 1.5px; }
 .add-btn {
-  width: 100%;
-  padding: 10px;
-  background: var(--navy);
-  color: var(--white);
-  border: none;
-  border-radius: 8px;
-  font-size: 12px;
-  font-weight: 500;
-  cursor: pointer;
-  font-family: 'Noto Sans JP', sans-serif;
+  width: 100%; padding: 12px; background: var(--navy); color: #fff;
+  border: none; border-radius: 8px; font-size: 12px; font-weight: 500; cursor: pointer;
 }
  
 /* ボトムナビ */
 .bottom-nav {
-  position: fixed;
-  bottom: 0; left: 0; width: 100%;
+  position: fixed; bottom: 0; left: 0; width: 100%;
   background: rgba(255, 255, 255, 0.95);
-  border-top: 1px solid var(--light);
-  display: flex;
-  z-index: 10;
+  border-top: 1px solid var(--light); display: flex; z-index: 100;
 }
 .nav-btn {
-  flex: 1;
-  padding: 12px 6px;
-  border: none;
-  background: transparent;
-  font-size: 10px;
-  color: var(--gray);
-  cursor: pointer;
-  text-align: center;
-  font-family: 'Noto Sans JP', sans-serif;
+  flex: 1; padding: 12px 6px; border: none; background: transparent;
+  font-size: 10px; color: var(--gray); cursor: pointer; text-align: center;
 }
 .nav-btn.active { color: var(--navy); font-weight: 500; }
 .nav-btn span { font-size: 18px; display: block; margin-bottom: 2px; }
-
-/* 余白調整 */
-#mainContent { padding-bottom: 80px; }
 </style>
 </head>
 <body>
@@ -300,21 +248,20 @@ header p {
 <div class="profile-bar">
   <span class="profile-tag">168cm / 65kg</span>
   <span style="font-size:11px;">スマートトラッド・シルエット</span>
-  <span style="margin-left:auto;font-size:11px;color:var(--gold-light);">凛子＆3兄弟共作</span>
+  <span style="margin-left:auto;font-size:11px;color:var(--gold-light);">3兄弟・完全修正版</span>
 </div>
  
 <div id="mainContent">
  
   <div class="coord-area" id="coordView">
-   
     <div class="scene-panel active" id="scene-street">
       <div class="coord-card">
         <div class="coord-card-header"><span style="font-size:20px;">🏙️</span><h3>自然な街角スタイル</h3></div>
         <div class="coord-card-body">
-          <div class="item-row"><div class="item-icon">🧥</div><div class="item-info"><div class="item-label">アウター</div><div class="item-name">麻混ストレッチ軽量ジャケット（ネイビー）</div><div class="item-desc">お写真のベージュジャケットの美学を継承。腕まくりで大人の余裕をさ！</div></div></div>
+          <div class="item-row"><div class="item-icon">🧥</div><div class="item-info"><div class="item-label">アウター</div><div class="item-name">麻混ストレッチ軽量ジャケット（ネイビー）</div><div class="item-desc">お写真のジャケットスタイルを現代ハック！腕まくりで大人の風格さ。</div></div></div>
           <div class="item-row"><div class="item-icon">👕</div><div class="item-info"><div class="item-label">トップス</div><div class="item-name">白ジャストサイズTシャツ</div><div class="item-desc">メタル眼鏡とロマンスグレーに最高の清潔感を凭依させるさ！</div></div></div>
-          <div class="item-row"><div class="item-icon">👖</div><div class="item-info"><div class="item-label">ボトムス</div><div class="item-name">薄グレー アンクル丈スラックス</div><div class="item-desc">168cm/65kgのスポーツ体型が最もスタイリッシュに見える絶対の丈感さ！</div></div></div>
-          <div class="rinko-comment"><div class="label">⚖️ 凛子の眼</div><p>品格とカジュアルの黄金比率です。アースカラーをどこかに1点混ぜると、松本の綺麗な街並みに完璧に溶け込みます。(^^)/</p></div>
+          <div class="item-row"><div class="item-icon">👖</div><div class="item-info"><div class="item-label">ボトムス</div><div class="item-name">薄グレー アンクル丈スラックス</div><div class="item-desc">引き締まった体型が最も美しく見えるテーパードラインさ！</div></div></div>
+          <div class="rinko-comment"><div class="label">⚖️ 凛子の眼</div><p>品格とカジュアルの黄金比率です。松本の綺麗な街並みに完璧に溶け込みます。(^^)/</p></div>
         </div>
       </div>
     </div>
@@ -323,10 +270,10 @@ header p {
       <div class="coord-card">
         <div class="coord-card-header"><span style="font-size:20px;">⛳</span><h3>蓼科・塩嶺コーススタイル</h3></div>
         <div class="coord-card-body">
-          <div class="item-row"><div class="item-icon">🎽</div><div class="item-info"><div class="item-label">トップス</div><div class="item-name">LUXEAKMPLUS ネイビーモックネック</div><div class="item-desc">お写真の白モックの反転カラー。引き締まった胸板がマッハで強調されるさ！</div></div></div>
-          <div class="item-row"><div class="item-icon">👖</div><div class="item-info"><div class="item-label">ボトムス</div><div class="item-name">ホワイト ストレッチチノパンツ</div><div class="item-desc">アディダスの白ニットの五感を継承。グリーン上で1番爽やかに目立つ一本道さ！</div></div></div>
-          <div class="item-row"><div class="item-icon">🧢</div><div class="item-info"><div class="item-label">ギア</div><div class="item-name">ブルーバイザー × 白レザーグローブ</div><div class="item-desc">日焼けした肌に白グローブのコントラストこそ、代表の放つ最強の弾道さ！</div></div></div>
-          <div class="rinko-comment"><div class="label">⚖️ 凛子の眼</div><p>最新のゴルフドゥ等のトレンドをハント。スイング時の颯爽としたお姿が120%引き立つ、王道のラグジュアリースポートです！🏌️‍♂️</p></div>
+          <div class="item-row"><div class="item-icon">🎽</div><div class="item-info"><div class="item-label">トップス</div><div class="item-name">LUXEAKMPLUS ネイビーモックネック</div><div class="item-desc">お写真の白モックの反転カラー。引き締まった胸板をマッハで強調さ！</div></div></div>
+          <div class="item-row"><div class="item-icon">👖</div><div class="item-info"><div class="item-label">ボトムス</div><div class="item-name">ホワイト ストレッチチノパンツ</div><div class="item-desc">グリーン上で1番爽やかに目立つ、アディダス白ニットの遺伝子さ！</div></div></div>
+          <div class="item-row"><div class="item-icon">🧢</div><div class="item-info"><div class="item-label">ギア</div><div class="item-name">ブルーバイザー × 白レザーグローブ</div><div class="item-desc">日焼けした肌に白グローブのコントラストこそ、代表の最大の武器さ！</div></div></div>
+          <div class="rinko-comment"><div class="label">⚖️ 凛子の眼</div><p>スイング時の颯爽としたお姿が120%引き立つ、至高のゴルフスタイルです！🏌️‍♂️</p></div>
         </div>
       </div>
     </div>
@@ -338,15 +285,14 @@ header p {
           <div class="item-row"><div class="item-icon">🧥</div><div class="item-info"><div class="item-label">ジャケット</div><div class="item-name">濃紺ウールサマージャケット</div><div class="item-desc">お写真の黒ジャケットの品格をさらにドレスアップ。サマーウールの艶が最高さ！</div></div></div>
           <div class="item-row"><div class="item-icon">👔</div><div class="item-info"><div class="item-label">インナー</div><div class="item-name">バーガンディ（ワイン色）極薄Vネックニット</div><div class="item-desc">ロビーの暖色照明に憑依する大人の差し色。これぞKirinFormalの美学さ！</div></div></div>
           <div class="item-row"><div class="item-icon">👞</div><div class="item-info"><div class="item-label">シューズ</div><div class="item-name">ダークブラウン レザードレスシューズ</div><div class="item-desc">黒で固めず、柔らかいブラウンで周囲に絶対的な信頼感を与えるさ！</div></div></div>
-          <div class="rinko-comment"><div class="label">⚖️ 凛子の眼</div><p>ENJOY ORDERの思想をハック。ロビーに佇むだけで周囲の空気がクラシックホテルに変わるような、至高のダンディズムです。(^^)/</p></div>
+          <div class="rinko-comment"><div class="label">⚖️ 凛子の眼</div><p>ロビーに佇むだけで周囲の空気がクラシックホテルに変わるような、至高のダンディズムです。(^^)/</p></div>
         </div>
       </div>
     </div>
- 
   </div>
  
   <div class="url-section" id="urlView" style="display:none;">
-    <h2>🌐 お気に入りショップURL（追加・削除・更新機能）</h2>
+    <h2>🌐 お気に入りショップURL管理</h2>
     <div class="url-list" id="urlList"></div>
     <div class="add-url-area">
       <input type="text" id="newUrlName" placeholder="ショップ名（例：パーリーゲイツ）">
@@ -363,12 +309,12 @@ header p {
 </div>
  
 <script>
-// 代表お気に入りのURLコレクション（初期ハントデータ）
+// 初期ハントデータ（代表の送ってくれた4大URLさ！）
 var urls = [
-  { id:1, name:'オーエン（AUEN）60代メンズファッション', link:'https://pro.dcollection.me/vivid/60s-mens-fashion-points/' },
-  { id:2, name:'メンズスタイル（簡単まるごとコーデ）', link:'https://shop.menz-style.com/coordinate/contents?cid=9686' },
-  { id:3, name:'レオゴルフ（60代ゴルフウェアブランド11選）', link:'https://reonard.com/information/fifties_man_golfwear_fashionable/' },
-  { id:4, name:'WEAR（メンズ人気ゴルフコーデ）', link:'https://wear.jp/coordinate/?tag_ids=13635' }
+  { id: 1, name: 'オーエン（AUEN）60代メンズファッション', link: 'https://pro.dcollection.me/vivid/60s-mens-fashion-points/' },
+  { id: 2, name: 'メンズスタイル（簡単まるごとコーデ）', link: 'https://shop.menz-style.com/coordinate/contents?cid=9686' },
+  { id: 3, name: 'レオゴルフ（60代ゴルフウェアブランド11選）', link: 'https://reonard.com/information/fifties_man_golfwear_fashionable/' },
+  { id: 4, name: 'WEAR（メンズ人気ゴルフコーデ）', link: 'https://wear.jp/coordinate/?tag_ids=13635' }
 ];
 var nextId = 5;
  
@@ -378,7 +324,7 @@ function setScene(scene, btn, videoId) {
   document.querySelectorAll('.scene-panel').forEach(p => p.classList.remove('active'));
   document.getElementById('scene-' + scene).classList.add('active');
   
-  // YouTube背景動画をマッハで切り替えハック！
+  // 背景動画を光速切り替えハック！
   document.getElementById('bgVideo').src = "https://www.youtube.com/embed/" + videoId + "?autoplay=1&mute=1&loop=1&playlist=" + videoId + "&controls=0&showinfo=0&rel=0&modestbranding=1";
 }
  
@@ -399,25 +345,27 @@ function renderUrls() {
   }
   list.innerHTML = urls.map(function(u) {
     return '<div class="url-item">' +
-      '<div class="url-item-icon">🔗</div>' +
       '<div class="url-item-info">' +
-        '<div class="url-item-name">' + u.name + '</div>' +
-        '<div class="url-item-link"><a href="' + u.link + '" target="_blank" style="color:#1a2b4a;text-decoration:none;font-weight:500;">' + u.link + '</a></div>' +
+        '<div class="url-item-name" style="font-size:12px; font-weight:500; margin-bottom:2px;">' + u.name + '</div>' +
+        '<div class="url-item-link"><a href="' + u.link + '" target="_blank">' + u.link + '</a></div>' +
       '</div>' +
-      '<div class="url-actions">' +
-        '<button class="url-btn url-btn-del" onclick="deleteUrl(' + u.id + ')">削除</button>' +
-      '</div>' +
+      '<button class="url-btn-del" onclick="deleteUrl(' + u.id + ')">削除</button>' +
     '</div>';
   }).join('');
 }
  
 function addUrl() {
-  var name = document.getElementById('newUrlName').value.trim();
-  var link = document.getElementById('newUrlLink').value.trim();
+  var nameInput = document.getElementById('newUrlName');
+  var linkInput = document.getElementById('newUrlLink');
+  var name = nameInput.value.trim();
+  var link = linkInput.value.trim();
+  
   if(!name || !link) { alert('ショップ名とURLを入力してくださいさ！'); return; }
+  if(!link.startsWith('http')) link = 'https://' + link;
+  
   urls.push({ id: nextId++, name: name, link: link });
-  document.getElementById('newUrlName').value = '';
-  document.getElementById('newUrlLink').value = '';
+  nameInput.value = '';
+  linkInput.value = '';
   renderUrls();
 }
  
