@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>自己中コーディネート for 六郷代表</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=Noto+Sans+JP:wght@300;400;500&display=swap');
+ 
+:root {
+  --navy: #1a2b4a;
+  --gold: #b8960b;
+  --gold-light: #f0e0a0;
+  --cream: #faf8f4;
+  --gray: #8a8a8a;
+  --light: #f0ede8;
+  --white: #ffffff;
+  --shadow: 0 4px 24px rgba(26,43,74,0.10);
+}
+ 
+* { box-sizing: border-box; margin: 0; padding: 0; }
+ 
+body {
+  font-family: 'Noto Sans JP', sans-serif;
+  background: var(--cream);
+  color: var(--navy);
+  min-height: 100vh;
+}
+ 
+header {
+  background: var(--navy);
+  color: var(--white);
+  padding: 18px 20px 14px;
+  text-align: center;
+}
+header h1 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 22px;
+  font-weight: 300;
+  letter-spacing: 3px;
+}
+header p {
+  font-size: 11px;
+  color: var(--gold-light);
+  margin-top: 3px;
+  letter-spacing: 1px;
+}
+ 
+/* シーン選択 */
+.scene-bar {
+  display: flex;
+  gap: 0;
+  border-bottom: 2px solid var(--navy);
+  background: var(--white);
+}
+.scene-btn {
+  flex: 1;
+  padding: 12px 6px;
+  border: none;
+  background: transparent;
+  font-family: 'Noto Sans JP', sans-serif;
+  font-size: 11px;
+  color: var(--gray);
+  cursor: pointer;
+  border-bottom: 3px solid transparent;
+  transition: all .2s;
+  text-align: center;
+}
+.scene-btn.active {
+  color: var(--navy);
+  font-weight: 500;
+  border-bottom: 3px solid var(--gold);
+}
+.scene-icon { font-size: 18px; display: block; margin-bottom: 3px; }
+ 
+/* プロフィール */
+.profile-bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--navy);
+  color: var(--white);
+  padding: 10px 16px;
+  font-size: 12px;
+}
+.profile-tag {
+  background: var(--gold);
+  color: var(--navy);
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-size: 10px;
+  font-weight: 500;
+}
+ 
+/* コーディネート表示エリア */
+.coord-area {
+  padding: 16px;
+}
+ 
+.scene-panel { display: none; }
+.scene-panel.active { display: block; }
+ 
+.coord-card {
+  background: var(--white);
+  border-radius: 14px;
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  margin-bottom: 14px;
+}
+.coord-card-header {
+  background: linear-gradient(135deg, var(--navy), #2a4a7a);
+  color: var(--white);
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.coord-card-header h3 {
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 1px;
+}
+.coord-card-body { padding: 14px 16px; }
+ 
+.item-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--light);
+}
+.item-row:last-child { border-bottom: none; }
+.item-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  background: var(--light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  flex-shrink: 0;
+}
+.item-info { flex: 1; }
+.item-label {
+  font-size: 10px;
+  color: var(--gold);
+  font-weight: 500;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+.item-name { font-size: 13px; font-weight: 500; margin: 2px 0; }
+.item-desc { font-size: 11px; color: var(--gray); line-height: 1.5; }
+ 
+.rinko-comment {
+  background: linear-gradient(135deg, #f0ede8, #faf8f4);
+  border-left: 3px solid var(--gold);
+  padding: 10px 12px;
+  margin-top: 12px;
+  border-radius: 0 8px 8px 0;
+}
+.rinko-comment .label { font-size: 10px; color: var(--gold); font-weight: 500; margin-bottom: 4px; }
+.rinko-comment p { font-size: 11px; color: var(--navy); line-height: 1.6; }
+ 
+/* URLストア管理 */
+.url-section {
+  padding: 0 16px 16px;
+}
+.url-section h2 {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--navy);
+  padding: 12px 0 8px;
+  border-bottom: 1px solid var(--light);
+  margin-bottom: 10px;
+  letter-spacing: 1px;
+}
+ 
+.url-list { display: flex; flex-direction: column; gap: 8px; }
+ 
+.url-item {
+  background: var(--white);
+  border: 1px solid var(--light);
+  border-radius: 10px;
+  padding: 10px 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.url-item-icon { font-size: 16px; }
+.url-item-info { flex: 1; min-width: 0; }
+.url-item-name { font-size: 12px; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.url-item-link { font-size: 10px; color: var(--gray); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.url-actions { display: flex; gap: 4px; }
+.url-btn {
+  padding: 4px 8px;
+  border-radius: 6px;
+  border: none;
+  font-size: 10px;
+  cursor: pointer;
+  font-family: 'Noto Sans JP', sans-serif;
+}
+.url-btn-edit { background: var(--light); color: var(--navy); }
+.url-btn-del { background: #ffe4e4; color: #8b0000; }
+ 
+.add-url-area {
+  background: var(--white);
+  border: 1.5px dashed var(--navy);
+  border-radius: 10px;
+  padding: 12px;
+  margin-top: 10px;
+}
+.add-url-area input {
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid var(--light);
+  border-radius: 8px;
+  font-size: 12px;
+  font-family: 'Noto Sans JP', sans-serif;
+  margin-bottom: 6px;
+  outline: none;
+}
+.add-url-area input:focus { border-color: var(--navy); }
+.add-btn {
+  width: 100%;
+  padding: 10px;
+  background: var(--navy);
+  color: var(--white);
+  border: none;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  font-family: 'Noto Sans JP', sans-serif;
+  transition: opacity .2s;
+}
+.add-btn:active { opacity: .85; }
+ 
+/* モーダル */
+.modal-overlay {
+  display: none;
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(26,43,74,0.6);
+  z-index: 100;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+.modal-overlay.show { display: flex; }
+.modal {
+  background: var(--white);
+  border-radius: 16px;
+  padding: 20px;
+  width: 100%;
+  max-width: 340px;
+}
+.modal h3 { font-size: 14px; margin-bottom: 12px; }
+.modal input {
+  width: 100%;
+  padding: 10px;
+  border: 1.5px solid var(--light);
+  border-radius: 8px;
+  font-size: 12px;
+  margin-bottom: 8px;
+  font-family: 'Noto Sans JP', sans-serif;
+  outline: none;
+}
+.modal input:focus { border-color: var(--navy); }
+.modal-btns { display: flex; gap: 8px; margin-top: 8px; }
+.modal-btns button {
+  flex: 1;
+  padding: 10px;
+  border: none;
+  border-radius: 8px;
+  font-size: 12px;
+  cursor: pointer;
+  font-family: 'Noto Sans JP', sans-serif;
+}
+.modal-cancel { background: var(--light); color: var(--navy); }
+.modal-save { background: var(--navy); color: var(--white); font-weight: 500; }
+ 
+/* ナビゲーション */
+.bottom-nav {
+  position: sticky;
+  bottom: 0;
+  background: var(--white);
+  border-top: 1px solid var(--light);
+  display: flex;
+}
+.nav-btn {
+  flex: 1;
+  padding: 12px 6px;
+  border: none;
+  background: transparent;
+  font-size: 10px;
+  color: var(--gray);
+  cursor: pointer;
+  text-align: center;
+  font-family: 'Noto Sans JP', sans-serif;
+}
+.nav-btn.active { color: var(--navy); font-weight: 500; }
+.nav-btn span { font-size: 18px; display: block; margin-bottom: 2px; }
+</style>
+</head>
+<body>
+ 
+<header>
+  <h1>JIBUN-CHU COORDINATE</h1>
+  <p>六郷 隆 専用スタイリスト AI</p>
+</header>
+ 
+<!-- シーン選択 -->
+<div class="scene-bar" id="sceneBar">
+  <button class="scene-btn active" onclick="setScene('street', this)">
+    <span class="scene-icon">🏙️</span>街角
+  </button>
+  <button class="scene-btn" onclick="setScene('golf', this)">
+    <span class="scene-icon">⛳</span>ゴルフ
+  </button>
+  <button class="scene-btn" onclick="setScene('hotel', this)">
+    <span class="scene-icon">🏨</span>ホテル
+  </button>
+</div>
+ 
+<!-- プロフィール -->
+<div class="profile-bar">
+  <span class="profile-tag">168cm / 65kg</span>
+  <span style="font-size:11px;">スマートトラッド・シルエット</span>
+  <span style="margin-left:auto;font-size:11px;color:var(--gold-light);">凛子監修</span>
+</div>
+ 
+<!-- コンテンツ -->
+<div id="mainContent">
+ 
+<!-- コーディネートパネル -->
+<div class="coord-area" id="coordView">
+ 
+  <!-- 街角シーン -->
+  <div class="scene-panel active" id="scene-street">
+    <div class="coord-card">
+      <div class="coord-card-header">
+        <span style="font-size:20px;">🏙️</span>
+        <h3>自然な街角スタイル</h3>
+      </div>
+      <div class="coord-card-body">
+        <div class="item-row">
+          <div class="item-icon">🧥</div>
+          <div class="item-info">
+            <div class="item-label">アウター</div>
+            <div class="item-name">麻混ストレッチ軽量ジャケット</div>
+            <div class="item-desc">ネイビーまたはチャコール。少し腕まくりできる素材感で大人のゆとりを演出。</div>
+          </div>
+        </div>
+        <div class="item-row">
+          <div class="item-icon">👕</div>
+          <div class="item-info">
+            <div class="item-label">トップス</div>
+            <div class="item-name">白ジャストサイズTシャツ</div>
+            <div class="item-desc">シンプルな白無地。ロマンスグレーの髪と眼鏡に清潔感がプラスされる。</div>
+          </div>
+        </div>
+        <div class="item-row">
+          <div class="item-icon">👖</div>
+          <div class="item-info">
+            <div class="item-label">ボトムス</div>
+            <div class="item-name">薄グレー アンクル丈スラックス</div>
+            <div class="item-desc">スリムシルエット。168cm/65kgの体型に最も映えるアンクル丈。</div>
+          </div>
+        </div>
+        <div class="item-row">
+          <div class="item-icon">👟</div>
+          <div class="item-info">
+            <div class="item-label">シューズ</div>
+            <div class="item-name">白レザースニーカーまたはローファー</div>
+            <div class="item-desc">足元を軽くすることで全体のバランスが整う。</div>
+          </div>
+        </div>
+        <div class="rinko-comment">
+          <div class="label">⚖️ 凛子より</div>
+          <p>メタルフレームの眼鏡とロマンスグレーの髪が、街の背景に「大人のゆとり」として上品に映えます。アースカラーのジャケットで落ち着きと品格を。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+ 
+  <!-- ゴルフシーン -->
+  <div class="scene-panel" id="scene-golf">
+    <div class="coord-card">
+      <div class="coord-card-header">
+        <span style="font-size:20px;">⛳</span>
+        <h3>ゴルフコーススタイル</h3>
+      </div>
+      <div class="coord-card-body">
+        <div class="item-row">
+          <div class="item-icon">🎽</div>
+          <div class="item-info">
+            <div class="item-label">トップス</div>
+            <div class="item-name">ネイビー モックネックシャツ</div>
+            <div class="item-desc">LUXEAKMPLUSやフットジョイのような品のあるブランド。タイトシルエットで胸板を活かす。</div>
+          </div>
+        </div>
+        <div class="item-row">
+          <div class="item-icon">👖</div>
+          <div class="item-info">
+            <div class="item-label">ボトムス</div>
+            <div class="item-name">ホワイト ストレッチチノパンツ</div>
+            <div class="item-desc">白で全体を明るく。スリムシルエットで引き締まった脚ラインを演出。</div>
+          </div>
+        </div>
+        <div class="item-row">
+          <div class="item-icon">🧢</div>
+          <div class="item-info">
+            <div class="item-label">ヘッドウェア</div>
+            <div class="item-name">ブルーバイザーまたはキャップ</div>
+            <div class="item-desc">差し色のブルーで表情を明るく。ドラえもんキャップのような遊び心もOK。</div>
+          </div>
+        </div>
+        <div class="item-row">
+          <div class="item-icon">🧤</div>
+          <div class="item-info">
+            <div class="item-label">グローブ</div>
+            <div class="item-name">白レザーグローブ</div>
+            <div class="item-desc">日焼けした肌と白グローブのコントラストが代表の最大の武器。</div>
+          </div>
+        </div>
+        <div class="rinko-comment">
+          <div class="label">⚖️ 凛子より</div>
+          <p>レオゴルフ・ゴルフドゥの最新トレンドより抽出。ネイビー×ホワイトのコントラストが引き締まった体型を最大限に活かします。プレイ中の颯爽とした姿が一番のコーディネート。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+ 
+  <!-- ホテルシーン -->
+  <div class="scene-panel" id="scene-hotel">
+    <div class="coord-card">
+      <div class="coord-card-header">
+        <span style="font-size:20px;">🏨</span>
+        <h3>ホテルロビースタイル</h3>
+      </div>
+      <div class="coord-card-body">
+        <div class="item-row">
+          <div class="item-icon">🧥</div>
+          <div class="item-info">
+            <div class="item-label">ジャケット</div>
+            <div class="item-name">濃紺ウールサマージャケット</div>
+            <div class="item-desc">KirinFormalSuitのエレガントネイビーダブルブレストが参考に。上質な素材感が品格を演出。</div>
+          </div>
+        </div>
+        <div class="item-row">
+          <div class="item-icon">👔</div>
+          <div class="item-info">
+            <div class="item-label">インナー</div>
+            <div class="item-name">マスタード or バーガンディ Vネックニット</div>
+            <div class="item-desc">差し色を胸元に。ロビーの暖色ライトに映える暖色系で大人の色気を。</div>
+          </div>
+        </div>
+        <div class="item-row">
+          <div class="item-icon">👖</div>
+          <div class="item-info">
+            <div class="item-label">ボトムス</div>
+            <div class="item-name">チャコールグレー スリムスラックス</div>
+            <div class="item-desc">ENJOY ORDERのオーダースーツ感覚で。信頼感と清潔感を同時に演出。</div>
+          </div>
+        </div>
+        <div class="item-row">
+          <div class="item-icon">👞</div>
+          <div class="item-info">
+            <div class="item-label">シューズ</div>
+            <div class="item-name">ダークブラウン レザードレスシューズ</div>
+            <div class="item-desc">黒より少し柔らかいブラウンで、堅すぎない大人の余裕を表現。</div>
+          </div>
+        </div>
+        <div class="rinko-comment">
+          <div class="label">⚖️ 凛子より</div>
+          <p>KirinFormalSuit・ENJOY ORDER Magazineを参考に構成。代表のジャケット姿は本当に様になります。インナーに暖色の差し色を入れることでロビーの照明に自然に溶け込みます。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+ 
+</div>
+ 
+<!-- URLストア管理 -->
+<div class="url-section" id="urlView" style="display:none;">
+  <h2>🌐 お気に入りショップURL</h2>
+  <div class="url-list" id="urlList"></div>
+ 
+  <div class="add-url-area">
+    <input type="text" id="newUrlName" placeholder="ショップ名（例：パーリーゲイツ）">
+    <input type="text" id="newUrlLink" placeholder="URL（https://...）">
+    <button class="add-btn" onclick="addUrl()">＋ URLを追加する</button>
+  </div>
+</div>
+ 
+</div><!-- mainContent -->
+ 
+<!-- 編集モーダル -->
+<div class="modal-overlay" id="editModal">
+  <div class="modal">
+    <h3>URLを編集</h3>
+    <input type="text" id="editName" placeholder="ショップ名">
+    <input type="text" id="editLink" placeholder="URL">
+    <div class="modal-btns">
+      <button class="modal-cancel" onclick="closeModal()">キャンセル</button>
+      <button class="modal-save" onclick="saveEdit()">保存</button>
+    </div>
+  </div>
+</div>
+ 
+<!-- ボトムナビ -->
+<div class="bottom-nav">
+  <button class="nav-btn active" onclick="showTab('coord', this)">
+    <span>👔</span>コーデ提案
+  </button>
+  <button class="nav-btn" onclick="showTab('url', this)">
+    <span>🌐</span>ショップURL
+  </button>
+</div>
+ 
+<script>
+var urls = [
+  { id:1, name:'レオゴルフ（ゴルフウェア）', link:'https://reonard.com/information/fifties_man_golfwear_fashionable/' },
+  { id:2, name:'ゴルフドゥ（夏コーデ）', link:'https://www.golfdo.com/knowledge/fashion/4698/' },
+  { id:3, name:'KirinFormalSuit', link:'https://www.kirinsuit.jp/articles/245' },
+  { id:4, name:'ENJOY ORDER Magazine', link:'https://www.global-style.jp/enjoy-order/?p=24777' },
+];
+var nextId = 5;
+var editingId = null;
+ 
+function setScene(scene, btn) {
+  document.querySelectorAll('.scene-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.scene-panel').forEach(p => p.classList.remove('active'));
+  document.getElementById('scene-' + scene).classList.add('active');
+}
+ 
+function showTab(tab, btn) {
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('coordView').style.display = tab === 'coord' ? 'block' : 'none';
+  document.getElementById('urlView').style.display = tab === 'url' ? 'block' : 'none';
+  document.getElementById('sceneBar').style.display = tab === 'coord' ? 'flex' : 'none';
+  if(tab === 'url') renderUrls();
+}
+ 
+function renderUrls() {
+  var list = document.getElementById('urlList');
+  if(urls.length === 0) {
+    list.innerHTML = '<p style="font-size:12px;color:#888;padding:10px 0;">まだURLが登録されていません</p>';
+    return;
+  }
+  list.innerHTML = urls.map(function(u) {
+    return '<div class="url-item">' +
+      '<div class="url-item-icon">🔗</div>' +
+      '<div class="url-item-info">' +
+        '<div class="url-item-name">' + u.name + '</div>' +
+        '<div class="url-item-link"><a href="' + u.link + '" target="_blank" style="color:#1a2b4a;text-decoration:none;">' + u.link + '</a></div>' +
+      '</div>' +
+      '<div class="url-actions">' +
+        '<button class="url-btn url-btn-edit" onclick="openEdit(' + u.id + ')">編集</button>' +
+        '<button class="url-btn url-btn-del" onclick="deleteUrl(' + u.id + ')">削除</button>' +
+      '</div>' +
+    '</div>';
+  }).join('');
+}
+ 
+function addUrl() {
+  var name = document.getElementById('newUrlName').value.trim();
+  var link = document.getElementById('newUrlLink').value.trim();
+  if(!name || !link) { alert('ショップ名とURLを両方入力してください'); return; }
+  if(!link.startsWith('http')) link = 'https://' + link;
+  urls.push({ id: nextId++, name: name, link: link });
+  document.getElementById('newUrlName').value = '';
+  document.getElementById('newUrlLink').value = '';
+  renderUrls();
+}
+ 
+function deleteUrl(id) {
+  if(!confirm('このURLを削除しますか？')) return;
+  urls = urls.filter(function(u) { return u.id !== id; });
+  renderUrls();
+}
+ 
+function openEdit(id) {
+  editingId = id;
+  var u = urls.find(function(u) { return u.id === id; });
+  document.getElementById('editName').value = u.name;
+  document.getElementById('editLink').value = u.link;
+  document.getElementById('editModal').classList.add('show');
+}
+ 
+function closeModal() {
+  document.getElementById('editModal').classList.remove('show');
+  editingId = null;
+}
+ 
+function saveEdit() {
+  var name = document.getElementById('editName').value.trim();
+  var link = document.getElementById('editLink').value.trim();
+  if(!name || !link) { alert('入力してください'); return; }
+  urls = urls.map(function(u) {
+    return u.id === editingId ? { id: u.id, name: name, link: link } : u;
+  });
+  closeModal();
+  renderUrls();
+}
+</script>
+</body>
+</html>
